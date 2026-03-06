@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
 
   const { industry, situation, claimContent, severity } = body as Record<string, string>;
   if (!claimContent) return NextResponse.json({ error: "クレーム内容は必須です" }, { status: 400 });
+  if (claimContent.length > 1000) return NextResponse.json({ error: "クレーム内容は1000文字以内で入力してください" }, { status: 400 });
 
   const prompt = `あなたはクレーム対応の専門家です。以下のクレームに対して、誠実かつ丁寧な対応文を作成してください。
 
@@ -67,7 +68,7 @@ export async function POST(req: NextRequest) {
     const text = message.content[0].type === "text" ? message.content[0].text : "";
     const newCount = cookieCount + 1;
     const res = NextResponse.json({ result: text, count: newCount });
-    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax" });
+    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
     return res;
   } catch (err) {
     console.error(err);
