@@ -68,7 +68,10 @@ export default function ClaimLP() {
         <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold px-8 py-4 rounded-xl hover:bg-blue-50">無料で試す →</Link>
       </section>
 
-      <footer className="border-t py-6 text-center text-xs text-gray-400">AIクレーム対応文ジェネレーター © 2026</footer>
+      <footer className="border-t py-6 text-center text-xs text-gray-400 space-y-2">
+        <p>AIクレーム対応文ジェネレーター © 2026</p>
+        <p><Link href="/privacy" className="underline hover:text-gray-600">プライバシーポリシー</Link></p>
+      </footer>
     </main>
   );
 }
