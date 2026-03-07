@@ -29,9 +29,15 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { industry, situation, claimContent, severity } = body as Record<string, string>;
+  const { industry, situation, claimContent, severity, tone } = body as Record<string, string>;
   if (!claimContent) return NextResponse.json({ error: "クレーム内容は必須です" }, { status: 400 });
   if (claimContent.length > 1000) return NextResponse.json({ error: "クレーム内容は1000文字以内で入力してください" }, { status: 400 });
+
+  const toneGuide = tone === "毅然"
+    ? "感情的にならず毅然とした姿勢で対応。謝り過ぎず、事実を明確に伝え、再発防止策を論理的に示す。"
+    : tone === "強硬"
+    ? "法的根拠・消費者契約法・業界規制を踏まえ毅然と対応。必要に応じ法的手段への言及を含む。過度な謝罪は不要。"
+    : "誠実で丁寧な謝罪を中心に、お客様の気持ちに寄り添う温かみある対応。";
 
   const severityGuide = severity === "重大"
     ? "法的リスク・風評被害を考慮し、責任者名義・補償提示を含む最上級の対応文を作成。"
@@ -48,6 +54,7 @@ export async function POST(req: NextRequest) {
 深刻度: ${severity || "通常"}
 
 対応方針: ${severityGuide}
+対応トーン: ${toneGuide}
 
 以下の構成で出力してください：
 
