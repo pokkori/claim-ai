@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   if (email) {
     isPremium = await isActiveSubscription(email, APP_ID);
   } else {
-    isPremium = req.cookies.get("stripe_premium")?.value === "1";
+    isPremium = req.cookies.get("premium")?.value === "1" || req.cookies.get("stripe_premium")?.value === "1" || req.cookies.get("premium")?.value === "biz";
   }
   const cookieCount = parseInt(req.cookies.get(COOKIE_KEY)?.value || "0");
   if (!isPremium && cookieCount >= FREE_LIMIT) {

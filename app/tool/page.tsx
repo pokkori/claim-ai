@@ -1,4 +1,5 @@
 "use client";
+import PayjpModal from "@/components/PayjpModal";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -37,13 +38,9 @@ function parseResult(text: string): ParsedResult {
   return { sections, raw: text };
 }
 
-async function startCheckout(plan: string) {
-  const res = await fetch("/api/stripe/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ plan }) });
-  const { url } = await res.json();
-  if (url) window.location.href = url;
-}
+// startCheckout replaced by PayjpModal
 
-function Paywall({ onClose }: { onClose: () => void }) {
+function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (plan: string) => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
@@ -57,10 +54,10 @@ function Paywall({ onClose }: { onClose: () => void }) {
           <li>✓ 履歴を無制限保存</li>
         </ul>
         <div className="space-y-3 mb-4">
-          <button onClick={() => startCheckout("standard")} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+          <button onClick={() => { onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
             スタンダード ¥4,980/月
           </button>
-          <button onClick={() => startCheckout("business")} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
+          <button onClick={() => { onClose(); onCheckout?.("business"); }} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
             ビジネス ¥9,800/月（無制限・チーム対応）
           </button>
         </div>
@@ -136,6 +133,8 @@ export default function ClaimTool() {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showPayjp, setShowPayjp] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("standard");
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [error, setError] = useState("");
@@ -178,7 +177,7 @@ export default function ClaimTool() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
+      {showPaywall && <Paywall onClose={() => setShowPaywall(false)} onCheckout={(p) => { setSelectedPlan(p); setShowPayjp(true); }} />}
 
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
@@ -332,6 +331,15 @@ export default function ClaimTool() {
         <span className="mx-2">|</span>
         <a href="/privacy" className="hover:underline">プライバシーポリシー</a>
       </footer>
+      {showPayjp && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel={(selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥4,980/月")}
+          plan={selectedPlan}
+          onSuccess={() => setShowPayjp(false)}
+          onClose={() => setShowPayjp(false)}
+        />
+      )}
     </main>
   );
 }
