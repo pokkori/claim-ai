@@ -2,10 +2,12 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { isActiveSubscription } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const FREE_LIMIT = 3;
-const COOKIE_KEY = "claim_use_count";
-const APP_ID = "claim";
+const COOKIE_KEY = "review_use_count";
+const APP_ID = "google-review";
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 function checkRateLimit(ip: string): boolean {
@@ -37,107 +39,83 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { industry, situation, claimContent, severity, tone } = body as Record<string, string>;
-  if (!claimContent) return NextResponse.json({ error: "クレーム内容は必須です" }, { status: 400 });
-  if (claimContent.length > 1000) return NextResponse.json({ error: "クレーム内容は1000文字以内で入力してください" }, { status: 400 });
+  const { industry, rating, reviewContent, tone } = body as Record<string, string>;
+  if (!reviewContent) return NextResponse.json({ error: "口コミ内容は必須です" }, { status: 400 });
+  if (reviewContent.length > 1000) return NextResponse.json({ error: "口コミ内容は1000文字以内で入力してください" }, { status: 400 });
+
+  const ratingNum = parseInt(rating?.replace("★", "") || "3");
+  const isLowRating = ratingNum <= 2;
+  const isHighRating = ratingNum >= 4;
 
   const toneGuide =
-    tone === "毅然"
-      ? "感情的にならず毅然とした姿勢で対応。謝り過ぎず事実を明確に伝え、再発防止策を論理的に示す。「大変ご迷惑をおかけしました」程度の謝罪にとどめ、過度な謝罪は避ける。"
-      : tone === "強硬"
-      ? "法的根拠・消費者契約法・業界規制を踏まえ毅然と対応。不当要求には明確に断る文言を含める。必要に応じ「法的対応を含む適切な措置を取らせていただく場合がある」旨を示唆。過度な謝罪は不要。"
-      : "誠実で丁寧な謝罪を中心に、お客様の気持ちに寄り添う温かみある対応。「心よりお詫び申し上げます」など真摯な謝罪表現を使用。";
+    tone === "プロ"
+      ? "プロフェッショナルで簡潔な文体。冗長な表現を避け、要点を的確に伝える。信頼感と誠実さを醸成する。"
+      : tone === "親しみ"
+      ? "温かみがあり、親しみやすい文体。お客様との距離を縮め、また来店したくなるような雰囲気を作る。"
+      : "丁寧で誠実な謝意を示す文体。お客様を大切にしている姿勢が伝わる言葉を選ぶ。";
 
-  const severityGuide =
-    severity === "重大"
-      ? "法的リスク・風評被害・SNS拡散を考慮し、責任者名義・具体的な補償提示を含む最上級の対応文を作成。対応の速さと誠実さを最大限示す。"
-      : severity === "軽微"
-      ? "簡潔で温かみのある対応文を作成。過度な謝罪は避け、迅速な解決を示す。"
-      : "誠実かつプロフェッショナルな標準的対応文を作成。";
+  const ratingContext = isLowRating
+    ? "低評価（★1〜2）の口コミです。まず誠実にお詫びし、具体的な改善策を示し、個別対応の意志を見せることが重要です。"
+    : isHighRating
+    ? "高評価（★4〜5）の口コミです。感謝の気持ちを伝えつつ、他のお客様にも訴求する内容にすることが重要です。"
+    : "中評価（★3）の口コミです。良かった点への感謝と、課題への誠実な改善意欲を示すことが重要です。";
 
   const industryContext = industry
-    ? `${industry}業界の慣習・専門用語・よくある補償内容を踏まえた対応文にすること。`
+    ? `${industry}業界の慣習・専門用語を踏まえた返信文にすること。`
     : "";
 
-  const prompt = `あなたはクレーム対応の第一人者コンサルタントです。20年の経験を持ち、大手企業のCS部門を指導してきた専門家として、以下のクレームに対する完全な対応セットを作成してください。
+  const prompt = `あなたはGoogleビジネスプロフィールの口コミ対応の専門家です。店舗のオーナーとして、以下のGoogle口コミに対する最適な返信文セットを作成してください。
 
-【クレーム情報】
-業種: ${industry || "一般"}
-状況: ${situation || "店舗・サービスへのクレーム"}
-クレーム内容: ${claimContent}
-深刻度: ${severity || "通常"}
+【口コミ情報】
+業種: ${industry || "一般店舗"}
+評価: ${rating || "★3"}
+口コミ内容: ${reviewContent}
 
 【対応方針】
-${severityGuide}
+${ratingContext}
 ${industryContext}
 トーン: ${toneGuide}
 
 以下の構成で出力してください。各セクションの区切りは必ず「---」（ハイフン3つのみの行）を使ってください：
 
 ---
-## 📧 メール返信文（そのまま使えるバージョン）
+## 💬 返信文（Googleに投稿する返信文）
 
-件名: 【重要】${situation || "ご指摘"}についてのご連絡
-
-（宛名）様
-
-（本文：①お詫び→②状況確認と原因→③再発防止策→④補償・対応策→⑤今後の対応→⑥締め）
-
-敬具
-
-株式会社〇〇
-担当: 〇〇 〇〇
-TEL: 000-0000-0000
+（${isLowRating ? "①感謝→②お詫び→③具体的な改善策→④個別対応の案内→⑤再来店の促し" : "①感謝→②具体的な共感→③店舗の魅力・強みへの言及→④今後もよろしくお願いします"}の流れで200〜300文字程度）
 
 ---
-## 📞 電話対応スクリプト
+## 🌟 感謝文（高評価をいただいた場合の追加感謝メッセージ）
 
-**【冒頭・第一声】**
-（お客様が電話に出た瞬間の言葉。謝罪と自己紹介を含む）
-
-**【状況確認フェーズ】**
-（怒りが少し落ち着いたタイミングで確認すべき質問。3〜4点）
-
-**【解決提案フェーズ】**
-（具体的に提示する補償・対応内容）
-
-**【想定されるお客様の反応への切り返し】**
-・「SNSに投稿する」と言われた場合:
-・「慰謝料を請求する」と言われた場合:
-・「二度と来ない」と言われた場合:
-
-**【クロージング】**
-（感謝と今後の関係継続への言葉）
+${isHighRating ? "（口コミ内容の具体的な点に触れながら、スタッフへの感謝や今後の抱負を300文字程度で）" : "（仮に高評価をいただいた場合の返信文テンプレートを300文字程度で作成。次回来店時に高評価をいただけるよう改善後を想定して）"}
 
 ---
-## ✅ 対応チェックリスト
+## 📈 SEOアドバイス（Googleマップ検索での露出を高めるためのポイント）
 
-**■ 初動対応（発生から1時間以内）**
-- [ ]
-- [ ]
-- [ ]
+**返信文に含めると効果的なキーワード：**
+（業種・地域・サービス名など検索されやすいキーワードを3〜5個）
 
-**■ 情報収集・原因究明（当日中）**
-- [ ]
-- [ ]
+**SEO的に有効な返信のコツ：**
+（具体的なアドバイスを3点）
 
-**■ 再発防止（3日以内）**
-- [ ]
-- [ ]
-${severity === "重大" ? "\n**■ エスカレーション対応**\n- [ ] 法務・上長への報告\n- [ ] 補償・返金の承認取得\n- [ ] 広報・SNS監視体制の確認" : ""}
+**この口コミへの返信で期待できる効果：**
+（集客・信頼性向上への影響を説明）
 
 ---
-## 💡 このクレームを顧客満足に変えるポイント
+## ✏️ 別パターン（文体・長さの異なる返信例）
 
-（このクレームをリピーター獲得のチャンスに変える具体的なアドバイスを3点。それぞれ「なぜ効果があるか」の理由も添えて。）
+**【短め・シンプル版】（100文字以内）**
+（簡潔にお礼・お詫びを伝えるバージョン）
+
+**【丁寧・詳細版】（400文字程度）**
+（より丁寧に、具体的な対応策を示すバージョン）
 
 ---
-※ 実際の状況に応じて文言を調整してご使用ください。`;
+※ 店舗名・担当者名は実際のものに変更してご使用ください。`;
 
   try {
     const message = await client.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 3000,
+      max_tokens: 2500,
       messages: [{ role: "user", content: prompt }],
     });
     const text = message.content[0].type === "text" ? message.content[0].text : "";
