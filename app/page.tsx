@@ -1,11 +1,10 @@
+"use client";
 import Link from "next/link";
-import type { Metadata } from "next";
+import { useState } from "react";
+import PayjpModal from "@/components/PayjpModal";
 
-export const metadata: Metadata = {
-  title: "AIクレーム対応文ジェネレーター｜メール文・電話スクリプト・チェックリストを30秒で作成",
-  description: "クレーム内容を入力するだけ。AIが業種・深刻度・トーンに合わせたメール返信文・電話スクリプト・対応チェックリストを即時生成。飲食店・EC・ホテル・美容院など全業種対応。無料3回試せます。",
-  keywords: "クレーム対応文,クレームメール 返信,クレーム 電話 対応,クレーム対応 テンプレート,飲食店 クレーム,EC クレーム対応",
-};
+const PAYJP_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? "";
+
 
 const INDUSTRIES = [
   { icon: "🍽", name: "飲食店", examples: ["料理への異物混入", "食中毒の疑い", "接客態度のクレーム"], pain: "SNS拡散リスクが高い業種。初動の30分が勝負。" },
@@ -37,8 +36,29 @@ const VOICES = [
 ];
 
 export default function ClaimLP() {
+  const [showPayjp, setShowPayjp] = useState(false);
+  const [payjpPlan, setPayjpPlan] = useState("standard");
+
+  function startCheckout(plan: string) {
+    setPayjpPlan(plan);
+    setShowPayjp(true);
+  }
+
+  const planLabel = payjpPlan === "business"
+    ? "ビジネスプラン ¥9,800/月"
+    : "スタンダードプラン ¥4,980/月";
+
   return (
     <main className="min-h-screen bg-white">
+      {showPayjp && (
+        <PayjpModal
+          publicKey={PAYJP_PUBLIC_KEY}
+          planLabel={planLabel}
+          plan={payjpPlan}
+          onSuccess={() => { setShowPayjp(false); window.location.href = "/success"; }}
+          onClose={() => setShowPayjp(false)}
+        />
+      )}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <span className="font-bold text-gray-900">AIクレーム対応文</span>
@@ -222,25 +242,25 @@ export default function ClaimLP() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", sub: "3回まで", features: ["全機能を試せます", "登録不要"], href: "/tool", cta: "無料で試す", highlight: false },
-              { name: "スタンダード", price: "¥4,980", sub: "/月（月100件）", features: ["月100件まで生成", "業種別最適化", "履歴保存（10件）"], href: "/tool", cta: "申し込む", highlight: true },
-              { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート"], href: "/tool", cta: "申し込む", highlight: false },
-            ].map(plan => (
-              <div key={plan.name} className={`rounded-2xl border p-6 relative ${plan.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
-                {plan.highlight && (
+              { name: "スタンダード", price: "¥4,980", sub: "/月（月100件）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "履歴保存（10件）"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
+              { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート", "カスハラ対応マニュアル"], plan: "business", cta: "申し込む", highlight: false },
+            ].map(p => (
+              <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
+                {p.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-blue-600 text-white px-3 py-0.5 rounded-full whitespace-nowrap">一番人気</div>
                 )}
-                <p className="font-bold text-gray-900 mb-1">{plan.name}</p>
-                <p className="text-2xl font-bold text-blue-600">{plan.price}<span className="text-sm font-normal text-gray-500">{plan.sub}</span></p>
+                <p className="font-bold text-gray-900 mb-1">{p.name}</p>
+                <p className="text-2xl font-bold text-blue-600">{p.price}<span className="text-sm font-normal text-gray-500">{p.sub}</span></p>
                 <ul className="mt-4 mb-5 space-y-2">
-                  {plan.features.map(f => (
+                  {p.features.map(f => (
                     <li key={f} className="text-sm text-gray-600 flex items-center gap-2">
                       <span className="text-green-500">✓</span>{f}
                     </li>
                   ))}
                 </ul>
-                <Link href={plan.href} className={`block w-full text-center text-sm font-medium py-2.5 rounded-lg ${plan.highlight ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-                  {plan.cta}
-                </Link>
+                <button onClick={() => startCheckout(p.plan)} className={`block w-full text-center text-sm font-medium py-2.5 rounded-lg ${p.highlight ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                  {p.cta}
+                </button>
               </div>
             ))}
           </div>

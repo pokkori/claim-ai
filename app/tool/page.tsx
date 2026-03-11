@@ -52,12 +52,12 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
         <div className="text-3xl mb-3">⭐</div>
         <h2 className="text-lg font-bold mb-2">無料枠を使い切りました</h2>
-        <p className="text-sm text-gray-500 mb-1">口コミ返信を無制限に自動生成</p>
+        <p className="text-sm text-gray-500 mb-1">クレーム対応文を無制限に生成</p>
         <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
-          <li>✓ Google口コミ返信を無制限生成</li>
-          <li>✓ SEO最適化アドバイス付き</li>
-          <li>✓ 複数パターンから最適文を選択</li>
-          <li>✓ 返信履歴を無制限保存</li>
+          <li>✓ クレーム対応文・電話スクリプトを無制限生成</li>
+          <li>✓ 業種別・深刻度別に最適化</li>
+          <li>✓ 悪質クレーマー対応の断り文生成</li>
+          <li>✓ 対応履歴を無制限保存</li>
         </ul>
         <div className="space-y-3 mb-4">
           <button onClick={() => { onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
@@ -92,7 +92,7 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
   const section = parsed.sections[activeTab];
 
   const handlePrint = () => {
-    const html = `<html><head><title>Google口コミ返信文</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;}</style></head><body>${parsed.raw.replace(/</g, "&lt;")}</body></html>`;
+    const html = `<html><head><title>クレーム対応文</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;}</style></head><body>${parsed.raw.replace(/</g, "&lt;")}</body></html>`;
     const blob = new Blob([html], { type: "text/html" });
     const url = URL.createObjectURL(blob);
     const w = window.open(url, "_blank");
