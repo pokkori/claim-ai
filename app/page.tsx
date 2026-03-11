@@ -59,7 +59,7 @@ export default function ClaimLP() {
           飲食・EC・美容・ホテル・小売・IT 全業種対応
         </div>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-          クレーム対応文を<br /><span className="text-blue-600">30秒</span>で自動作成
+          クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
         </h1>
         <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
           業種・深刻度・トーンを選ぶだけ。AIが<strong className="text-gray-700">メール返信文・電話スクリプト・対応チェックリスト</strong>をセットで生成。クレーム対応のストレスをゼロに。
