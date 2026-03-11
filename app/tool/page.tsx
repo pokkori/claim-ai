@@ -15,6 +15,7 @@ const TONE_OPTIONS = [
 ];
 
 type Section = { title: string; icon: string; content: string };
+type LevelInfo = { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string };
 type ParsedResult = { sections: Section[]; raw: string };
 type HistoryItem = { date: string; industry: string; rating: string; result: string };
 
@@ -134,6 +135,7 @@ export default function ReviewTool() {
   const [reviewContent, setReviewContent] = useState("");
   const [tone, setTone] = useState("丁寧");
   const [parsed, setParsed] = useState<ParsedResult | null>(null);
+  const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
@@ -154,7 +156,7 @@ export default function ReviewTool() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLimit) { setShowPaywall(true); return; }
-    setLoading(true); setParsed(null); setError("");
+    setLoading(true); setParsed(null); setLevelInfo(null); setError("");
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -168,6 +170,7 @@ export default function ReviewTool() {
       localStorage.setItem(KEY, String(newCount));
       setCount(newCount);
       const text = data.result || "";
+      if (data.level) setLevelInfo(data.level);
       const p = parseResult(text);
       setParsed(p);
       const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), industry: industry || "一般", rating, result: text };
@@ -257,7 +260,25 @@ export default function ReviewTool() {
 
           {/* 出力エリア */}
           <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-2">生成結果</label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium text-gray-700">生成結果</label>
+              {levelInfo && (
+                <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
+                  levelInfo.color === "red" ? "bg-red-50 text-red-700 border-red-200" :
+                  levelInfo.color === "yellow" ? "bg-yellow-50 text-yellow-700 border-yellow-200" :
+                  "bg-green-50 text-green-700 border-green-200"
+                }`}>
+                  <span>{levelInfo.color === "red" ? "🔴" : levelInfo.color === "yellow" ? "🟡" : "🟢"}</span>
+                  <span>クレームレベル: {levelInfo.level}</span>
+                  <span className="text-xs font-normal opacity-75">— {levelInfo.reason}</span>
+                </div>
+              )}
+            </div>
+            {levelInfo?.color === "red" && (
+              <div className="mb-3 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 text-xs text-red-700">
+                ⚠️ <strong>重度クレームです。</strong>上長へのエスカレーション・書面対応・証拠記録を推奨します。カスハラに該当する可能性があります。
+              </div>
+            )}
             {loading ? (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
                 <div className="text-center">

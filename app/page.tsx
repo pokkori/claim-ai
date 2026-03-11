@@ -48,6 +48,11 @@ export default function ClaimLP() {
         </div>
       </nav>
 
+      {/* カスハラ義務化バナー */}
+      <div className="bg-red-600 text-white text-center text-sm font-semibold py-2.5 px-4">
+        🚨 2026年10月から<strong>カスタマーハラスメント対策が全事業主に法的義務化</strong>されます。準備はできていますか？
+      </div>
+
       {/* ヒーロー */}
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
         <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-6">
@@ -62,7 +67,7 @@ export default function ClaimLP() {
         <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
           無料で3回試す →
         </Link>
-        <p className="text-xs text-gray-400">クレジットカード不要・登録不要</p>
+        <p className="text-sm font-semibold text-gray-500">クレジットカード不要・登録不要・今すぐ使える</p>
       </section>
 
       {/* 課題 */}
@@ -77,6 +82,8 @@ export default function ClaimLP() {
               "スタッフごとに対応品質がバラバラで統一できていない",
               "「SNSに書く」と脅されて焦って対応してしまう",
               "重大クレームへのエスカレーション手順がわからない",
+              "2026年10月のカスハラ義務化に向けた対応体制が整っていない",
+              "カスタマーハラスメントと正当なクレームの区別がつかない",
             ].map(p => (
               <div key={p} className="flex gap-3 bg-white rounded-xl p-4 border border-gray-200">
                 <span className="text-red-500 text-lg shrink-0">✗</span>
@@ -116,6 +123,38 @@ export default function ClaimLP() {
                 <p className="text-sm text-gray-500">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* カスハラ義務化セクション */}
+      <section className="bg-red-50 border-y border-red-100 py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded">2026年10月 義務化</span>
+            <h2 className="text-2xl font-bold text-gray-900">カスタマーハラスメント対策が法的義務になります</h2>
+          </div>
+          <p className="text-center text-gray-600 text-sm mb-10 max-w-2xl mx-auto">
+            改正労働施策総合推進法により、全事業主はカスハラ防止措置・証拠記録の整備が義務化されます。<br />
+            飲食店・EC・美容・ホテルなど中小事業者こそ今すぐ対応が必要です。
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { icon: "📋", title: "対応体制の整備", desc: "カスハラ判定基準の策定と従業員向けマニュアルの整備が必要。AIクレーム対応文のテンプレートが即使えます。" },
+              { icon: "📁", title: "証拠記録の管理", desc: "クレーム内容・対応経緯の記録義務。生成した対応文を保存すれば証拠記録として活用できます。" },
+              { icon: "🛡", title: "従業員の保護", desc: "悪質クレームから従業員を守るため毅然とした対応文を整備。スタッフが迷わず対応できます。" },
+            ].map(item => (
+              <div key={item.title} className="bg-white rounded-xl p-5 border border-red-100">
+                <div className="text-2xl mb-2">{item.icon}</div>
+                <h3 className="font-bold text-gray-900 mb-2 text-sm">{item.title}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <a href="/tool" className="inline-block bg-red-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-red-700 text-sm">
+              義務化前に対応体制を整える →
+            </a>
           </div>
         </div>
       </section>
@@ -215,6 +254,9 @@ export default function ClaimLP() {
 
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
+        <div className="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
+          2026年10月カスハラ義務化まで対応急ぎ
+        </div>
         <h2 className="text-2xl font-bold text-white mb-3">今すぐクレーム対応の悩みを解消する</h2>
         <p className="text-blue-100 text-sm mb-8">登録不要・クレジットカード不要で3回無料</p>
         <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
