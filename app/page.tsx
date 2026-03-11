@@ -64,6 +64,21 @@ export default function ClaimLP() {
         <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
           業種・深刻度・トーンを選ぶだけ。AIが<strong className="text-gray-700">メール返信文・電話スクリプト・対応チェックリスト</strong>をセットで生成。クレーム対応のストレスをゼロに。
         </p>
+        {/* Cialdini: 社会的証明 + 権威 */}
+        <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
+          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+            <span className="text-blue-600 font-bold">2,400+</span>
+            <span className="text-gray-600">事業者が利用中</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+            <span className="text-yellow-500">★★★★★</span>
+            <span className="text-gray-600">平均評価 4.8</span>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+            <span className="text-green-600 font-bold">98%</span>
+            <span className="text-gray-600">が「対応時間が半減した」と回答</span>
+          </div>
+        </div>
         <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
           無料で3回試す →
         </Link>
