@@ -145,6 +145,37 @@ export default function ReviewTool() {
   const [showHistory, setShowHistory] = useState(false);
   const [error, setError] = useState("");
 
+  // 悪質クレーマー対応モード
+  const [maliciousText, setMaliciousText] = useState("");
+  const [maliciousResult, setMaliciousResult] = useState("");
+  const [maliciousLoading, setMaliciousLoading] = useState(false);
+  const [maliciousError, setMaliciousError] = useState("");
+  const [maliciousCopied, setMaliciousCopied] = useState(false);
+
+  const handleMaliciousSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMaliciousLoading(true);
+    setMaliciousResult("");
+    setMaliciousError("");
+    try {
+      const res = await fetch("/api/generate/malicious", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ claimText: maliciousText }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setMaliciousError(data.error || "エラーが発生しました"); return; }
+      setMaliciousResult(data.result || "");
+    } catch { setMaliciousError("通信エラーが発生しました。インターネット接続を確認してください。"); }
+    finally { setMaliciousLoading(false); }
+  };
+
+  const handleMaliciousCopy = () => {
+    navigator.clipboard.writeText(maliciousResult);
+    setMaliciousCopied(true);
+    setTimeout(() => setMaliciousCopied(false), 2000);
+  };
+
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
     const h = localStorage.getItem(HISTORY_KEY);
@@ -304,6 +335,70 @@ export default function ReviewTool() {
               </div>
             )}
           </div>
+        </div>
+
+        {/* 悪質クレーマー対応モード */}
+        <div className="mt-10 bg-white border-2 border-red-200 rounded-xl p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">悪質クレーマー対応</span>
+            <h2 className="text-base font-bold text-gray-900">毅然とした断り文を生成</h2>
+          </div>
+          <p className="text-xs text-gray-500 mb-4">不当要求・カスハラ・脅迫的なクレームに対して、法的根拠のある丁寧な断り文を生成します。</p>
+
+          <form onSubmit={handleMaliciousSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                クレーム・不当要求の内容 <span className="text-red-500">*</span>
+              </label>
+              <textarea
+                value={maliciousText}
+                onChange={e => setMaliciousText(e.target.value)}
+                rows={5}
+                placeholder="例：「SNSで拡散してやる」「弁護士を呼ぶ」「返金しなければ消費者センターに訴える」など、受けたクレームや不当要求の内容を入力してください。"
+                className="w-full border border-red-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
+                required
+              />
+              <p className="text-xs text-gray-400 mt-1">受けたクレーム内容をそのまま貼り付けてください（{maliciousText.length}/1000文字）</p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={maliciousLoading}
+              className="w-full font-medium py-3 rounded-lg text-white transition-colors bg-red-600 hover:bg-red-700 disabled:bg-red-300"
+            >
+              {maliciousLoading ? "断り文を生成中..." : "断り文を生成する"}
+            </button>
+
+            {maliciousError && <p className="text-sm text-red-500 text-center">{maliciousError}</p>}
+          </form>
+
+          {maliciousLoading && (
+            <div className="mt-4 bg-red-50 border border-red-200 rounded-xl flex items-center justify-center py-10">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-3" />
+                <p className="text-sm text-gray-500 font-medium">法的根拠のある断り文を作成中...</p>
+                <p className="text-xs text-gray-400 mt-1">通常5〜10秒かかります</p>
+              </div>
+            </div>
+          )}
+
+          {maliciousResult && !maliciousLoading && (
+            <div className="mt-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-semibold text-red-700">生成された断り文</span>
+                <button
+                  onClick={handleMaliciousCopy}
+                  className="text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-medium transition-colors"
+                >
+                  {maliciousCopied ? "コピー済み ✓" : "コピー"}
+                </button>
+              </div>
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{maliciousResult}</pre>
+              </div>
+              <p className="text-xs text-gray-400 mt-2">※ 社名・担当者名・日付は実際のものに変更してご使用ください。法的措置の実施は必ず専門家（弁護士）にご相談ください。</p>
+            </div>
+          )}
         </div>
 
         {/* 履歴 */}
