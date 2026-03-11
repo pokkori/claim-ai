@@ -103,7 +103,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "無料トライアルはありますか？",
-    a: "登録不要・カード不要で3回無料でお試しいただけます。有料プランへの申し込み後14日以内であれば全額返金対応しています。まずは実際の品質を無料でご確認ください。",
+    a: "登録不要・カード不要で3回無料でお試しいただけます。まずは実際の品質を無料でご確認ください。デジタルコンテンツの性質上、決済完了後の返金は承っておりません。",
   },
   {
     q: "自社のクレーム対応マニュアルを学習させられますか？",
@@ -262,7 +262,7 @@ export default function BusinessLP() {
             法人見積もりを依頼
           </Link>
         </div>
-        <p className="text-xs text-gray-400 mt-4">14日間返金保証付き・解約はいつでも可能</p>
+        <p className="text-xs text-gray-400 mt-4">解約はいつでも可能</p>
       </section>
 
       {/* ROI スタッツ */}
@@ -320,7 +320,7 @@ export default function BusinessLP() {
             <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100">
               まず1ヶ月お試し ¥4,980 →
             </Link>
-            <p className="text-xs text-gray-400 mt-3">14日間返金保証付き</p>
+            <p className="text-xs text-gray-400 mt-3">解約はいつでも可能</p>
           </div>
         </div>
       </section>
@@ -405,7 +405,7 @@ export default function BusinessLP() {
               </div>
             ))}
           </div>
-          <p className="text-center text-xs text-gray-400 mt-4">14日間返金保証付き・解約はいつでも可能</p>
+          <p className="text-center text-xs text-gray-400 mt-4">解約はいつでも可能</p>
         </div>
       </section>
 
@@ -417,7 +417,7 @@ export default function BusinessLP() {
           <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
             まず1ヶ月お試し ¥4,980 →
           </Link>
-          <p className="text-blue-200 text-xs mt-3">14日間返金保証付き・解約はいつでも可能</p>
+          <p className="text-blue-200 text-xs mt-3">解約はいつでも可能</p>
         </div>
       </section>
 
@@ -439,7 +439,7 @@ export default function BusinessLP() {
       {/* 最終CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
         <h2 className="text-2xl font-bold text-white mb-3">クレーム対応コストを、今月から削減する</h2>
-        <p className="text-blue-100 text-sm mb-8">14日間返金保証付き・解約はいつでも可能。リスクなくお試しいただけます。</p>
+        <p className="text-blue-100 text-sm mb-8">解約はいつでも可能。リスクなくお試しいただけます。</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
             まず1ヶ月お試し ¥4,980 →
