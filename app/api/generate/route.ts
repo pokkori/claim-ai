@@ -42,6 +42,11 @@ export async function POST(req: NextRequest) {
   const { industry, rating, reviewContent, tone } = body as Record<string, string>;
   if (!reviewContent) return NextResponse.json({ error: "口コミ内容は必須です" }, { status: 400 });
   if (reviewContent.length > 1000) return NextResponse.json({ error: "口コミ内容は1000文字以内で入力してください" }, { status: 400 });
+  // allowlist: tone は列挙値のみ許可
+  const VALID_TONES = ["プロ", "親しみ", "丁寧"];
+  if (tone && !VALID_TONES.includes(tone)) return NextResponse.json({ error: "不正なトーン値です" }, { status: 400 });
+  // industry は任意入力だが最大50文字・制御文字禁止
+  const safIndustry = (industry ?? "").replace(/[\u0000-\u001f\u007f]/g, "").slice(0, 50);
 
   const ratingNum = parseInt(rating?.replace("★", "") || "3");
   const isLowRating = ratingNum <= 2;
@@ -60,14 +65,14 @@ export async function POST(req: NextRequest) {
     ? "高評価（★4〜5）の口コミです。感謝の気持ちを伝えつつ、他のお客様にも訴求する内容にすることが重要です。"
     : "中評価（★3）の口コミです。良かった点への感謝と、課題への誠実な改善意欲を示すことが重要です。";
 
-  const industryContext = industry
-    ? `${industry}業界の慣習・専門用語を踏まえた返信文にすること。`
+  const industryContext = safIndustry
+    ? `${safIndustry}業界の慣習・専門用語を踏まえた返信文にすること。`
     : "";
 
   const prompt = `あなたはGoogleビジネスプロフィールの口コミ対応の専門家です。店舗のオーナーとして、以下のGoogle口コミに対する最適な返信文セットを作成してください。
 
 【口コミ情報】
-業種: ${industry || "一般店舗"}
+業種: ${safIndustry || "一般店舗"}
 評価: ${rating || "★3"}
 口コミ内容: ${reviewContent}
 

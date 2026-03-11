@@ -62,8 +62,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const topic = TWEET_TOPICS[Math.floor(Math.random() * TWEET_TOPICS.length)];
-    const tweetText = await generateTweetContent(topic);
+    let tweetText = await generateTweetContent(topic);
     if (!tweetText) throw new Error("Empty tweet content");
+    // Twitter API は140文字超でエラーになるため切り詰める
+    if (tweetText.length > 140) tweetText = tweetText.slice(0, 140);
 
     const result = await postTweet(tweetText);
     console.log(`[cron/tweet] Posted: ${result.id} | Topic: ${topic}`);
