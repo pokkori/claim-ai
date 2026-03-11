@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     let plan = "std";
     if (subId) {
       const stripeSub = await stripe.subscriptions.retrieve(subId);
-      currentPeriodEnd = new Date(stripeSub.current_period_end * 1000).toISOString();
+      currentPeriodEnd = new Date((stripeSub as any).current_period_end * 1000).toISOString();
       const priceId = stripeSub.items.data[0]?.price.id;
       if (priceId === process.env.STRIPE_PRICE_BIZ) plan = "biz";
     }
