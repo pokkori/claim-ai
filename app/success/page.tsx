@@ -1,31 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { Suspense } from "react";
+import Link from "next/link";
 
 function SuccessContent() {
-  const params = useSearchParams();
-  const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
-
-  useEffect(() => {
-    const sessionId = params.get("session_id");
-    if (!sessionId) { setStatus("error"); return; }
-    fetch(`/api/stripe/verify?session_id=${sessionId}`)
-      .then(r => r.ok ? setStatus("ok") : setStatus("error"))
-      .catch(() => setStatus("error"));
-  }, [params]);
-
-  if (status === "loading") return (
-    <div className="text-center text-gray-500">認証中...</div>
-  );
-  if (status === "error") return (
-    <div className="text-center">
-      <p className="text-red-500 mb-4">認証に失敗しました。</p>
-      <Link href="/" className="text-blue-600 underline">トップへ戻る</Link>
-    </div>
-  );
   return (
     <div className="text-center">
       <div className="text-5xl mb-4">🎉</div>
