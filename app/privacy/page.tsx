@@ -77,7 +77,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">9. 事業者情報</h2>
-            <p>屋号：ポッコリラボ／運営責任者：新美 諭／所在地：〒475-0077 愛知県半田市元山町／電話：090-6093-5290</p>
+            <p>屋号：ポッコリラボ／運営責任者：ポッコリラボ 代表 新美／所在地：〒475-0077 愛知県半田市元山町／電話：090-6093-5290</p>
           </div>
         </section>
       </article>
