@@ -87,16 +87,16 @@ export default function ClaimLP() {
         {/* Cialdini: 社会的証明 + 権威 */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
           <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-blue-600 font-bold">2,400+</span>
-            <span className="text-gray-600">事業者が利用中</span>
+            <span className="text-blue-600 font-bold">2026年10月</span>
+            <span className="text-gray-600">カスハラ対策義務化に対応</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-yellow-500">★★★★★</span>
-            <span className="text-gray-600">平均評価 4.8</span>
+            <span className="text-green-600 font-bold">飲食・EC・介護</span>
+            <span className="text-gray-600">業種別プリセット搭載</span>
           </div>
           <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-green-600 font-bold">98%</span>
-            <span className="text-gray-600">が「対応時間が半減した」と回答</span>
+            <span className="text-purple-600 font-bold">即時生成</span>
+            <span className="text-gray-600">メール文・電話スクリプト同時出力</span>
           </div>
         </div>
         <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
