@@ -1,13 +1,15 @@
 import Link from "next/link";
 
 const ITEMS = [
-  { label: "販売業者", value: "levonadesign" },
-  { label: "運営責任者", value: "levonadesign" },
-  { label: "お問い合わせ", value: "levonadesign@gmail.com" },
+  { label: "販売業者", value: "ポッコリラボ" },
+  { label: "運営責任者", value: "新美 諭" },
+  { label: "所在地", value: "〒475-0077 愛知県半田市元山町" },
+  { label: "お問い合わせ（電話）", value: "090-6093-5290" },
   { label: "販売価格", value: "スタンダードプラン ¥4,980/月、ビジネスプラン ¥9,800/月（税込）" },
   { label: "支払方法", value: "クレジットカード（Visa・Mastercard・American Express・JCB）" },
   { label: "支払時期", value: "お申込み時に即時決済。以降、毎月同日に自動更新" },
   { label: "サービス提供時期", value: "決済完了後、即時ご利用いただけます" },
+  { label: "商品代金以外の必要料金", value: "なし" },
   { label: "返品・キャンセル", value: "デジタルコンテンツの性質上、決済完了後の返金は承っておりません。解約はいつでもマイページより行えます。解約後は次回更新日まで引き続きご利用いただけます" },
   { label: "動作環境", value: "インターネット接続環境および最新版ブラウザが必要です" },
 ];

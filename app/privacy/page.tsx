@@ -76,8 +76,8 @@ export default function PrivacyPage() {
           </div>
 
           <div>
-            <h2 className="font-bold text-gray-900 mb-2">9. お問い合わせ</h2>
-            <p>本ポリシーに関するご質問は levonadesign@gmail.com までご連絡ください。</p>
+            <h2 className="font-bold text-gray-900 mb-2">9. 事業者情報</h2>
+            <p>屋号：ポッコリラボ／運営責任者：新美 諭／所在地：〒475-0077 愛知県半田市元山町／電話：090-6093-5290</p>
           </div>
         </section>
       </article>
