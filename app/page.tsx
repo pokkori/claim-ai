@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PayjpModal from "@/components/PayjpModal";
 
 const PAYJP_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? "";
@@ -130,6 +130,12 @@ function SampleSection() {
 export default function ClaimLP() {
   const [showPayjp, setShowPayjp] = useState(false);
   const [payjpPlan, setPayjpPlan] = useState("standard");
+  const [daysLeft, setDaysLeft] = useState<number | null>(null);
+  useEffect(() => {
+    const target = new Date("2026-10-01");
+    const diff = Math.ceil((target.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    setDaysLeft(diff);
+  }, []);
 
   function startCheckout(plan: string) {
     setPayjpPlan(plan);
@@ -160,9 +166,9 @@ export default function ClaimLP() {
         </div>
       </nav>
 
-      {/* カスハラ義務化バナー */}
+      {/* カスハラ義務化カウントダウンバナー */}
       <div className="bg-red-600 text-white text-center text-sm font-semibold py-2.5 px-4">
-        🚨 2026年10月から<strong>カスタマーハラスメント対策が全事業主に法的義務化</strong>されます。準備はできていますか？
+        🚨 カスハラ対策義務化（2026年10月1日施行）まで{daysLeft !== null ? <strong> あと{daysLeft}日 </strong> : ""}— <strong>全事業主に対策が法的義務</strong>になります。準備はできていますか？
       </div>
 
       {/* ヒーロー */}
