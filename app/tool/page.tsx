@@ -316,6 +316,11 @@ export default function ReviewTool() {
             {levelInfo?.color === "red" && (
               <div className="mb-3 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 text-xs text-red-700">
                 ⚠️ <strong>重度クレームです。</strong>上長へのエスカレーション・書面対応・証拠記録を推奨します。カスハラに該当する可能性があります。
+                <div className="mt-2 pt-2 border-t border-red-200">
+                  法的対応・訴訟リスクがある場合は必ず専門家にご相談ください。→
+                  <a href="https://www.nichibenren.or.jp/legal_advice/search/index.html" target="_blank" rel="noopener noreferrer"
+                    className="ml-1 underline font-bold hover:text-red-900">日弁連 弁護士紹介サービス</a>
+                </div>
               </div>
             )}
             {loading ? (
