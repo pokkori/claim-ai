@@ -138,7 +138,7 @@ export default function ClaimLP() {
 
   const planLabel = payjpPlan === "business"
     ? "ビジネスプラン ¥9,800/月"
-    : "モニタープラン ¥2,980/月";
+    : "スタンダードプラン ¥2,980/月";
 
   return (
     <main className="min-h-screen bg-white">
@@ -344,11 +344,11 @@ export default function ClaimLP() {
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center mb-3">料金プラン</h2>
           <p className="text-center text-gray-500 text-sm mb-2">すべてのプランでメール文・電話スクリプト・チェックリストがフルセット</p>
-          <p className="text-center text-red-600 text-xs font-semibold mb-10">🎁 導入応援価格（期間限定） — 通常¥4,980が今だけ¥2,980</p>
+          <p className="text-center text-red-600 text-xs font-semibold mb-10">🎁 カスハラ義務化（2026年10月）対応 — 今すぐ導入で現場負担を削減</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", sub: "3回まで", features: ["全機能を試せます", "登録不要"], href: "/tool", cta: "無料で試す", highlight: false },
-              { name: "スタンダード", price: "¥2,980", sub: "/月（期間限定価格）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
+              { name: "スタンダード", price: "¥2,980", sub: "/月", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
               { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート", "カスハラ対応マニュアル"], plan: "business", cta: "申し込む", highlight: false },
             ].map(p => (
               <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
@@ -396,11 +396,11 @@ export default function ClaimLP() {
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
         <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-          導入応援価格 期間限定実施中
+          2026年10月 カスハラ対策義務化
         </div>
         <h2 className="text-2xl font-bold text-white mb-3">今すぐGoogle口コミ対応の悩みを解消する</h2>
         <p className="text-blue-100 text-sm mb-2">まずは無料で3回お試しください</p>
-        <p className="text-yellow-300 text-xs font-semibold mb-8">モニター価格 ¥2,980/月（通常¥4,980）で使い放題</p>
+        <p className="text-yellow-300 text-xs font-semibold mb-8">スタンダードプラン ¥2,980/月で使い放題</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
             無料で対応文を生成する →
