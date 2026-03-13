@@ -374,16 +374,16 @@ export default function ClaimLP() {
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center mb-3">料金プラン</h2>
           <p className="text-center text-gray-500 text-sm mb-2">すべてのプランでメール文・電話スクリプト・チェックリストがフルセット</p>
-          <p className="text-center text-red-600 text-xs font-semibold mb-10">🎁 先着50社限定モニター価格 — 通常¥4,980が今だけ¥2,980</p>
+          <p className="text-center text-red-600 text-xs font-semibold mb-10">🎁 導入応援価格（期間限定） — 通常¥4,980が今だけ¥2,980</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", sub: "3回まで", features: ["全機能を試せます", "登録不要"], href: "/tool", cta: "無料で試す", highlight: false },
-              { name: "モニタープラン", price: "¥2,980", sub: "/月（先着50社）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "モニターで申し込む", highlight: true },
+              { name: "スタンダード", price: "¥2,980", sub: "/月（期間限定価格）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
               { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート", "カスハラ対応マニュアル"], plan: "business", cta: "申し込む", highlight: false },
             ].map(p => (
               <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
                 {p.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">先着50社限定</div>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">人気No.1</div>
                 )}
                 <p className="font-bold text-gray-900 mb-1">{p.name}</p>
                 <p className="text-2xl font-bold text-blue-600">{p.price}<span className="text-sm font-normal text-gray-500">{p.sub}</span></p>
@@ -426,7 +426,7 @@ export default function ClaimLP() {
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
         <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
-          先着50社限定 モニター募集中
+          導入応援価格 期間限定実施中
         </div>
         <h2 className="text-2xl font-bold text-white mb-3">今すぐクレーム対応の悩みを解消する</h2>
         <p className="text-blue-100 text-sm mb-2">まずは無料で3回お試しください</p>
@@ -436,7 +436,7 @@ export default function ClaimLP() {
             無料で対応文を生成する →
           </Link>
           <button onClick={() => startCheckout("standard")} className="inline-block bg-yellow-400 text-gray-900 font-bold text-lg px-8 py-4 rounded-xl hover:bg-yellow-300 shadow-lg">
-            モニターで申し込む ¥2,980/月
+            今すぐ申し込む ¥2,980/月
           </button>
         </div>
       </section>
