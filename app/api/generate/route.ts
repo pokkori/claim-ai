@@ -4,10 +4,14 @@ import { isActiveSubscription } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+let _client: Anthropic | null = null;
+function getClient(): Anthropic {
+  if (!_client) _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  return _client;
+}
 const FREE_LIMIT = 3;
-const COOKIE_KEY = "review_use_count";
-const APP_ID = "google-review";
+const COOKIE_KEY = "claim_use_count";
+const APP_ID = "claim-ai";
 
 const rateLimit = new Map<string, { count: number; resetAt: number }>();
 function checkRateLimit(ip: string): boolean {
@@ -29,7 +33,8 @@ export async function POST(req: NextRequest) {
   if (email) {
     isPremium = await isActiveSubscription(email, APP_ID);
   } else {
-    isPremium = req.cookies.get("premium")?.value === "1" || req.cookies.get("stripe_premium")?.value === "1" || req.cookies.get("premium")?.value === "biz";
+    const pv = req.cookies.get("premium")?.value;
+    isPremium = pv === "1" || pv === "biz";
   }
   const cookieCount = parseInt(req.cookies.get(COOKIE_KEY)?.value || "0");
   if (!isPremium && cookieCount >= FREE_LIMIT) {
@@ -131,7 +136,7 @@ ${isHighRating ? "（口コミ内容の具体的な点に触れながら、ス�
   const levelInfo = assessLevel(reviewContent, ratingNum);
 
   try {
-    const message = await client.messages.create({
+    const message = await getClient().messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 2500,
       messages: [{ role: "user", content: prompt }],
