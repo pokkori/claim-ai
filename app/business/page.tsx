@@ -3,6 +3,80 @@
 import Link from "next/link";
 import { useState } from "react";
 
+const PURPOSES = ["月間クレーム対応工数の削減", "カスハラ対策法への対応", "スタッフ教育・標準化", "Google口コミ返信の効率化", "その他"];
+
+function DemoForm({ accentColor, serviceName }: { accentColor: string; serviceName: string }) {
+  const [form, setForm] = useState({ company: "", name: "", email: "", phone: "", purpose: "" });
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const subject = encodeURIComponent(`${serviceName} 無料デモのお申込み`);
+    const body = encodeURIComponent(
+      `会社名: ${form.company}\n担当者名: ${form.name}\nメール: ${form.email}\n電話番号: ${form.phone}\nご利用目的: ${form.purpose}`
+    );
+    window.open(`mailto:support@pokkorilab.com?subject=${subject}&body=${body}`, "_blank");
+    setSubmitted(true);
+  }
+
+  const ring = accentColor === "amber" ? "focus:border-amber-400" : accentColor === "indigo" ? "focus:border-indigo-400" : "focus:border-blue-400";
+  const btn = accentColor === "amber" ? "bg-amber-600 hover:bg-amber-700" : accentColor === "indigo" ? "bg-indigo-600 hover:bg-indigo-700" : "bg-blue-600 hover:bg-blue-700";
+  const badge = accentColor === "amber" ? "bg-amber-50 text-amber-700" : accentColor === "indigo" ? "bg-indigo-50 text-indigo-700" : "bg-blue-50 text-blue-700";
+
+  return (
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-2xl mx-auto px-6">
+        <div className="text-center mb-8">
+          <div className={`inline-block text-xs font-semibold px-3 py-1 rounded-full mb-3 ${badge}`}>法人・士業限定</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">無料デモ・お見積もり申込</h2>
+          <p className="text-sm text-gray-500">3営業日以内にご連絡いたします</p>
+        </div>
+        {submitted ? (
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
+            <div className="text-4xl mb-3">✅</div>
+            <p className="font-bold text-gray-900 mb-2">メールアプリが開きました</p>
+            <p className="text-sm text-gray-500">送信後、3営業日以内にご連絡いたします。<br />メールが開かない場合は <span className="font-medium">support@pokkorilab.com</span> まで直接ご連絡ください。</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-200 p-6 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">会社名 <span className="text-red-500">*</span></label>
+                <input required value={form.company} onChange={e => setForm(f => ({ ...f, company: e.target.value }))} placeholder="株式会社○○" className={`w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none ${ring}`} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">担当者名 <span className="text-red-500">*</span></label>
+                <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="山田 太郎" className={`w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none ${ring}`} />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">メールアドレス <span className="text-red-500">*</span></label>
+                <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} placeholder="info@example.com" className={`w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none ${ring}`} />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 mb-1">電話番号</label>
+                <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="090-0000-0000" className={`w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none ${ring}`} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 mb-1">ご利用目的</label>
+              <select value={form.purpose} onChange={e => setForm(f => ({ ...f, purpose: e.target.value }))} className={`w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none ${ring}`}>
+                <option value="">選択してください</option>
+                {PURPOSES.map(p => <option key={p} value={p}>{p}</option>)}
+              </select>
+            </div>
+            <button type="submit" className={`w-full ${btn} text-white font-bold py-3 rounded-xl text-sm transition-colors`}>
+              無料デモを申し込む →
+            </button>
+            <p className="text-xs text-gray-400 text-center">送信するとメールアプリが開きます。3営業日以内にご連絡します。</p>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
 const PROBLEMS = [
   { title: "カスハラ対策法施行でマニュアル整備が急務", desc: "2026年10月施行のカスタマーハラスメント対策法に対応。AIで対応品質を即座に標準化。" },
   { title: "ベテランが辞めたらクレーム対応の質が落ちた", desc: "属人化したスキルをAIで標準化。誰でも即戦力に。" },
@@ -436,6 +510,9 @@ export default function BusinessLP() {
         </div>
       </section>
 
+      {/* 法人デモ申込フォーム */}
+      <DemoForm accentColor="blue" serviceName="クレームAI" />
+
       {/* 最終CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
         <h2 className="text-2xl font-bold text-white mb-3">クレーム対応コストを、今月から削減する</h2>
@@ -444,9 +521,9 @@ export default function BusinessLP() {
           <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
             まず1ヶ月お試し ¥4,980 →
           </Link>
-          <Link href="/contact" className="inline-block bg-blue-500 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-400">
+          <a href="mailto:support@pokkorilab.com?subject=クレームAI法人プランについて" className="inline-block bg-blue-500 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-400">
             法人見積もりを依頼
-          </Link>
+          </a>
         </div>
       </section>
 
