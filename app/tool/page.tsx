@@ -61,7 +61,7 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
         </ul>
         <div className="space-y-3 mb-4">
           <button onClick={() => { onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
-            スタンダード ¥4,980/月
+            スタンダード ¥2,980/月
           </button>
           <button onClick={() => { onClose(); onCheckout?.("business"); }} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
             ビジネス ¥9,800/月（無制限・チーム対応）
@@ -436,7 +436,7 @@ export default function ReviewTool() {
       {showPayjp && (
         <PayjpModal
           publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel={(selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥4,980/月")}
+          planLabel={(selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥2,980/月")}
           plan={selectedPlan}
           onSuccess={() => setShowPayjp(false)}
           onClose={() => setShowPayjp(false)}

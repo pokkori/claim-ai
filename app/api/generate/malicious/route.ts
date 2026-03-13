@@ -6,7 +6,22 @@ export const dynamic = "force-dynamic";
 
 const client = new Anthropic();
 
+const rateLimit = new Map<string, { count: number; resetAt: number }>();
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimit.get(ip);
+  if (!entry || now > entry.resetAt) { rateLimit.set(ip, { count: 1, resetAt: now + 60000 }); return true; }
+  if (entry.count >= 5) return false;
+  entry.count++;
+  return true;
+}
+
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  if (!checkRateLimit(ip)) return NextResponse.json({ error: "リクエストが多すぎます" }, { status: 429 });
+  const isPremium = req.cookies.get("premium")?.value === "1" || req.cookies.get("stripe_premium")?.value === "1";
+  if (!isPremium) return NextResponse.json({ error: "LIMIT_REACHED" }, { status: 402 });
+
   try {
     const { claimText } = await req.json();
     if (!claimText) return NextResponse.json({ error: "内容を入力してください" }, { status: 400 });
