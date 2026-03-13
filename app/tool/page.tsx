@@ -119,11 +119,19 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
         <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
       </div>
 
-      <div className="flex gap-2 justify-end">
+      <div className="flex gap-2 justify-end flex-wrap">
         <CopyButton text={parsed.raw} label="全文コピー" />
         <button onClick={handlePrint} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
           印刷・PDF保存
         </button>
+        <a
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIがクレーム対応文書を30秒で作成！\nカスハラ・理不尽なクレームにも冷静に対応できます。\n#クレーム対応 #AI活用 #カスハラ対策")}&url=${encodeURIComponent("https://claim-ai-beryl.vercel.app")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors"
+        >
+          𝕏 でシェアする
+        </a>
       </div>
     </div>
   );
