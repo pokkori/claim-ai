@@ -336,6 +336,7 @@ export default function ClaimLP() {
               </div>
             ))}
           </div>
+          <p className="text-xs text-gray-400 text-center mt-4">※個人の感想です。効果には個人差があります。</p>
         </div>
       </section>
 
