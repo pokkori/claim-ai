@@ -16,17 +16,17 @@ const INDUSTRIES = [
 ];
 
 const FEATURES = [
-  { icon: "📧", title: "メール返信文", desc: "件名・宛名から署名まで完全な文章をそのままコピペ可能。業種・深刻度・トーンに合わせて自動調整。" },
-  { icon: "📞", title: "電話対応スクリプト", desc: "第一声からクロージングまで。「SNSに投稿する」「慰謝料を要求する」など難しい場面への切り返しフレーズも収録。" },
-  { icon: "✅", title: "初動対応チェックリスト", desc: "発生から1時間以内・当日中・3日以内のアクションを段階別に整理。対応漏れを防ぎます。" },
-  { icon: "💡", title: "顧客満足に変えるアドバイス", desc: "クレームをリピーター獲得のチャンスに変える具体的な提案。なぜ効果があるかの理由付きで解説。" },
+  { icon: "💬", title: "口コミ返信文", desc: "投稿用の返信文を件名から署名まで完全生成。業種・評価点数・トーンに合わせて自動調整。コピペでそのまま投稿できます。" },
+  { icon: "🌟", title: "感謝文・好印象アップ文", desc: "高評価口コミへの感謝文を自動生成。他のユーザーに刺さる表現で「また来たい」と思わせる効果。" },
+  { icon: "📈", title: "SEOアドバイス", desc: "Googleマップ検索での露出を高めるキーワード・返信テクニックを提案。上位表示につながる返信のコツを明示。" },
+  { icon: "✏️", title: "別パターン（短め・詳細版）", desc: "同じ口コミに対して短め版（100字以内）と丁寧版（400字）の2パターンを追加生成。使いやすい方を選べます。" },
 ];
 
 const HOW_TO = [
-  { step: "1", title: "業種・状況を選択", desc: "プリセットをタップするだけ。直接入力もできます。" },
-  { step: "2", title: "クレーム内容を入力", desc: "受けたクレームの内容を入力。詳しく書くほど精度が上がります。" },
-  { step: "3", title: "深刻度・トーンを設定", desc: "軽微〜重大、丁寧〜強硬の中から状況に合わせて選択。" },
-  { step: "4", title: "対応文セットを受け取る", desc: "15〜20秒でメール文・電話スクリプト・チェックリストがセットで生成されます。" },
+  { step: "1", title: "業種を選択", desc: "飲食店・美容サロン・クリニック・ホテルなどのプリセットからタップするだけ。" },
+  { step: "2", title: "口コミ内容と評価を貼り付け", desc: "Googleビジネスプロフィールに届いた口コミをコピー＆ペースト。評価（★1〜5）を選択。" },
+  { step: "3", title: "返信のトーンを設定", desc: "丁寧・プロ・親しみやすいの3種類から状況に合わせて選択。" },
+  { step: "4", title: "返信文セットを受け取る", desc: "15〜20秒で返信文・感謝文・SEOアドバイス・別パターンが生成。そのままGoogleに投稿できます。" },
 ];
 
 const VOICES = [
@@ -37,81 +37,51 @@ const VOICES = [
 
 const SAMPLES = [
   {
-    industry: "🍽 飲食店",
-    situation: "「料理が冷たかった・待ち時間が長すぎる」という接客クレーム",
-    tab: "メール返信文",
-    content: `件名：先日のご来店に関するお詫び
+    industry: "🍽 飲食店（★2）",
+    situation: "「料理が冷たくて待ち時間も長かった。もう行かない」という低評価口コミ",
+    tab: "💬 返信文",
+    content: `この度はご来店いただき、またご意見をお寄せいただきありがとうございます。
+料理の温度と提供時間について、ご期待に沿えず大変申し訳ございませんでした。
 
-○○様
+ご指摘の通り、ランチピーク時の提供体制に課題がございました。
+現在はオーダー時に待ち時間をお伝えする運用に改善し、スタッフ全員で品質管理の徹底を図っております。
 
-先日はご来店いただきありがとうございました。
-お食事とお待ち時間について、ご不満をおかけしてしまい誠に申し訳ございませんでした。
+ご不満な思いをさせてしまったにもかかわらず、貴重なご意見をいただいたことを心よりお礼申し上げます。
+改善した姿を、ぜひ一度またお試しいただけますと幸いです。
 
-ご指摘いただいた点について確認しましたところ、
-当日はランチピーク時に混雑が集中し、料理のご提供が大幅に遅れていたことが確認できました。
-その結果、料理が適温でお出しできなかったことは明らかな不手際でございます。
-
-【改善対応】
-・提供時間の目安をご注文時にお伝えする運用を即日開始しました
-・料理の温度管理と確認手順を厨房スタッフで共有しました
-
-次回ご来店の際は、本メールをご提示いただくと
-お食事代より10%割引させていただきます。
-
-ぜひ改善した弊店を再度ご体験いただけますと幸いです。
-引き続きどうぞよろしくお願いいたします。
-
-○○食堂 店長 ○○`,
+○○食堂 店長`,
   },
   {
-    industry: "📦 EC・通販",
-    situation: "1週間以上届かない配送遅延クレーム",
-    tab: "メール返信文",
-    content: `件名：ご注文商品の配送遅延に関するお詫び
+    industry: "✂ 美容・サロン（★5）",
+    situation: "「担当スタイリストの対応が最高！また絶対来ます」という高評価口コミ",
+    tab: "🌟 感謝文",
+    content: `嬉しいお言葉をいただき、スタッフ一同大変励みになっております！
+担当スタイリストにも伝え、今後もお客様一人ひとりのご要望に寄り添えるよう精進してまいります。
 
-○○様
+当店では、ヘアカラーとトリートメントの相性・仕上がりのイメージ共有を大切にしており、
+○○様に喜んでいただけたことが何より嬉しいです。
 
-この度は弊店をご利用いただきありがとうございます。
-ご注文いただいた商品がお手元に届いておらず、大変ご不便をおかけしております。
+またお越しの際も、最高の仕上がりをご提供できるよう全力でサポートいたします。
+次回のご来店を、スタッフ一同心よりお待ちしております！
 
-【現在の状況】
-配送状況を確認しましたところ、配送センターにて保留状態になっておりました。
-大変申し訳ございません。
-
-【対応方針】
-1. 本日中に配送業者へ緊急連絡を行い、優先配送を手配いたします
-2. 予定として明日中にはお届けできる見込みです
-3. お急ぎの場合は代替商品の即日発送も対応可能です
-
-お詫びとして、次回ご注文時にご利用いただける500円割引クーポンをお送りいたします。
-
-ご希望の対応をご返信にてお知らせいただけますでしょうか。
-引き続きどうぞよろしくお願いいたします。`,
+○○ヘアサロン`,
   },
   {
-    industry: "✂ 美容院",
-    situation: "カラーが想定と違うと激怒している顧客",
-    tab: "メール返信文",
-    content: `件名：ご来店時の仕上がりに関するご連絡
+    industry: "🏨 ホテル・旅館（★3）",
+    situation: "「部屋は良かったが朝食の品数が少なかった」という中評価口コミ",
+    tab: "💬 返信文",
+    content: `ご宿泊いただき、またご感想をお寄せいただきありがとうございます。
 
-○○様
+お部屋をお気に召していただけたとのこと、大変嬉しく思います。
+一方で朝食の品数については、ご期待に沿えず申し訳ございませんでした。
 
-先日はご来店いただきありがとうございました。
-ご期待に添えない仕上がりになってしまい、誠に申し訳ございませんでした。
+現在、朝食ビュッフェの品目拡充とローテーション見直しを進めております。
+地元食材を活かしたメニューも追加予定ですので、ぜひ次回またご利用いただけますと幸いです。
 
-担当スタイリストよりご説明が不十分であったことも含め、深くお詫び申し上げます。
+貴重なご意見を今後のサービス改善に活かしてまいります。
+またのご来訪を心よりお待ちしております。
 
-【弊社からのご提案】
-ご都合のよい日程にご来店いただければ、以下の対応をさせていただきます。
-
-・担当スタイリストによる無料やり直し施術
-・または別スタイリストへの変更（ご希望の場合）
-・仕上がりイメージのすり合わせを丁寧に実施
-
-ご来店が難しい場合は、施術料金の全額返金も対応いたします。
-
-○○様に満足いただける仕上がりをご提供できるよう、全力で対応させていただきます。
-ご都合のよい日程を2〜3候補お知らせいただけますでしょうか。`,
+○○旅館 フロント`,
   },
 ];
 
@@ -122,8 +92,8 @@ function SampleSection() {
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-10">
           <div className="inline-block bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">実際の生成例</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">こんな対応文が15秒で生成されます</h2>
-          <p className="text-sm text-gray-500">業種・状況を選ぶだけで完成形の文章が出力されます（コピペでそのまま使えます）</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">こんな返信文が15秒で生成されます</h2>
+          <p className="text-sm text-gray-500">業種・評価点数・口コミ内容を入力するだけ。Googleにそのまま投稿できる返信文が出力されます</p>
         </div>
         <div className="flex gap-2 justify-center mb-6 flex-wrap">
           {SAMPLES.map((s, i) => (
@@ -183,7 +153,7 @@ export default function ClaimLP() {
       )}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900">AIクレーム対応文</span>
+          <span className="font-bold text-gray-900">Google口コミ返信AI</span>
           <Link href="/tool" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700">
             無料で試す
           </Link>
@@ -204,7 +174,7 @@ export default function ClaimLP() {
           クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
         </h1>
         <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
-          業種・深刻度・トーンを選ぶだけ。AIが<strong className="text-gray-700">メール返信文・電話スクリプト・対応チェックリスト</strong>をセットで生成。クレーム対応のストレスをゼロに。
+          業種・評価・トーンを選ぶだけ。AIが<strong className="text-gray-700">返信文・感謝文・SEOアドバイス・別パターン</strong>をセットで生成。Googleビジネスプロフィールの口コミ対応を15秒で。
         </p>
         {/* Cialdini: 社会的証明 + 権威 */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
@@ -270,8 +240,8 @@ export default function ClaimLP() {
       {/* 機能 */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-2xl font-bold text-center mb-3">生成される対応文セット</h2>
-          <p className="text-center text-gray-500 text-sm mb-10">1回の生成で4種類のコンテンツが出力されます</p>
+          <h2 className="text-2xl font-bold text-center mb-3">1回の生成で4種類のコンテンツが届く</h2>
+          <p className="text-center text-gray-500 text-sm mb-10">Google口コミ1件に対して返信文・感謝文・SEO対策・別パターンをまとめて生成</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {FEATURES.map(f => (
               <div key={f.title} className="bg-white rounded-xl p-6 border border-gray-200">
@@ -428,7 +398,7 @@ export default function ClaimLP() {
         <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
           導入応援価格 期間限定実施中
         </div>
-        <h2 className="text-2xl font-bold text-white mb-3">今すぐクレーム対応の悩みを解消する</h2>
+        <h2 className="text-2xl font-bold text-white mb-3">今すぐGoogle口コミ対応の悩みを解消する</h2>
         <p className="text-blue-100 text-sm mb-2">まずは無料で3回お試しください</p>
         <p className="text-yellow-300 text-xs font-semibold mb-8">モニター価格 ¥2,980/月（通常¥4,980）で使い放題</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
