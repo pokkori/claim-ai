@@ -354,7 +354,7 @@ export default function ClaimLP() {
             ].map(p => (
               <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
                 {p.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">人気No.1</div>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">おすすめ</div>
                 )}
                 <p className="font-bold text-gray-900 mb-1">{p.name}</p>
                 <p className="text-2xl font-bold text-blue-600">{p.price}<span className="text-sm font-normal text-gray-500">{p.sub}</span></p>
