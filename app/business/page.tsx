@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 const PROBLEMS = [
-  { title: "カスハラ対策法施行でマニュアル整備が急務", desc: "2025年4月施行のカスタマーハラスメント対策法に対応。AIで対応品質を即座に標準化。" },
+  { title: "カスハラ対策法施行でマニュアル整備が急務", desc: "2026年10月施行のカスタマーハラスメント対策法に対応。AIで対応品質を即座に標準化。" },
   { title: "ベテランが辞めたらクレーム対応の質が落ちた", desc: "属人化したスキルをAIで標準化。誰でも即戦力に。" },
   { title: "新人スタッフが感情的な返信をして炎上した", desc: "AIが生成した文章をコピペするだけ。感情に左右されない。" },
   { title: "月に何件もクレームがありその都度時間を取られる", desc: "1件あたり5〜10分 → 30秒。月の対応工数を90%削減。" },
@@ -239,7 +239,7 @@ export default function BusinessLP() {
 
       {/* カスハラ法制化バナー */}
       <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 text-center text-sm text-amber-800">
-        <span className="font-bold">📢 2025年4月施行</span>：カスタマーハラスメント対策法により、企業のクレーム対応マニュアル整備が義務化。
+        <span className="font-bold">📢 2026年10月施行</span>：カスタマーハラスメント対策法により、企業のクレーム対応マニュアル整備が義務化。
         <span className="font-bold ml-1">今すぐAIで対応品質を標準化しましょう。</span>
       </div>
 
