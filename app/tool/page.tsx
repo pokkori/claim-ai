@@ -227,7 +227,7 @@ export default function ReviewTool() {
 
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-bold text-gray-900">⭐ Google口コミ返信AI</Link>
+          <Link href="/" className="font-bold text-gray-900">⭐ クレームAI</Link>
           <span className={`text-xs px-3 py-1 rounded-full ${isLimit ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"}`}>
             {isLimit ? "無料枠終了" : `無料あと${FREE_LIMIT - count}回`}
           </span>
