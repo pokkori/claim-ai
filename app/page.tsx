@@ -35,6 +35,129 @@ const VOICES = [
   { role: "美容院マネージャー・30代", text: "スタッフによって対応品質がバラバラだったのが、これで統一できました。クレームが逆にリピーターになることも増えました。" },
 ];
 
+const SAMPLES = [
+  {
+    industry: "🍽 飲食店",
+    situation: "食中毒の疑いで激怒している顧客",
+    tab: "メール返信文",
+    content: `件名：【重要】お申し出いただいた件につきまして
+
+○○様
+
+このたびは、弊店をご利用いただきありがとうございました。
+ご体調が優れないとのご連絡を受け、大変心よりお見舞い申し上げます。
+
+お申し出の内容を真剣に受け止め、本日より以下の対応を実施いたします。
+
+【即時対応】
+・保健所への自主申告を本日中に行います
+・該当ロットの食材を全て使用停止しました
+・厨房の緊急衛生検査を実施中です
+
+ご不調が続く場合は、医療機関へのご受診をお勧めいたします。
+診断書が発行された場合、医療費については全額弊社で負担させていただきます。
+
+改めてお電話でご状況をお伺いさせてください。
+ご都合のよいお時間をお知らせいただけますでしょうか。
+
+深くお詫び申し上げます。
+
+○○食堂 店長 ○○`,
+  },
+  {
+    industry: "📦 EC・通販",
+    situation: "1週間以上届かない配送遅延クレーム",
+    tab: "メール返信文",
+    content: `件名：ご注文商品の配送遅延に関するお詫び
+
+○○様
+
+この度は弊店をご利用いただきありがとうございます。
+ご注文いただいた商品がお手元に届いておらず、大変ご不便をおかけしております。
+
+【現在の状況】
+配送状況を確認しましたところ、配送センターにて保留状態になっておりました。
+大変申し訳ございません。
+
+【対応方針】
+1. 本日中に配送業者へ緊急連絡を行い、優先配送を手配いたします
+2. 予定として明日中にはお届けできる見込みです
+3. お急ぎの場合は代替商品の即日発送も対応可能です
+
+お詫びとして、次回ご注文時にご利用いただける500円割引クーポンをお送りいたします。
+
+ご希望の対応をご返信にてお知らせいただけますでしょうか。
+引き続きどうぞよろしくお願いいたします。`,
+  },
+  {
+    industry: "✂ 美容院",
+    situation: "カラーが想定と違うと激怒している顧客",
+    tab: "メール返信文",
+    content: `件名：ご来店時の仕上がりに関するご連絡
+
+○○様
+
+先日はご来店いただきありがとうございました。
+ご期待に添えない仕上がりになってしまい、誠に申し訳ございませんでした。
+
+担当スタイリストよりご説明が不十分であったことも含め、深くお詫び申し上げます。
+
+【弊社からのご提案】
+ご都合のよい日程にご来店いただければ、以下の対応をさせていただきます。
+
+・担当スタイリストによる無料やり直し施術
+・または別スタイリストへの変更（ご希望の場合）
+・仕上がりイメージのすり合わせを丁寧に実施
+
+ご来店が難しい場合は、施術料金の全額返金も対応いたします。
+
+○○様に満足いただける仕上がりをご提供できるよう、全力で対応させていただきます。
+ご都合のよい日程を2〜3候補お知らせいただけますでしょうか。`,
+  },
+];
+
+function SampleSection() {
+  const [active, setActive] = useState(0);
+  return (
+    <section className="py-16">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <div className="inline-block bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">実際の生成例</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">こんな対応文が15秒で生成されます</h2>
+          <p className="text-sm text-gray-500">業種・状況を選ぶだけで完成形の文章が出力されます（コピペでそのまま使えます）</p>
+        </div>
+        <div className="flex gap-2 justify-center mb-6 flex-wrap">
+          {SAMPLES.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={`text-sm px-4 py-2 rounded-full border font-medium transition-colors ${active === i ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"}`}
+            >
+              {s.industry}
+            </button>
+          ))}
+        </div>
+        <div className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
+          <div className="bg-white border-b border-gray-200 px-5 py-3 flex items-center gap-3">
+            <span className="text-xs font-semibold text-gray-500">状況:</span>
+            <span className="text-xs text-gray-700 font-medium">{SAMPLES[active].situation}</span>
+          </div>
+          <div className="p-5">
+            <div className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-3">📧 {SAMPLES[active].tab}</div>
+            <pre className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-sans bg-white border border-gray-100 rounded-xl p-4">{SAMPLES[active].content}</pre>
+          </div>
+        </div>
+        <p className="text-center text-xs text-gray-400 mt-4">※上記は生成例のイメージです。実際の生成内容は入力内容によって異なります。</p>
+        <div className="text-center mt-6">
+          <a href="/tool" className="inline-block bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 text-sm shadow-lg shadow-blue-100">
+            自分のクレームで試してみる（無料）→
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function ClaimLP() {
   const [showPayjp, setShowPayjp] = useState(false);
   const [payjpPlan, setPayjpPlan] = useState("standard");
@@ -46,7 +169,7 @@ export default function ClaimLP() {
 
   const planLabel = payjpPlan === "business"
     ? "ビジネスプラン ¥9,800/月"
-    : "スタンダードプラン ¥4,980/月";
+    : "モニタープラン ¥2,980/月";
 
   return (
     <main className="min-h-screen bg-white">
@@ -162,6 +285,9 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* 実際の生成例 */}
+      <SampleSection />
+
       {/* カスハラ義務化セクション */}
       <section className="bg-red-50 border-y border-red-100 py-16">
         <div className="max-w-4xl mx-auto px-6">
@@ -186,7 +312,17 @@ export default function ClaimLP() {
               </div>
             ))}
           </div>
-          <div className="text-center mt-8">
+          {/* 東京都奨励金 */}
+          <div className="mt-10 bg-yellow-50 border border-yellow-200 rounded-2xl p-6 max-w-2xl mx-auto text-center">
+            <div className="inline-block bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full mb-3">💰 東京都 カスハラ対策奨励金</div>
+            <p className="font-bold text-gray-900 mb-2">東京都のカスハラ対策奨励金（最大¥40万）を活用できる可能性があります</p>
+            <p className="text-sm text-gray-600 mb-3">
+              東京都しごと財団がカスハラ対策ツールの導入費用を最大¥40万補助する奨励金制度を実施しています。<br />
+              クレームAIの年間費用（¥35,760〜）を大幅に補填できる可能性があります。
+            </p>
+            <p className="text-xs text-gray-400">※対象要件・申請時期は東京都しごと財団にご確認ください。本サービスが奨励金の対象に該当するかは申請時にご確認をお願いします。</p>
+          </div>
+          <div className="text-center mt-6">
             <a href="/tool" className="inline-block bg-red-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-red-700 text-sm">
               義務化前に対応体制を整える →
             </a>
@@ -238,16 +374,17 @@ export default function ClaimLP() {
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center mb-3">料金プラン</h2>
-          <p className="text-center text-gray-500 text-sm mb-10">すべてのプランでメール文・電話スクリプト・チェックリストがフルセット</p>
+          <p className="text-center text-gray-500 text-sm mb-2">すべてのプランでメール文・電話スクリプト・チェックリストがフルセット</p>
+          <p className="text-center text-red-600 text-xs font-semibold mb-10">🎁 先着50社限定モニター価格 — 通常¥4,980が今だけ¥2,980</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { name: "お試し", price: "無料", sub: "3回まで", features: ["全機能を試せます", "登録不要"], href: "/tool", cta: "無料で試す", highlight: false },
-              { name: "スタンダード", price: "¥4,980", sub: "/月（月100件）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "履歴保存（10件）"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
+              { name: "モニタープラン", price: "¥2,980", sub: "/月（先着50社）", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "モニターで申し込む", highlight: true },
               { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート", "カスハラ対応マニュアル"], plan: "business", cta: "申し込む", highlight: false },
             ].map(p => (
               <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
                 {p.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-blue-600 text-white px-3 py-0.5 rounded-full whitespace-nowrap">一番人気</div>
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">先着50社限定</div>
                 )}
                 <p className="font-bold text-gray-900 mb-1">{p.name}</p>
                 <p className="text-2xl font-bold text-blue-600">{p.price}<span className="text-sm font-normal text-gray-500">{p.sub}</span></p>
@@ -258,7 +395,7 @@ export default function ClaimLP() {
                     </li>
                   ))}
                 </ul>
-                <button onClick={() => startCheckout(p.plan)} className={`block w-full text-center text-sm font-medium py-2.5 rounded-lg ${p.highlight ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                <button onClick={() => p.plan ? startCheckout(p.plan) : window.location.href = "/tool"} className={`block w-full text-center text-sm font-medium py-2.5 rounded-lg ${p.highlight ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                   {p.cta}
                 </button>
               </div>
@@ -289,14 +426,20 @@ export default function ClaimLP() {
 
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
-        <div className="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
-          2026年10月カスハラ義務化まで対応急ぎ
+        <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+          先着50社限定 モニター募集中
         </div>
         <h2 className="text-2xl font-bold text-white mb-3">今すぐクレーム対応の悩みを解消する</h2>
-        <p className="text-blue-100 text-sm mb-8">登録不要・クレジットカード不要で3回無料</p>
-        <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
-          無料で対応文を生成する →
-        </Link>
+        <p className="text-blue-100 text-sm mb-2">まずは無料で3回お試しください</p>
+        <p className="text-yellow-300 text-xs font-semibold mb-8">モニター価格 ¥2,980/月（通常¥4,980）で使い放題</p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link href="/tool" className="inline-block bg-white text-blue-600 font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-50 shadow-lg">
+            無料で対応文を生成する →
+          </Link>
+          <button onClick={() => startCheckout("standard")} className="inline-block bg-yellow-400 text-gray-900 font-bold text-lg px-8 py-4 rounded-xl hover:bg-yellow-300 shadow-lg">
+            モニターで申し込む ¥2,980/月
+          </button>
+        </div>
       </section>
 
       <footer className="border-t py-6 text-center text-xs text-gray-400 space-x-4">
