@@ -404,6 +404,94 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* BtoB 法人向けセクション */}
+      <section className="bg-gray-900 text-white py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+              🏢 法人・BtoB向け — カスハラ義務化対応パッケージ
+            </div>
+            <h2 className="text-3xl font-bold mb-3">
+              スタッフを守り、会社を守る。<br />
+              <span className="text-yellow-400">¥9,800/月で義務化に完全対応</span>
+            </h2>
+            <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+              2026年10月1日施行の改正労働施策総合推進法により、全事業主に「カスハラ対策措置」の義務が課されます。<br />
+              飲食チェーン・EC・医療介護・ホテル・コールセンターなど複数スタッフを抱える事業者様に最適です。
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-10 items-start">
+            {/* 左: 機能リスト */}
+            <div>
+              <p className="text-yellow-400 font-bold text-sm mb-4">ビジネスプランで対応できること</p>
+              <div className="space-y-4">
+                {[
+                  { icon: "📄", title: "カスハラ対応マニュアル一式", desc: "厚労省ガイドライン準拠のカスハラ判定基準・対応フロー・エスカレーション手順をAIが自動生成。義務化対応の証拠書類として保存可。" },
+                  { icon: "👥", title: "複数スタッフのアカウント共有", desc: "チーム全員が同じAIツールを使うことで、対応品質をクレーム一件ごとに統一。新人スタッフでも即戦力に。" },
+                  { icon: "🚨", title: "悪質クレーム・カスハラ断り文生成", desc: "「お断りします」「以後の対応は法的手続きに委ねます」など毅然とした断り文を即生成。感情的にならず毅然と対応。" },
+                  { icon: "∞", title: "生成無制限", desc: "月間何件でもAI生成可能。繁忙期のクレームラッシュでも制限なし。" },
+                  { icon: "💰", title: "東京都奨励金で実質無料化も", desc: "東京都のカスハラ対策奨励金（最大¥40万）を活用すれば、年間費用¥117,600がほぼ全額補填できる可能性があります。" },
+                ].map(item => (
+                  <div key={item.title} className="flex gap-4 items-start">
+                    <span className="text-2xl flex-shrink-0">{item.icon}</span>
+                    <div>
+                      <p className="font-bold text-white text-sm">{item.title}</p>
+                      <p className="text-gray-400 text-xs mt-0.5 leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* 右: プランカード */}
+            <div className="bg-white text-gray-900 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-1">
+                <p className="font-bold text-gray-700">ビジネスプラン</p>
+                <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">義務化対応</span>
+              </div>
+              <p className="text-4xl font-black text-blue-600 mb-1">¥9,800<span className="text-base font-normal text-gray-500">/月</span></p>
+              <p className="text-xs text-gray-400 mb-6">年間¥117,600 — 東京都奨励金¥40万で初年度ほぼ無料化</p>
+              <ul className="space-y-2.5 mb-6 text-sm text-gray-700">
+                {[
+                  "AI返信文・カスハラ断り文 生成無制限",
+                  "カスハラ対応マニュアル（厚労省ガイドライン準拠）",
+                  "複数スタッフ共有・チームアカウント",
+                  "優先サポート（24時間以内返信）",
+                  "重大クレームへのエスカレーションガイド",
+                  "2026年10月 義務化対応完了",
+                ].map(f => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="text-green-500 font-bold mt-0.5">✓</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => startCheckout("business")}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-base transition-colors shadow-lg"
+              >
+                ビジネスプランで申し込む →
+              </button>
+              <p className="text-xs text-gray-400 mt-3 text-center">いつでも解約可能 / 法人請求書払いはXでお問い合わせ</p>
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <p className="text-xs text-gray-500 text-center">
+                  法人一括払い・請求書払いをご希望の場合は<br />
+                  X (Twitter) <a href="https://x.com/levona_design" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">@levona_design</a> にてご連絡ください
+                </p>
+              </div>
+            </div>
+          </div>
+          {/* ターゲット業種 */}
+          <div className="mt-12 border-t border-gray-700 pt-10">
+            <p className="text-center text-gray-400 text-sm mb-6">こんな事業者様に特に選ばれています</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {["飲食チェーン・居酒屋グループ", "ECモール出店者", "医療・介護事業所", "ホテル・旅館・旅行会社", "コールセンター", "美容チェーン", "小売チェーン"].map(t => (
+                <span key={t} className="bg-gray-800 text-gray-300 text-xs px-3 py-1.5 rounded-full">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-blue-600 py-16 text-center px-6">
         <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
