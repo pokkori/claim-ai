@@ -196,6 +196,10 @@ export default function ClaimLP() {
             <span className="text-purple-600 font-bold">即時生成</span>
             <span className="text-gray-600">メール文・電話スクリプト同時出力</span>
           </div>
+          <div className="flex items-center gap-1.5 bg-yellow-50 border border-yellow-300 rounded-full px-4 py-2 shadow-sm">
+            <span className="text-yellow-700 font-bold">東京都奨励金40万円</span>
+            <span className="text-gray-600">AI活用システム導入対象</span>
+          </div>
         </div>
         <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
           無料で3回試す →
@@ -418,9 +422,21 @@ export default function ClaimLP() {
         </div>
       </section>
 
-      <footer className="border-t py-6 text-center text-xs text-gray-400 space-x-4">
-        <Link href="/legal" className="hover:underline">特定商取引法に基づく表記</Link>
-        <Link href="/privacy" className="hover:underline">プライバシーポリシー</Link>
+      <footer className="border-t py-6 text-center text-xs text-gray-400">
+        <div className="space-x-4 mb-3">
+          <Link href="/legal" className="hover:underline">特定商取引法に基づく表記</Link>
+          <Link href="/privacy" className="hover:underline">プライバシーポリシー</Link>
+        </div>
+        <div className="border-t border-gray-100 pt-3">
+          <p className="mb-1">ポッコリラボの他のサービス</p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <a href="https://hojyokin-ai-delta.vercel.app" className="hover:text-gray-600">補助金AI</a>
+            <a href="https://keiyakusho-ai.vercel.app" className="hover:text-gray-600">契約書AIレビュー</a>
+            <a href="https://rougo-sim-ai.vercel.app" className="hover:text-gray-600">老後シミュレーターAI</a>
+            <a href="https://keiba-yoso-ai.vercel.app" className="hover:text-gray-600">競馬予想AI</a>
+            <a href="https://ai-keiei-keikaku.vercel.app" className="hover:text-gray-600">AI経営計画書</a>
+          </div>
+        </div>
       </footer>
     </main>
   );
