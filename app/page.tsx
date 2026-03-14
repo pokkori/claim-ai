@@ -384,6 +384,26 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* Cross-sell: パワハラ対策AI */}
+      <section className="max-w-4xl mx-auto px-6 py-8">
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 flex items-center gap-5">
+          <div className="text-4xl shrink-0">🛡️</div>
+          <div className="flex-1">
+            <p className="text-xs font-semibold text-blue-500 mb-1">一緒に使うと効果的</p>
+            <h3 className="font-bold text-gray-900 mb-1">パワハラ対策AI との併用でカスハラ・ハラスメント両方に対応</h3>
+            <p className="text-sm text-gray-600">社内のパワハラ対応文書 + 外部クレーム対応文書を両方AIで即生成。人事・CS部門の方に人気のセット利用。</p>
+          </div>
+          <a
+            href="https://pawahara-ai.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 bg-blue-600 text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-blue-700 transition-colors"
+          >
+            詳細を見る →
+          </a>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-2xl mx-auto px-6">
