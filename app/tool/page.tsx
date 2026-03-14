@@ -4,26 +4,26 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const FREE_LIMIT = 3;
-const KEY = "review_count";
-const HISTORY_KEY = "review_history";
+const KEY = "claim_use_count";
+const HISTORY_KEY = "claim_history";
 
-const INDUSTRY_PRESETS = ["飲食店", "美容・サロン", "クリニック・歯科", "ホテル・旅館", "不動産", "小売店"];
-const TONE_OPTIONS = [
-  { value: "丁寧", label: "丁寧・謙虚", desc: "誠実な感謝中心" },
-  { value: "プロ", label: "プロ・簡潔", desc: "信頼感を演出" },
-  { value: "親しみ", label: "親しみやすい", desc: "温かみある文体" },
+const CLAIM_TYPE_PRESETS = ["商品・品質不具合", "サービス遅延・キャンセル", "スタッフ対応", "請求・料金トラブル", "安全・衛生問題", "その他"];
+const SEVERITY_OPTIONS = [
+  { value: "軽度", label: "軽度", desc: "一般的な不満" },
+  { value: "中度", label: "中度", desc: "強い不満・要求" },
+  { value: "重度", label: "重度", desc: "脅迫・カスハラ" },
 ];
 
 type Section = { title: string; icon: string; content: string };
 type LevelInfo = { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string };
 type ParsedResult = { sections: Section[]; raw: string };
-type HistoryItem = { date: string; industry: string; rating: string; result: string };
+type HistoryItem = { date: string; claimType: string; severity: string; result: string };
 
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
-    { key: "返信文", icon: "💬" },
-    { key: "感謝文", icon: "🌟" },
-    { key: "SEOアドバイス", icon: "📈" },
+    { key: "口頭スクリプト", icon: "💬" },
+    { key: "書面通知文", icon: "📄" },
+    { key: "インシデント記録", icon: "📋" },
     { key: "別パターン", icon: "✏️" },
   ];
   const sections: Section[] = [];
@@ -38,12 +38,10 @@ function parseResult(text: string): ParsedResult {
     }
   }
   if (sections.length === 0) {
-    sections.push({ title: "生成結果", icon: "💬", content: text });
+    sections.push({ title: "対応文", icon: "💬", content: text });
   }
   return { sections, raw: text };
 }
-
-// startCheckout replaced by PayjpModal
 
 function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (plan: string) => void }) {
   return (
@@ -137,11 +135,10 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
   );
 }
 
-export default function ReviewTool() {
-  const [industry, setIndustry] = useState("");
-  const [rating, setRating] = useState("★3");
-  const [reviewContent, setReviewContent] = useState("");
-  const [tone, setTone] = useState("丁寧");
+export default function ClaimTool() {
+  const [claimType, setClaimType] = useState("");
+  const [situation, setSituation] = useState("");
+  const [severity, setSeverity] = useState("中度");
   const [parsed, setParsed] = useState<ParsedResult | null>(null);
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -200,7 +197,7 @@ export default function ReviewTool() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ industry, rating, reviewContent, tone }),
+        body: JSON.stringify({ claimType, situation, severity }),
       });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
       const data = await res.json();
@@ -212,7 +209,7 @@ export default function ReviewTool() {
       if (data.level) setLevelInfo(data.level);
       const p = parseResult(text);
       setParsed(p);
-      const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), industry: industry || "一般", rating, result: text };
+      const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: text };
       const newHistory = [newItem, ...history].slice(0, 10);
       setHistory(newHistory);
       localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
@@ -238,42 +235,30 @@ export default function ReviewTool() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* 入力フォーム */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="text-xl font-bold text-gray-900">口コミ情報を入力</h1>
+            <h1 className="text-xl font-bold text-gray-900">クレーム情報を入力</h1>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">業種</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">クレームの種類</label>
               <div className="flex flex-wrap gap-2 mb-2">
-                {INDUSTRY_PRESETS.map(p => (
-                  <button key={p} type="button" onClick={() => setIndustry(industry === p ? "" : p)}
-                    className={`px-3 py-1 rounded-full text-xs border font-medium transition-colors ${industry === p ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}>
+                {CLAIM_TYPE_PRESETS.map(p => (
+                  <button key={p} type="button" onClick={() => setClaimType(claimType === p ? "" : p)}
+                    className={`px-3 py-1 rounded-full text-xs border font-medium transition-colors ${claimType === p ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}>
                     {p}
                   </button>
                 ))}
               </div>
-              <input type="text" value={industry} onChange={e => setIndustry(e.target.value)} placeholder="または直接入力（例: カフェ、整骨院）"
+              <input type="text" value={claimType} onChange={e => setClaimType(e.target.value)} placeholder="または直接入力（例: 配送遅延、接客トラブル）"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">評価（星）</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">深刻度</label>
               <div className="flex gap-2">
-                {["★1", "★2", "★3", "★4", "★5"].map(r => (
-                  <button key={r} type="button" onClick={() => setRating(r)}
-                    className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-colors ${rating === r ? "bg-yellow-400 text-white border-yellow-400" : "bg-white text-gray-700 border-gray-300 hover:border-yellow-300"}`}>
-                    {r}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">返信トーン</label>
-              <div className="flex gap-2">
-                {TONE_OPTIONS.map(t => (
-                  <button key={t.value} type="button" onClick={() => setTone(t.value)}
-                    className={`flex-1 py-2 px-1 rounded-lg border text-center transition-colors ${tone === t.value ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"}`}>
-                    <div className="text-xs font-semibold">{t.label}</div>
-                    <div className={`text-xs mt-0.5 ${tone === t.value ? "text-blue-100" : "text-gray-400"}`}>{t.desc}</div>
+                {SEVERITY_OPTIONS.map(s => (
+                  <button key={s.value} type="button" onClick={() => setSeverity(s.value)}
+                    className={`flex-1 py-2 px-1 rounded-lg border text-center transition-colors ${severity === s.value ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"}`}>
+                    <div className="text-xs font-semibold">{s.label}</div>
+                    <div className={`text-xs mt-0.5 ${severity === s.value ? "text-blue-100" : "text-gray-400"}`}>{s.desc}</div>
                   </button>
                 ))}
               </div>
@@ -281,17 +266,17 @@ export default function ReviewTool() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                口コミ内容 <span className="text-red-500">*</span>
+                クレームの状況 <span className="text-red-500">*</span>
               </label>
-              <textarea value={reviewContent} onChange={e => setReviewContent(e.target.value)} rows={5}
-                placeholder="例：料理は美味しかったのですが、待ち時間が長すぎました。スタッフの方は親切でしたが、もう少し効率よく対応してほしいです。"
+              <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={5}
+                placeholder="例：昨日購入した商品に傷があり、お客様から電話でお怒りを受けています。返金または交換を強く求められており、「上の者を出せ」とおっしゃっています。"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
-              <p className="text-xs text-gray-400 mt-1">口コミ文をそのまま貼り付けてください（{reviewContent.length}/1000文字）</p>
+              <p className="text-xs text-gray-400 mt-1">受けたクレームの状況を詳しく入力してください（{situation.length}/1000文字）</p>
             </div>
 
             <button type="submit" disabled={loading}
               className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300"}`}>
-              {loading ? "返信文を生成中..." : isLimit ? "有料プランに申し込む" : "返信文を生成する（無料）"}
+              {loading ? "対応文を生成中..." : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
             </button>
 
             {error && <p className="text-sm text-red-500 text-center">{error}</p>}
@@ -327,8 +312,8 @@ export default function ReviewTool() {
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3" />
-                  <p className="text-sm text-gray-500 font-medium">AIが返信文を作成中...</p>
-                  <p className="text-xs text-gray-400 mt-2">💬 返信文 → 🌟 感謝文 → 📈 SEO → ✏️ 別パターン</p>
+                  <p className="text-sm text-gray-500 font-medium">AIが対応文を作成中...</p>
+                  <p className="text-xs text-gray-400 mt-2">💬 口頭スクリプト → 📄 書面通知文 → 📋 インシデント記録</p>
                   <p className="text-xs text-gray-300 mt-1">通常10〜15秒かかります</p>
                 </div>
               </div>
@@ -337,13 +322,12 @@ export default function ReviewTool() {
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
                 <div className="text-4xl">⭐</div>
-                <p className="text-sm text-center font-medium text-gray-500">口コミ内容を入力して<br />生成ボタンを押してください</p>
+                <p className="text-sm text-center font-medium text-gray-500">クレーム状況を入力して<br />生成ボタンを押してください</p>
                 <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
                   <p className="font-semibold text-gray-600">生成される内容：</p>
-                  <p className="text-gray-500">💬 返信文（そのままコピペ可）</p>
-                  <p className="text-gray-500">🌟 感謝文（高評価口コミ向け）</p>
-                  <p className="text-gray-500">📈 SEOアドバイス（検索露出アップ）</p>
-                  <p className="text-gray-500">✏️ 別パターン（2〜3パターン）</p>
+                  <p className="text-gray-500">💬 口頭スクリプト（電話・対面対応用）</p>
+                  <p className="text-gray-500">📄 書面通知文（メール・FAX送付用）</p>
+                  <p className="text-gray-500">📋 インシデント記録テンプレート</p>
                 </div>
               </div>
             )}
@@ -419,7 +403,7 @@ export default function ReviewTool() {
           <div className="mt-8 bg-white border border-gray-200 rounded-xl p-4">
             <button onClick={() => setShowHistory(!showHistory)}
               className="flex items-center justify-between w-full text-sm font-medium text-gray-700">
-              <span>返信履歴（直近{history.length}件）</span>
+              <span>対応履歴（直近{history.length}件）</span>
               <span className="text-gray-400">{showHistory ? "▲ 閉じる" : "▼ 表示する"}</span>
             </button>
             {showHistory && (
@@ -427,7 +411,7 @@ export default function ReviewTool() {
                 {history.map((item, i) => (
                   <div key={i} className="border border-gray-100 rounded-lg p-3 bg-gray-50">
                     <div className="flex justify-between text-xs text-gray-400 mb-2">
-                      <span className="font-medium text-gray-600">{item.industry} / {item.rating}</span>
+                      <span className="font-medium text-gray-600">{item.claimType} / {item.severity}</span>
                       <span>{item.date}</span>
                     </div>
                     <pre className="text-xs text-gray-700 whitespace-pre-wrap max-h-24 overflow-y-auto leading-relaxed">{item.result.slice(0, 200)}...</pre>
