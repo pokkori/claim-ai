@@ -23,6 +23,9 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+const VALID_CLAIM_TYPES = ["商品・品質クレーム", "接客・対応クレーム", "配送・納期クレーム", "請求・料金クレーム", "カスタマーハラスメント", "その他"];
+const VALID_SEVERITY = ["low", "medium", "high"];
+
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for") || "unknown";
   if (!checkRateLimit(ip)) {
@@ -40,100 +43,85 @@ export async function POST(req: NextRequest) {
   if (!isPremium && cookieCount >= FREE_LIMIT) {
     return NextResponse.json({ error: "LIMIT_REACHED" }, { status: 429 });
   }
+
   let body: Record<string, unknown>;
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { industry, rating, reviewContent, tone } = body as Record<string, string>;
-  if (!reviewContent) return NextResponse.json({ error: "口コミ内容は必須です" }, { status: 400 });
-  if (reviewContent.length > 1000) return NextResponse.json({ error: "口コミ内容は1000文字以内で入力してください" }, { status: 400 });
-  // allowlist: tone は列挙値のみ許可
-  const VALID_TONES = ["プロ", "親しみ", "丁寧"];
-  if (tone && !VALID_TONES.includes(tone)) return NextResponse.json({ error: "不正なトーン値です" }, { status: 400 });
-  // industry は任意入力だが最大50文字・制御文字禁止
-  const safIndustry = (industry ?? "").replace(/[\u0000-\u001f\u007f]/g, "").slice(0, 50);
+  const { claimType, situation, severity } = body as Record<string, string>;
+  if (!situation || !situation.trim()) return NextResponse.json({ error: "状況を入力してください" }, { status: 400 });
+  if (situation.length > 1500) return NextResponse.json({ error: "状況は1500文字以内で入力してください" }, { status: 400 });
+  if (claimType && !VALID_CLAIM_TYPES.includes(claimType)) return NextResponse.json({ error: "不正なクレーム種別です" }, { status: 400 });
+  if (severity && !VALID_SEVERITY.includes(severity)) return NextResponse.json({ error: "不正な深刻度です" }, { status: 400 });
 
-  const ratingNum = parseInt(rating?.replace("★", "") || "3");
-  const isLowRating = ratingNum <= 2;
-  const isHighRating = ratingNum >= 4;
+  const safSituation = situation.replace(/[<>]/g, "");
 
-  const toneGuide =
-    tone === "プロ"
-      ? "プロフェッショナルで簡潔な文体。冗長な表現を避け、要点を的確に伝える。信頼感と誠実さを醸成する。"
-      : tone === "親しみ"
-      ? "温かみがあり、親しみやすい文体。お客様との距離を縮め、また来店したくなるような雰囲気を作る。"
-      : "丁寧で誠実な謝意を示す文体。お客様を大切にしている姿勢が伝わる言葉を選ぶ。";
+  const severityLabel = severity === "high" ? "重度" : severity === "low" ? "軽度" : "中度";
+  const severityGuidance =
+    severity === "high"
+      ? "法的措置・SNS拡散・消費者センター通報など重大なリスクを伴う可能性があります。毅然とした対応と証拠保全を優先してください。"
+      : severity === "low"
+      ? "軽微なご不満・改善要望レベルです。誠実な謝意と具体的な改善策の提示を中心としてください。"
+      : "一般的なクレームです。誠実に事実確認を行い、対応策を明確に示してください。";
 
-  const ratingContext = isLowRating
-    ? "低評価（★1〜2）の口コミです。まず誠実にお詫びし、具体的な改善策を示し、個別対応の意志を見せることが重要です。"
-    : isHighRating
-    ? "高評価（★4〜5）の口コミです。感謝の気持ちを伝えつつ、他のお客様にも訴求する内容にすることが重要です。"
-    : "中評価（★3）の口コミです。良かった点への感謝と、課題への誠実な改善意欲を示すことが重要です。";
+  const prompt = `あなたは企業のカスタマーサポート対応の専門家です。
+消費者契約法・民法・不正競争防止法など関連法規を踏まえ、一般企業（BtoC・小売・飲食・サービス業）のCS担当者が
+そのまま使用できる対応文一式を生成してください。
 
-  const industryContext = safIndustry
-    ? `${safIndustry}業界の慣習・専門用語を踏まえた返信文にすること。`
-    : "";
-
-  const prompt = `あなたはGoogleビジネスプロフィールの口コミ対応の専門家です。店舗のオーナーとして、以下のGoogle口コミに対する最適な返信文セットを作成してください。
-
-【口コミ情報】
-業種: ${safIndustry || "一般店舗"}
-評価: ${rating || "★3"}
-口コミ内容: ${reviewContent}
+【クレーム種別】${claimType || "その他"}
+【深刻度】${severityLabel}
+【状況の詳細】
+${safSituation}
 
 【対応方針】
-${ratingContext}
-${industryContext}
-トーン: ${toneGuide}
+${severityGuidance}
 
-以下の構成で出力してください。各セクションの区切りは必ず「---」（ハイフン3つのみの行）を使ってください：
+以下の3種類の対応文を生成してください。各対応文は「---」（ハイフン3つのみの行）で区切ってください。
 
 ---
-## 💬 返信文（Googleに投稿する返信文）
+## 口頭・電話対応スクリプト
 
-（${isLowRating ? "①感謝→②お詫び→③具体的な改善策→④個別対応の案内→⑤再来店の促し" : "①感謝→②具体的な共感→③店舗の魅力・強みへの言及→④今後もよろしくお願いします"}の流れで200〜300文字程度）
-
----
-## 🌟 感謝文（高評価をいただいた場合の追加感謝メッセージ）
-
-${isHighRating ? "（口コミ内容の具体的な点に触れながら、スタッフへの感謝や今後の抱負を300文字程度で）" : "（仮に高評価をいただいた場合の返信文テンプレートを300文字程度で作成。次回来店時に高評価をいただけるよう改善後を想定して）"}
+- CS担当者が直接伝えるための具体的なセリフ形式
+- 冷静・丁寧かつ毅然としたトーン
+- 謝罪すべき点と謝罪しない点を明確に区別する
+- 深刻度「重度」の場合は上長エスカレーションの案内を含める
 
 ---
-## 📈 SEOアドバイス（Googleマップ検索での露出を高めるためのポイント）
+## 書面・通知文
 
-**返信文に含めると効果的なキーワード：**
-（業種・地域・サービス名など検索されやすいキーワードを3〜5個）
-
-**SEO的に有効な返信のコツ：**
-（具体的なアドバイスを3点）
-
-**この口コミへの返信で期待できる効果：**
-（集客・信頼性向上への影響を説明）
+- 企業名義の公式文書として使用できる文体
+- 事実確認・対応方針・今後の対処を明記
+- 深刻度「重度」の場合は警告・法的措置への言及を適切に含める
+- 宛名・差出人・日付のプレースホルダーを含める
 
 ---
-## ✏️ 別パターン（文体・長さの異なる返信例）
+## インシデント記録テンプレート
 
-**【短め・シンプル版】（100文字以内）**
-（簡潔にお礼・お詫びを伝えるバージョン）
-
-**【丁寧・詳細版】（400文字程度）**
-（より丁寧に、具体的な対応策を示すバージョン）
+- 日時・対応者・クレーム内容・対応経緯・対応結果を記録する形式
+- 将来の法的対応・社内報告・再発防止に活用できる客観的記述
+- 記入すべき項目を明示し、そのまま使用できるフォーマットで出力する
 
 ---
-※ 店舗名・担当者名は実際のものに変更してご使用ください。`;
+※ 本ツールが生成する対応文はAIによる参考案です。法的効力を持つものではありません。重大なクレームや法的問題が生じた場合は必ず専門家（弁護士）にご相談ください。`;
 
-  // クレームレベルを評価（APIコールなしでルールベース判定）
-  function assessLevel(content: string, ratingNum: number): { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string } {
-    const severe = ["弁護士", "訴訟", "裁判", "警察", "消費者センター", "SNS", "拡散", "炎上", "訴える", "詐欺", "返金しろ", "謝罪しろ", "カスハラ"];
-    const moderate = ["ひどい", "最悪", "二度と", "クレーム", "不満", "怒", "許せない", "がっかり"];
-    const hasSevere = severe.some(w => content.includes(w));
-    const hasModerate = moderate.some(w => content.includes(w));
-    if (ratingNum <= 1 || hasSevere) return { level: "重度", color: "red", reason: hasSevere ? "法的措置・拡散リスクのキーワードあり" : "最低評価（★1）" };
-    if (ratingNum <= 2 || hasModerate) return { level: "中度", color: "yellow", reason: hasModerate ? "強い不満のキーワードあり" : "低評価（★2）" };
-    return { level: "軽度", color: "green", reason: "一般的な改善要望レベル" };
+  // クレームレベルを評価（ルールベース判定）
+  function assessLevel(content: string, sev: string): { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string } {
+    if (sev === "high") {
+      const legalKeywords = ["弁護士", "訴訟", "裁判", "警察", "消費者センター", "SNS", "拡散", "炎上", "訴える", "詐欺", "返金しろ", "謝罪しろ"];
+      const hasLegal = legalKeywords.some(w => content.includes(w));
+      return { level: "重度", color: "red", reason: hasLegal ? "法的措置・拡散リスクのキーワードあり" : "深刻度：重度が指定されています" };
+    }
+    if (sev === "low") {
+      return { level: "軽度", color: "green", reason: "一般的な改善要望レベル" };
+    }
+    const severeKeywords = ["弁護士", "訴訟", "裁判", "警察", "消費者センター", "SNS", "拡散", "炎上", "訴える", "詐欺"];
+    const moderateKeywords = ["ひどい", "最悪", "二度と", "不満", "怒", "許せない", "がっかり", "カスハラ"];
+    if (severeKeywords.some(w => content.includes(w))) return { level: "重度", color: "red", reason: "法的措置・拡散リスクのキーワードあり" };
+    if (moderateKeywords.some(w => content.includes(w))) return { level: "中度", color: "yellow", reason: "強い不満のキーワードあり" };
+    return { level: "中度", color: "yellow", reason: "通常クレームレベル" };
   }
 
-  const levelInfo = assessLevel(reviewContent, ratingNum);
+  const levelInfo = assessLevel(safSituation, severity || "medium");
 
   try {
     const message = await getClient().messages.create({
