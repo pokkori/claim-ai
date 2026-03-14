@@ -205,6 +205,11 @@ export default function ClaimLP() {
           無料で3回試す →
         </Link>
         <p className="text-sm font-semibold text-gray-500">クレジットカード不要・登録不要・今すぐ使える</p>
+        <div className="mt-4">
+          <a href="#btob" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 font-semibold border border-blue-200 bg-blue-50 px-5 py-2.5 rounded-full transition">
+            🏢 法人・チーム導入はこちら（¥9,800/月）→
+          </a>
+        </div>
       </section>
 
       {/* 課題 */}
@@ -425,7 +430,7 @@ export default function ClaimLP() {
       </section>
 
       {/* BtoB 法人向けセクション */}
-      <section className="bg-gray-900 text-white py-20 px-6">
+      <section id="btob" className="bg-gray-900 text-white py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">
