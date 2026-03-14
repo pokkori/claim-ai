@@ -198,7 +198,7 @@ export default function ClaimLP() {
           </div>
           <div className="flex items-center gap-1.5 bg-yellow-50 border border-yellow-300 rounded-full px-4 py-2 shadow-sm">
             <span className="text-yellow-700 font-bold">東京都奨励金40万円</span>
-            <span className="text-gray-600">AI活用システム導入対象</span>
+            <span className="text-gray-600">活用できる可能性あり</span>
           </div>
         </div>
         <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
