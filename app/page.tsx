@@ -16,17 +16,17 @@ const INDUSTRIES = [
 ];
 
 const FEATURES = [
-  { icon: "💬", title: "口コミ返信文", desc: "投稿用の返信文を件名から署名まで完全生成。業種・評価点数・トーンに合わせて自動調整。コピペでそのまま投稿できます。" },
-  { icon: "🌟", title: "感謝文・好印象アップ文", desc: "高評価口コミへの感謝文を自動生成。他のユーザーに刺さる表現で「また来たい」と思わせる効果。" },
-  { icon: "📈", title: "SEOアドバイス", desc: "Googleマップ検索での露出を高めるキーワード・返信テクニックを提案。上位表示につながる返信のコツを明示。" },
-  { icon: "✏️", title: "別パターン（短め・詳細版）", desc: "同じ口コミに対して短め版（100字以内）と丁寧版（400字）の2パターンを追加生成。使いやすい方を選べます。" },
+  { icon: "📞", title: "口頭対応スクリプト", desc: "電話・対面クレームに即使える応答スクリプトを生成。謝罪の度合い・補償の有無・エスカレーション判断まで含めた実践的な文言。" },
+  { icon: "📄", title: "お詫び状・通知文", desc: "正式な書面（お詫び状・改善報告書・補償通知）を件名から署名まで完全生成。法的リスクを踏まえた表現で安心して送付できます。" },
+  { icon: "📋", title: "社内インシデント記録", desc: "発生日時・対応経緯・法的リスク評価・再発防止策を含む記録書を自動作成。顧問弁護士への報告や労働局対応にも使えます。" },
+  { icon: "⚖️", title: "カスハラ判定・対応ガイド", desc: "正当なクレームかカスタマーハラスメントかを判定し、毅然とした対応文言と警察・弁護士連携の判断基準を提示。" },
 ];
 
 const HOW_TO = [
-  { step: "1", title: "業種を選択", desc: "飲食店・美容サロン・クリニック・ホテルなどのプリセットからタップするだけ。" },
-  { step: "2", title: "口コミ内容と評価を貼り付け", desc: "Googleビジネスプロフィールに届いた口コミをコピー＆ペースト。評価（★1〜5）を選択。" },
-  { step: "3", title: "返信のトーンを設定", desc: "丁寧・プロ・親しみやすいの3種類から状況に合わせて選択。" },
-  { step: "4", title: "返信文セットを受け取る", desc: "15〜20秒で返信文・感謝文・SEOアドバイス・別パターンが生成。そのままGoogleに投稿できます。" },
+  { step: "1", title: "業種・クレーム内容を入力", desc: "飲食店・EC・美容サロン・ホテルなどのプリセットを選択し、クレームの状況をテキストで貼り付けるだけ。" },
+  { step: "2", title: "感情温度・状況を設定", desc: "相手の怒り度合い（普通・強い・激しい）・カスハラ疑いの有無・補償の要否を選択。" },
+  { step: "3", title: "対応文書の種類を選択", desc: "口頭スクリプト・お詫び状・社内記録・カスハラ判定の中から必要なものを選択。" },
+  { step: "4", title: "対応文書セットを受け取る", desc: "15〜20秒で対応スクリプト・書面・インシデント記録・法的リスク評価が生成。そのまま使えます。" },
 ];
 
 const VOICES = [
@@ -37,51 +37,22 @@ const VOICES = [
 
 const SAMPLES = [
   {
-    industry: "🍽 飲食店（★2）",
-    situation: "「料理が冷たくて待ち時間も長かった。もう行かない」という低評価口コミ",
-    tab: "💬 返信文",
-    content: `この度はご来店いただき、またご意見をお寄せいただきありがとうございます。
-料理の温度と提供時間について、ご期待に沿えず大変申し訳ございませんでした。
-
-ご指摘の通り、ランチピーク時の提供体制に課題がございました。
-現在はオーダー時に待ち時間をお伝えする運用に改善し、スタッフ全員で品質管理の徹底を図っております。
-
-ご不満な思いをさせてしまったにもかかわらず、貴重なご意見をいただいたことを心よりお礼申し上げます。
-改善した姿を、ぜひ一度またお試しいただけますと幸いです。
-
-○○食堂 店長`,
+    industry: '🍽 飲食店（異物混入クレーム）',
+    situation: '「料理に異物が入っていた。体に影響が出たらどうする気だ」という強いクレーム電話',
+    tab: '📞 口頭スクリプト',
+    content: ,
   },
   {
-    industry: "✂ 美容・サロン（★5）",
-    situation: "「担当スタイリストの対応が最高！また絶対来ます」という高評価口コミ",
-    tab: "🌟 感謝文",
-    content: `嬉しいお言葉をいただき、スタッフ一同大変励みになっております！
-担当スタイリストにも伝え、今後もお客様一人ひとりのご要望に寄り添えるよう精進してまいります。
-
-当店では、ヘアカラーとトリートメントの相性・仕上がりのイメージ共有を大切にしており、
-○○様に喜んでいただけたことが何より嬉しいです。
-
-またお越しの際も、最高の仕上がりをご提供できるよう全力でサポートいたします。
-次回のご来店を、スタッフ一同心よりお待ちしております！
-
-○○ヘアサロン`,
+    industry: '📦 EC・通販（返金要求クレーム）',
+    situation: '「届いた商品が壊れていた。すぐに全額返金しろ」というメールクレーム',
+    tab: '📄 お詫び状',
+    content: ,
   },
   {
-    industry: "🏨 ホテル・旅館（★3）",
-    situation: "「部屋は良かったが朝食の品数が少なかった」という中評価口コミ",
-    tab: "💬 返信文",
-    content: `ご宿泊いただき、またご感想をお寄せいただきありがとうございます。
-
-お部屋をお気に召していただけたとのこと、大変嬉しく思います。
-一方で朝食の品数については、ご期待に沿えず申し訳ございませんでした。
-
-現在、朝食ビュッフェの品目拡充とローテーション見直しを進めております。
-地元食材を活かしたメニューも追加予定ですので、ぜひ次回またご利用いただけますと幸いです。
-
-貴重なご意見を今後のサービス改善に活かしてまいります。
-またのご来訪を心よりお待ちしております。
-
-○○旅館 フロント`,
+    industry: '💻 IT・SaaS（システム障害クレーム）',
+    situation: '「システムが1時間止まって業務に支障が出た。損害賠償を請求する」という法人クレーム',
+    tab: '📋 インシデント記録',
+    content: ,
   },
 ];
 
@@ -92,7 +63,7 @@ function SampleSection() {
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-10">
           <div className="inline-block bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">実際の生成例</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">こんな返信文が15秒で生成されます</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">こんな対応文書が15秒で生成されます</h2>
           <p className="text-sm text-gray-500">業種・評価点数・口コミ内容を入力するだけ。Googleにそのまま投稿できる返信文が出力されます</p>
         </div>
         <div className="flex gap-2 justify-center mb-6 flex-wrap">
@@ -159,7 +130,7 @@ export default function ClaimLP() {
       )}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900">Google口コミ返信AI</span>
+          <span className="font-bold text-gray-900">🆘 クレームAI</span>
           <Link href="/tool" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700">
             無料で試す
           </Link>
@@ -180,7 +151,7 @@ export default function ClaimLP() {
           クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
         </h1>
         <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
-          業種・評価・トーンを選ぶだけ。AIが<strong className="text-gray-700">返信文・感謝文・SEOアドバイス・別パターン</strong>をセットで生成。Googleビジネスプロフィールの口コミ対応を15秒で。
+          業種・クレーム内容を入力するだけ。AIが<strong className="text-gray-700">口頭スクリプト・お詫び状・社内記録・カスハラ判定</strong>をセットで生成。クレーム対応を15秒で完結。
         </p>
         {/* Cialdini: 社会的証明 + 権威 */}
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
@@ -256,7 +227,7 @@ export default function ClaimLP() {
       <section className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold text-center mb-3">1回の生成で4種類のコンテンツが届く</h2>
-          <p className="text-center text-gray-500 text-sm mb-10">Google口コミ1件に対して返信文・感謝文・SEO対策・別パターンをまとめて生成</p>
+          <p className="text-center text-gray-500 text-sm mb-10">クレーム1件の入力で口頭スクリプト・書面・社内記録・カスハラ判定をまとめて生成</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {FEATURES.map(f => (
               <div key={f.title} className="bg-white rounded-xl p-6 border border-gray-200">
@@ -522,7 +493,7 @@ export default function ClaimLP() {
         <div className="inline-block bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
           2026年10月 カスハラ対策義務化
         </div>
-        <h2 className="text-2xl font-bold text-white mb-3">今すぐGoogle口コミ対応の悩みを解消する</h2>
+        <h2 className="text-2xl font-bold text-white mb-3">今すぐクレーム対応の悩みを解消する</h2>
         <p className="text-blue-100 text-sm mb-2">まずは無料で3回お試しください</p>
         <p className="text-yellow-300 text-xs font-semibold mb-8">スタンダードプラン ¥2,980/月で使い放題</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
