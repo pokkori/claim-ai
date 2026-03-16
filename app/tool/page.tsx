@@ -169,9 +169,9 @@ export default function ClaimTool() {
         body: JSON.stringify({ claimText: maliciousText }),
       });
       const data = await res.json();
-      if (!res.ok) { setMaliciousError(data.error || "エラーが発生しました"); return; }
+      if (!res.ok) { setMaliciousError(data.error || "少し時間を置いてもう一度お試しください 🙏"); return; }
       setMaliciousResult(data.result || "");
-    } catch { setMaliciousError("通信エラーが発生しました。インターネット接続を確認してください。"); }
+    } catch { setMaliciousError("少し時間を置いてもう一度お試しください 🙏"); }
     finally { setMaliciousLoading(false); }
   };
 
@@ -189,9 +189,7 @@ export default function ClaimTool() {
 
   const isLimit = count >= FREE_LIMIT;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (isLimit) { setShowPaywall(true); return; }
+  const streamGenerate = async () => {
     setLoading(true); setParsed(null); setLevelInfo(null); setError("");
     try {
       const res = await fetch("/api/generate", {
@@ -200,22 +198,50 @@ export default function ClaimTool() {
         body: JSON.stringify({ claimType, situation, severity }),
       });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "エラーが発生しました"); setLoading(false); return; }
-      const newCount = data.count ?? count + 1;
-      localStorage.setItem(KEY, String(newCount));
-      setCount(newCount);
-      const text = data.result || "";
-      if (data.level) setLevelInfo(data.level);
-      const p = parseResult(text);
-      setParsed(p);
-      const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: text };
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "少し時間を置いてもう一度お試しください 🙏"); setLoading(false); return;
+      }
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = "";
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        if (chunk.includes("\nDONE:")) {
+          const idx = chunk.indexOf("\nDONE:");
+          accumulated += chunk.slice(0, idx);
+          try {
+            const meta = JSON.parse(chunk.slice(idx + 6));
+            const newCount = meta.count ?? count + 1;
+            localStorage.setItem(KEY, String(newCount));
+            setCount(newCount);
+            if (meta.level) setLevelInfo(meta.level);
+            if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+          } catch { /* ignore */ }
+        } else {
+          accumulated += chunk;
+        }
+        setParsed(parseResult(accumulated));
+      }
+      const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: accumulated };
       const newHistory = [newItem, ...history].slice(0, 10);
       setHistory(newHistory);
       localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
-      if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
-    } catch { setError("通信エラーが発生しました。インターネット接続を確認してください。"); }
+    } catch { setError("少し時間を置いてもう一度お試しください 🙏"); }
     finally { setLoading(false); }
+  };
+
+  const handleRegenerate = async () => {
+    if (isLimit) { setShowPaywall(true); return; }
+    await streamGenerate();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isLimit) { setShowPaywall(true); return; }
+    await streamGenerate();
   };
 
   return (
@@ -318,7 +344,16 @@ export default function ClaimTool() {
                 </div>
               </div>
             ) : parsed ? (
-              <ResultTabs parsed={parsed} />
+              <>
+                <ResultTabs parsed={parsed} />
+                <button
+                  onClick={handleRegenerate}
+                  disabled={loading}
+                  className="mt-2 text-sm text-gray-500 underline hover:text-gray-700 disabled:opacity-40"
+                >
+                  🔄 別のパターンで再生成
+                </button>
+              </>
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
                 <div className="text-4xl">⭐</div>

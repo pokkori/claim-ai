@@ -64,9 +64,8 @@ export async function POST(req: NextRequest) {
       ? "軽微なご不満・改善要望レベルです。誠実な謝意と具体的な改善策の提示を中心としてください。"
       : "一般的なクレームです。誠実に事実確認を行い、対応策を明確に示してください。";
 
-  const prompt = `あなたは企業のカスタマーサポート対応の専門家です。
-消費者契約法・民法・不正競争防止法など関連法規を踏まえ、一般企業（BtoC・小売・飲食・サービス業）のCS担当者が
-そのまま使用できる対応文一式を生成してください。
+  const prompt = `あなたは企業のカスタマーサポート対応の専門家です。15年以上の現場経験を持ち、消費者契約法・民法・不正競争防止法・カスタマーハラスメント対策指針（厚労省）を熟知しています。
+一般企業（BtoC・小売・飲食・サービス業）のCS担当者がそのままコピーして使用できる、プロ品質の対応文一式を生成してください。
 
 【クレーム種別】${claimType || "その他"}
 【深刻度】${severityLabel}
@@ -81,25 +80,57 @@ ${severityGuidance}
 ---
 ## 口頭・電話対応スクリプト
 
-- CS担当者が直接伝えるための具体的なセリフ形式
-- 冷静・丁寧かつ毅然としたトーン
-- 謝罪すべき点と謝罪しない点を明確に区別する
-- 深刻度「重度」の場合は上長エスカレーションの案内を含める
+CS担当者が読み上げるセリフ形式で、400〜600文字で生成してください。
+
+【必須要素】
+- 冒頭：受け止めの言葉（感謝よりも先に「おわび」を。「ご不便をおかけし、大変申し訳ございません」等）
+- 状況の確認と傾聴姿勢（「おっしゃる通りでございます」「ご状況を詳しくお聞かせいただけますでしょうか」等）
+- 謝罪すべき点（自社の落ち度）と謝罪しない点（事実無根・要求過剰）を明確に区別
+- 具体的な次のアクション（「本日中に○○部へ確認し、△△日までにご連絡いたします」等の期日明示）
+- 深刻度「重度」の場合：上長・専門部署へのエスカレーション案内を含める
+- カスタマーハラスメント（暴言・脅迫）の場合：「お申し出の内容については真摯に受け止めますが、威圧的な言動については対応が困難となります」等の毅然とした文言
+
+【文体】敬語・丁寧語を徹底。箇条書き禁止（流れるセリフ形式）。読み上げやすい文節で区切る。
 
 ---
 ## 書面・通知文
 
-- 企業名義の公式文書として使用できる文体
-- 事実確認・対応方針・今後の対処を明記
-- 深刻度「重度」の場合は警告・法的措置への言及を適切に含める
-- 宛名・差出人・日付のプレースホルダーを含める
+企業名義の正式文書として400〜600文字で生成してください。
+
+【必須要素】
+- 文書冒頭に日付・宛名・差出人のプレースホルダー（例：令和　　年　　月　　日 / ○○様 / ○○株式会社 代表取締役 ○○）
+- 件名（例：「○○に関するご申告へのご回答について」）
+- 第1段落：事実の確認と誠意ある受け止め（「このたびはご不便・ご不快をおかけし、誠に申し訳ございません」等）
+- 第2段落：調査・確認の経緯と判明した事実（客観的記述。「弊社にて調査いたしました結果、〜であることが確認されました」等）
+- 第3段落：再発防止策・具体的な対応内容（曖昧な「検討します」は禁止。「○月末までに○○を実施いたします」等の期日・具体策を明記）
+- 深刻度「重度」の場合：「今後同様の行為が継続する場合、誠に遺憾ながら法的措置を検討せざるを得ない旨、申し添えます」等の警告文言
+- 末尾：担当者名・問い合わせ先・電話番号のプレースホルダー
+
+【文体】公用文体（「ます・です」調）。段落は一行空けで区切る。「拝啓・敬具」等の頭語・結語を使用。
 
 ---
 ## インシデント記録テンプレート
 
-- 日時・対応者・クレーム内容・対応経緯・対応結果を記録する形式
-- 将来の法的対応・社内報告・再発防止に活用できる客観的記述
-- 記入すべき項目を明示し、そのまま使用できるフォーマットで出力する
+社内保管・法的対応・監査に耐えうる客観的記述で生成してください。感情・主観は排除し事実のみを記録する形式で出力してください。
+
+【必須フィールド（全項目を状況に合わせて埋めること）】
+- 記録番号：INC-YYYYMMDD-（連番）
+- 記録日時：
+- 対応者氏名・部署・役職：
+- クレーム受付日時：　　受付方法（電話 / メール / 来店 / SNS等）：
+- 申告者情報（氏名・連絡先・会員番号等。不明の場合は「取得不可」と記載）：
+- クレーム種別：　　深刻度（低 / 中 / 高）：
+- クレーム内容（事実のみ・5W1Hで記述）：
+- 申告者の具体的要求事項：
+- 対応経緯（時系列で箇条書き。日時・対応者・内容）：
+  - ○月○日 ○時：
+  - ○月○日 ○時：
+- 今回の対応結果・合意内容：
+- 今後の対応方針・担当者・期限：
+- 証拠・資料の保管場所・ファイル名：
+- 法的リスク評価（低 / 中 / 高）・理由：
+- 再発防止措置・提言：
+- 承認者氏名・承認日：
 
 ---
 ※ 本ツールが生成する対応文はAIによる参考案です。法的効力を持つものではありません。重大なクレームや法的問題が生じた場合は必ず専門家（弁護士）にご相談ください。`;
@@ -124,15 +155,40 @@ ${severityGuidance}
   const levelInfo = assessLevel(safSituation, severity || "medium");
 
   try {
-    const message = await getClient().messages.create({
+    const newCount = cookieCount + 1;
+    const stream = getClient().messages.stream({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 2500,
+      max_tokens: 3500,
       messages: [{ role: "user", content: prompt }],
     });
-    const text = message.content[0].type === "text" ? message.content[0].text : "";
-    const newCount = cookieCount + 1;
-    const res = NextResponse.json({ result: text, count: newCount, level: levelInfo });
-    res.cookies.set(COOKIE_KEY, String(newCount), { maxAge: 60 * 60 * 24 * 30, sameSite: "lax", httpOnly: true, secure: true });
+
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
+              controller.enqueue(encoder.encode(chunk.delta.text));
+            }
+          }
+          // メタ情報をJSONで末尾に送信
+          const meta = JSON.stringify({ count: newCount, level: levelInfo });
+          controller.enqueue(encoder.encode(`\nDONE:${meta}`));
+          controller.close();
+        } catch (err) {
+          console.error(err);
+          controller.error(err);
+        }
+      },
+    });
+
+    const res = new Response(readable, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache",
+        "Set-Cookie": `${COOKIE_KEY}=${newCount}; Max-Age=${60 * 60 * 24 * 30}; SameSite=Lax; HttpOnly; Secure; Path=/`,
+      },
+    });
     return res;
   } catch (err) {
     console.error(err);
