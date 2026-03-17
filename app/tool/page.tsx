@@ -19,6 +19,13 @@ type LevelInfo = { level: "軽度" | "中度" | "重度"; color: "green" | "yell
 type ParsedResult = { sections: Section[]; raw: string };
 type HistoryItem = { date: string; claimType: string; severity: string; result: string };
 
+// 深刻度スコア変換（1〜10）
+function severityToScore(level: LevelInfo): number {
+  if (level.color === "red") return Math.floor(Math.random() * 3) + 8; // 8〜10
+  if (level.color === "yellow") return Math.floor(Math.random() * 3) + 4; // 4〜6
+  return Math.floor(Math.random() * 3) + 1; // 1〜3
+}
+
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
     { key: "口頭スクリプト", icon: "💬" },
@@ -79,15 +86,58 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button onClick={handleCopy} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
-      {copied ? "コピー済み ✓" : label}
-    </button>
+    <div className="relative inline-block">
+      <button onClick={handleCopy} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
+        {copied ? "コピー済み ✓" : label}
+      </button>
+      {copied && (
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white text-xs rounded-lg px-2 py-1 whitespace-nowrap animate-bounce shadow-lg">
+          ✅ コピー完了！
+        </div>
+      )}
+    </div>
   );
 }
 
-function ResultTabs({ parsed }: { parsed: ParsedResult }) {
+// 達成感バナー
+function CompletionBanner({ visible, levelInfo }: { visible: boolean; levelInfo: LevelInfo | null }) {
+  const scoreNum = levelInfo ? severityToScore(levelInfo) : null;
+  const scoreColor = levelInfo?.color === "red" ? "bg-red-500" : levelInfo?.color === "yellow" ? "bg-yellow-500" : "bg-green-500";
+  const barWidth = scoreNum ? `${(scoreNum / 10) * 100}%` : "0%";
+
+  return (
+    <div className={`transition-all duration-500 overflow-hidden ${visible ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}>
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-5 py-4 flex flex-col gap-2 shadow-lg">
+        <div className="flex items-center gap-2 font-bold text-base">
+          <span className="text-2xl">✅</span>
+          <span>対応文書 作成完了！</span>
+        </div>
+        {levelInfo && scoreNum !== null && (
+          <div className="mt-1">
+            <div className="flex items-center justify-between text-xs mb-1 opacity-90">
+              <span>クレームレベル: {levelInfo.level}</span>
+              <span className="font-bold text-base">{scoreNum}<span className="text-xs font-normal">/10</span></span>
+            </div>
+            <div className="w-full bg-white/20 rounded-full h-2.5">
+              <div
+                className={`${scoreColor} h-2.5 rounded-full transition-all duration-700`}
+                style={{ width: barWidth }}
+              />
+            </div>
+            <p className="text-xs opacity-75 mt-1">{levelInfo.reason}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: LevelInfo | null }) {
   const [activeTab, setActiveTab] = useState(0);
   const section = parsed.sections[activeTab];
+
+  const scoreNum = levelInfo ? severityToScore(levelInfo) : 6;
+  const shareText = `クレーム重度レベル${scoreNum}/10 — AIがクレーム対応文を即生成しました！ #カスハラ対策 #クレーム対応AI #2026年義務化`;
 
   const handlePrint = () => {
     const html = `<html><head><title>クレーム対応文</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;}</style></head><body>${parsed.raw.replace(/</g, "&lt;")}</body></html>`;
@@ -117,16 +167,16 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
         <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
       </div>
 
-      <div className="flex gap-2 justify-end flex-wrap">
+      <div className="flex gap-2 justify-end flex-wrap items-center">
         <CopyButton text={parsed.raw} label="全文コピー" />
         <button onClick={handlePrint} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
           印刷・PDF保存
         </button>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIがカスハラ対応文を生成！使ってみた → https://claim-ai-beryl.vercel.app #カスハラ対策 #クレーム対応AI #2026年義務化")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://claim-ai-beryl.vercel.app")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors"
+          className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors shadow-lg hover:scale-105 transition-transform"
         >
           𝕏 でシェアする
         </a>
@@ -149,6 +199,7 @@ export default function ClaimTool() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [error, setError] = useState("");
+  const [completionVisible, setCompletionVisible] = useState(false);
 
   // 悪質クレーマー対応モード
   const [maliciousText, setMaliciousText] = useState("");
@@ -190,7 +241,7 @@ export default function ClaimTool() {
   const isLimit = count >= FREE_LIMIT;
 
   const streamGenerate = async () => {
-    setLoading(true); setParsed(null); setLevelInfo(null); setError("");
+    setLoading(true); setParsed(null); setLevelInfo(null); setError(""); setCompletionVisible(false);
     try {
       const res = await fetch("/api/generate", {
         method: "POST",
@@ -225,6 +276,10 @@ export default function ClaimTool() {
         }
         setParsed(parseResult(accumulated));
       }
+      // 達成感バナー表示
+      setCompletionVisible(true);
+      setTimeout(() => setCompletionVisible(false), 4000);
+
       const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: accumulated };
       const newHistory = [newItem, ...history].slice(0, 10);
       setHistory(newHistory);
@@ -324,6 +379,10 @@ export default function ClaimTool() {
                 </div>
               )}
             </div>
+
+            {/* 達成感バナー */}
+            <CompletionBanner visible={completionVisible} levelInfo={levelInfo} />
+
             {levelInfo?.color === "red" && (
               <div className="mb-3 bg-red-50 border border-red-200 rounded-lg px-4 py-2.5 text-xs text-red-700">
                 ⚠️ <strong>重度クレームです。</strong>上長へのエスカレーション・書面対応・証拠記録を推奨します。カスハラに該当する可能性があります。
@@ -345,7 +404,7 @@ export default function ClaimTool() {
               </div>
             ) : parsed ? (
               <>
-                <ResultTabs parsed={parsed} />
+                <ResultTabs parsed={parsed} levelInfo={levelInfo} />
                 <button
                   onClick={handleRegenerate}
                   disabled={loading}
@@ -418,12 +477,19 @@ export default function ClaimTool() {
             <div className="mt-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold text-red-700">生成された断り文</span>
-                <button
-                  onClick={handleMaliciousCopy}
-                  className="text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-medium transition-colors"
-                >
-                  {maliciousCopied ? "コピー済み ✓" : "コピー"}
-                </button>
+                <div className="relative inline-block">
+                  <button
+                    onClick={handleMaliciousCopy}
+                    className="text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-medium transition-colors"
+                  >
+                    {maliciousCopied ? "コピー済み ✓" : "コピー"}
+                  </button>
+                  {maliciousCopied && (
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-green-600 text-white text-xs rounded-lg px-2 py-1 whitespace-nowrap animate-bounce shadow-lg">
+                      ✅ コピー完了！
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="bg-red-50 border border-red-200 rounded-xl p-4">
                 <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{maliciousResult}</pre>
