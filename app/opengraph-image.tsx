@@ -58,7 +58,7 @@ export default function Image() {
             fontWeight: 600,
           }}
         >
-          無料3回 → ¥4,980/月〜
+          無料3回 → ¥2,980/月〜
         </div>
       </div>
     ),
