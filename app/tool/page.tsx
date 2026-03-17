@@ -26,6 +26,39 @@ function severityToScore(level: LevelInfo): number {
   return Math.floor(Math.random() * 3) + 1; // 1〜3
 }
 
+function renderMarkdown(text: string) {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inList = false;
+
+  for (const line of lines) {
+    if (/^## (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^## (.+)$/, '<h3 class="font-bold text-base mt-4 mb-2 text-blue-700 border-b border-blue-200 pb-1">$1</h3>'));
+    } else if (/^# (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^# (.+)$/, '<h2 class="font-bold text-lg mt-4 mb-2 text-blue-800">$1</h2>'));
+    } else if (/^- (.+)$/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (/^[①②③④⑤⑥⑦⑧⑨⑩]/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (line.trim() === '') {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push('<div class="mt-2"></div>');
+    } else {
+      if (inList) { result.push('</ul>'); inList = false; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<p class="text-gray-700 text-sm leading-relaxed">${inner}</p>`);
+    }
+  }
+  if (inList) result.push('</ul>');
+  return result.join('\n');
+}
+
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
     { key: "口頭スクリプト", icon: "💬" },
@@ -137,7 +170,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
   const section = parsed.sections[activeTab];
 
   const scoreNum = levelInfo ? severityToScore(levelInfo) : 6;
-  const shareText = `クレーム重度レベル${scoreNum}/10 — AIがクレーム対応文を即生成しました！ #カスハラ対策 #クレーム対応AI #2026年義務化`;
+  const shareText = `「クレーム対応文が30秒で完成した🙌 レベル${scoreNum}/10のクレームにも完璧な解決策が出た → https://claim-ai-beryl.vercel.app #カスハラ対策 #クレーム対応AI #2026年義務化`;
 
   const handlePrint = () => {
     const html = `<html><head><title>クレーム対応文</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;}</style></head><body>${parsed.raw.replace(/</g, "&lt;")}</body></html>`;
@@ -164,7 +197,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
           <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
         </div>
-        <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+        <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(section.content) }} />
       </div>
 
       <div className="flex gap-2 justify-end flex-wrap items-center">
@@ -492,7 +525,7 @@ export default function ClaimTool() {
                 </div>
               </div>
               <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-                <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{maliciousResult}</pre>
+                <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(maliciousResult) }} />
               </div>
               <p className="text-xs text-gray-400 mt-2">※ 社名・担当者名・日付は実際のものに変更してご使用ください。法的措置の実施は必ず専門家（弁護士）にご相談ください。</p>
             </div>
