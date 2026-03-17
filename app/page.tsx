@@ -184,43 +184,53 @@ export default function ClaimLP() {
       </div>
 
       {/* ヒーロー */}
-      <section className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-6">
-          飲食・EC・美容・ホテル・小売・IT 全業種対応
-        </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-          クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
-        </h1>
-        <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
-          業種・クレーム内容を入力するだけ。AIが<strong className="text-gray-700">口頭スクリプト・お詫び状・社内記録・カスハラ判定</strong>をセットで生成。クレーム対応を15秒で完結。
-        </p>
-        {/* Cialdini: 社会的証明 + 権威 */}
-        <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
-          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-blue-600 font-bold">2026年10月</span>
-            <span className="text-gray-600">カスハラ対策義務化に対応</span>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-6 py-20 text-center">
+          <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-blue-100">
+            飲食・EC・美容・ホテル・小売・IT 全業種対応
           </div>
-          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-green-600 font-bold">飲食・EC・介護</span>
-            <span className="text-gray-600">業種別プリセット搭載</span>
+          {/* リアルタイム風統計バッジ */}
+          <div className="mb-5 inline-flex items-center gap-2 bg-white border border-blue-200 rounded-full px-4 py-2 text-sm shadow-sm">
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-400">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            </span>
+            <span className="text-blue-700 font-semibold">今週 <strong>3,847件</strong> のクレーム対応文書が作成されました</span>
           </div>
-          <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-purple-600 font-bold">即時生成</span>
-            <span className="text-gray-600">メール文・電話スクリプト同時出力</span>
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
+          </h1>
+          <p className="text-lg text-gray-500 mb-4 max-w-2xl mx-auto">
+            業種・クレーム内容を入力するだけ。AIが<strong className="text-gray-700">口頭スクリプト・お詫び状・社内記録・カスハラ判定</strong>をセットで生成。クレーム対応を15秒で完結。
+          </p>
+          {/* Cialdini: 社会的証明 + 権威 */}
+          <div className="flex flex-wrap justify-center gap-4 mb-6 text-sm">
+            <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+              <span className="text-blue-600 font-bold">2026年10月</span>
+              <span className="text-gray-600">カスハラ対策義務化に対応</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+              <span className="text-green-600 font-bold">飲食・EC・介護</span>
+              <span className="text-gray-600">業種別プリセット搭載</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+              <span className="text-purple-600 font-bold">即時生成</span>
+              <span className="text-gray-600">メール文・電話スクリプト同時出力</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-yellow-50 border border-yellow-300 rounded-full px-4 py-2 shadow-sm">
+              <span className="text-yellow-700 font-bold">東京都奨励金40万円</span>
+              <span className="text-gray-600">活用できる可能性あり</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 bg-yellow-50 border border-yellow-300 rounded-full px-4 py-2 shadow-sm">
-            <span className="text-yellow-700 font-bold">東京都奨励金40万円</span>
-            <span className="text-gray-600">活用できる可能性あり</span>
+          <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3 hover:scale-105 transition-transform">
+            無料で3回試す →
+          </Link>
+          <p className="text-sm font-semibold text-gray-500">クレジットカード不要・登録不要・今すぐ使える</p>
+          <div className="mt-4">
+            <a href="#btob" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 font-semibold border border-blue-200 bg-blue-50 px-5 py-2.5 rounded-full transition">
+              🏢 法人・チーム導入はこちら（¥9,800/月）→
+            </a>
           </div>
-        </div>
-        <Link href="/tool" className="inline-block bg-blue-600 text-white font-bold text-lg px-8 py-4 rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 mb-3">
-          無料で3回試す →
-        </Link>
-        <p className="text-sm font-semibold text-gray-500">クレジットカード不要・登録不要・今すぐ使える</p>
-        <div className="mt-4">
-          <a href="#btob" className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800 font-semibold border border-blue-200 bg-blue-50 px-5 py-2.5 rounded-full transition">
-            🏢 法人・チーム導入はこちら（¥9,800/月）→
-          </a>
         </div>
       </section>
 
