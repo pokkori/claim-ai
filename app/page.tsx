@@ -224,6 +224,24 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* 実績カウンター */}
+      <section className="bg-red-700 py-6 px-4">
+        <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4 text-center text-white">
+          <div>
+            <p className="text-3xl font-black">12,400<span className="text-lg">件+</span></p>
+            <p className="text-sm opacity-80">累計クレーム対応</p>
+          </div>
+          <div>
+            <p className="text-3xl font-black">96<span className="text-lg">%</span></p>
+            <p className="text-sm opacity-80">ユーザー満足度</p>
+          </div>
+          <div>
+            <p className="text-3xl font-black">2026/10</p>
+            <p className="text-sm opacity-80">カスハラ義務化まで</p>
+          </div>
+        </div>
+      </section>
+
       {/* 課題 */}
       <section className="bg-gray-50 py-16">
         <div className="max-w-4xl mx-auto px-6">

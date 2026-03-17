@@ -123,7 +123,7 @@ function ResultTabs({ parsed }: { parsed: ParsedResult }) {
           印刷・PDF保存
         </button>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIがクレーム対応文書を30秒で作成！\nカスハラ・理不尽なクレームにも冷静に対応できます。\n#クレーム対応 #AI活用 #カスハラ対策")}&url=${encodeURIComponent("https://claim-ai-beryl.vercel.app")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIがカスハラ対応文を生成！使ってみた → https://claim-ai-beryl.vercel.app #カスハラ対策 #クレーム対応AI #2026年義務化")}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors"
