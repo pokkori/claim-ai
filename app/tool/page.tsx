@@ -2,6 +2,7 @@
 import PayjpModal from "@/components/PayjpModal";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -98,10 +99,10 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
           <li>✓ 対応履歴を無制限保存</li>
         </ul>
         <div className="space-y-3 mb-4">
-          <button onClick={() => { onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
+          <button onClick={() => { track('upgrade_click', { service: 'クレームAI', plan: 'standard' }); onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
             スタンダード ¥2,980/月
           </button>
-          <button onClick={() => { onClose(); onCheckout?.("business"); }} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
+          <button onClick={() => { track('upgrade_click', { service: 'クレームAI', plan: 'business' }); onClose(); onCheckout?.("business"); }} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
             ビジネス ¥9,800/月（無制限・チーム対応）
           </button>
         </div>
@@ -142,7 +143,7 @@ function CompletionBanner({ visible, levelInfo }: { visible: boolean; levelInfo:
     <div className={`transition-all duration-500 overflow-hidden ${visible ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}>
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-5 py-4 flex flex-col gap-2 shadow-lg">
         <div className="flex items-center gap-2 font-bold text-base">
-          <span className="text-2xl">✅</span>
+          <span className="text-2xl animate-stamp">✅</span>
           <span>対応文書 作成完了！</span>
         </div>
         {levelInfo && scoreNum !== null && (
@@ -275,6 +276,7 @@ export default function ClaimTool() {
   const isLimit = count >= FREE_LIMIT;
 
   const streamGenerate = async () => {
+    track('ai_generated', { service: 'クレームAI' });
     setLoading(true); setParsed(null); setLevelInfo(null); setError(""); setCompletionVisible(false);
     try {
       const res = await fetch("/api/generate", {
@@ -282,7 +284,7 @@ export default function ClaimTool() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ claimType, situation, severity }),
       });
-      if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
+      if (res.status === 429) { track('paywall_shown', { service: 'クレームAI' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.error || "少し時間を置いてもう一度お試しください 🙏"); setLoading(false); return;
@@ -303,7 +305,7 @@ export default function ClaimTool() {
             localStorage.setItem(KEY, String(newCount));
             setCount(newCount);
             if (meta.level) setLevelInfo(meta.level);
-            if (newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+            if (newCount >= FREE_LIMIT) setTimeout(() => { track('paywall_shown', { service: 'クレームAI' }); setShowPaywall(true); }, 1500);
           } catch { /* ignore */ }
         } else {
           accumulated += chunk;
@@ -456,7 +458,7 @@ export default function ClaimTool() {
                 </div>
               </div>
             ) : parsed ? (
-              <>
+              <div className="animate-fade-in-up">
                 <ResultTabs parsed={parsed} levelInfo={levelInfo} />
                 <button
                   onClick={handleRegenerate}
@@ -465,7 +467,7 @@ export default function ClaimTool() {
                 >
                   🔄 別のパターンで再生成
                 </button>
-              </>
+              </div>
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
                 <div className="text-4xl">⭐</div>
