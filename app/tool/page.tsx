@@ -206,7 +206,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
           印刷・PDF保存
         </button>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent("https://claim-ai-beryl.vercel.app")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors shadow-lg hover:scale-105 transition-transform"
@@ -222,6 +222,7 @@ export default function ClaimTool() {
   const [claimType, setClaimType] = useState("");
   const [situation, setSituation] = useState("");
   const [severity, setSeverity] = useState("中度");
+  const [showDetails, setShowDetails] = useState(false);
   const [parsed, setParsed] = useState<ParsedResult | null>(null);
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -351,41 +352,60 @@ export default function ClaimTool() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <h1 className="text-xl font-bold text-gray-900">クレーム情報を入力</h1>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">クレームの種類</label>
-              <div className="flex flex-wrap gap-2 mb-2">
-                {CLAIM_TYPE_PRESETS.map(p => (
-                  <button key={p} type="button" onClick={() => setClaimType(claimType === p ? "" : p)}
-                    className={`px-3 py-1 rounded-full text-xs border font-medium transition-colors ${claimType === p ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}>
-                    {p}
-                  </button>
-                ))}
-              </div>
-              <input type="text" value={claimType} onChange={e => setClaimType(e.target.value)} placeholder="または直接入力（例: 配送遅延、接客トラブル）"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">深刻度</label>
-              <div className="flex gap-2">
-                {SEVERITY_OPTIONS.map(s => (
-                  <button key={s.value} type="button" onClick={() => setSeverity(s.value)}
-                    className={`flex-1 py-2 px-1 rounded-lg border text-center transition-colors ${severity === s.value ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"}`}>
-                    <div className="text-xs font-semibold">{s.label}</div>
-                    <div className={`text-xs mt-0.5 ${severity === s.value ? "text-blue-100" : "text-gray-400"}`}>{s.desc}</div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
+            {/* クレームの状況（必須・1フィールドで即生成可能） */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                クレームの状況 <span className="text-red-500">*</span>
+                クレームの状況を1行で <span className="text-red-500">*</span>
               </label>
-              <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={5}
-                placeholder="例：昨日購入した商品に傷があり、お客様から電話でお怒りを受けています。返金または交換を強く求められており、「上の者を出せ」とおっしゃっています。"
+              <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={4}
+                placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
-              <p className="text-xs text-gray-400 mt-1">受けたクレームの状況を詳しく入力してください（{situation.length}/1000文字）</p>
+              <p className="text-xs text-gray-400 mt-1">これだけで対応文を生成できます。詳細は下から任意で追加できます（{situation.length}/1000文字）</p>
+            </div>
+
+            {/* 詳細情報（折りたたみ・任意） */}
+            <div>
+              <button
+                type="button"
+                onClick={() => setShowDetails(!showDetails)}
+                className="flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-900 transition-colors"
+              >
+                <span>{showDetails ? "▼" : "▶"}</span>
+                {showDetails ? "詳細情報を非表示" : "より正確な対応文のために詳細を入力（任意）"}
+              </button>
+
+              {showDetails && (
+                <div className="mt-4 space-y-4 border border-blue-100 rounded-xl p-4 bg-blue-50/30">
+                  <p className="text-xs text-gray-500">以下の情報を追加すると、より状況に合った対応文が生成されます。</p>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">クレームの種類（任意）</label>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {CLAIM_TYPE_PRESETS.map(p => (
+                        <button key={p} type="button" onClick={() => setClaimType(claimType === p ? "" : p)}
+                          className={`px-3 py-1 rounded-full text-xs border font-medium transition-colors ${claimType === p ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}>
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                    <input type="text" value={claimType} onChange={e => setClaimType(e.target.value)} placeholder="または直接入力（例: 配送遅延、接客トラブル）"
+                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">深刻度（任意）</label>
+                    <div className="flex gap-2">
+                      {SEVERITY_OPTIONS.map(s => (
+                        <button key={s.value} type="button" onClick={() => setSeverity(s.value)}
+                          className={`flex-1 py-2 px-1 rounded-lg border text-center transition-colors ${severity === s.value ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"}`}>
+                          <div className="text-xs font-semibold">{s.label}</div>
+                          <div className={`text-xs mt-0.5 ${severity === s.value ? "text-blue-100" : "text-gray-400"}`}>{s.desc}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <button type="submit" disabled={loading}
