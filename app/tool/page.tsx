@@ -483,6 +483,23 @@ export default function ClaimTool() {
                     ))}
                   </ol>
                 </div>
+                {/* 弁護士相談アフィリエイト（A8.net申請後URLを差し替え） */}
+                <div className="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                  <p className="text-sm font-black text-slate-800 mb-1">⚖️ 悪質クレームは弁護士に相談</p>
+                  <p className="text-xs text-slate-500 mb-3">脅迫・不当要求・カスハラは弁護士対応が最速解決。初回無料相談あり。</p>
+                  <div className="space-y-2">
+                    {/* TODO: Replace href with A8.net affiliate URL after approval */}
+                    <a href="https://www.bengo4.com/c_1011/" target="_blank" rel="noopener noreferrer sponsored"
+                      className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-3 py-2.5 hover:bg-blue-50 transition-colors">
+                      <div>
+                        <div className="text-sm font-bold text-slate-800">弁護士ドットコム</div>
+                        <div className="text-xs text-slate-500">初回無料 • 全国対応 • 企業向け顧問契約も</div>
+                      </div>
+                      <span className="text-blue-600 font-bold text-xs bg-blue-50 border border-blue-200 px-2 py-1 rounded-full shrink-0">無料相談 →</span>
+                    </a>
+                  </div>
+                  <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載</p>
+                </div>
               </div>
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
