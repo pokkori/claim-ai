@@ -1,5 +1,6 @@
 "use client";
 import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
@@ -99,12 +100,16 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
           <li>✓ 対応履歴を無制限保存</li>
         </ul>
         <div className="space-y-3 mb-4">
-          <button onClick={() => { track('upgrade_click', { service: 'クレームAI', plan: 'standard' }); onClose(); onCheckout?.("standard"); }} className="block w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700">
-            スタンダード ¥2,980/月
-          </button>
-          <button onClick={() => { track('upgrade_click', { service: 'クレームAI', plan: 'business' }); onClose(); onCheckout?.("business"); }} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm">
-            ビジネス ¥9,800/月（無制限・チーム対応）
-          </button>
+          <KomojuButton
+            planId="standard"
+            planLabel="スタンダード ¥2,980/月"
+            className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          />
+          <KomojuButton
+            planId="business"
+            planLabel="ビジネス ¥9,800/月（無制限・チーム対応）"
+            className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          />
         </div>
         <button onClick={onClose} className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
       </div>
