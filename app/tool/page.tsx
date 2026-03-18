@@ -467,6 +467,22 @@ export default function ClaimTool() {
                 >
                   🔄 別のパターンで再生成
                 </button>
+                {/* 次のアクション3選 */}
+                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                  <p className="text-sm font-bold text-blue-800 mb-3">📋 次にやるべきこと3選</p>
+                  <ol className="space-y-2">
+                    {[
+                      { icon: "📝", text: "上長・責任者に今回のクレーム対応を報告・共有する" },
+                      { icon: "🗂️", text: "クレーム記録票に日時・内容・対応方法を記録する" },
+                      { icon: "📞", text: "悪質なケースは弁護士・警察・消費生活センターへ相談する" },
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                        <span className="text-lg leading-none">{item.icon}</span>
+                        <span>{i + 1}. {item.text}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               </div>
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
