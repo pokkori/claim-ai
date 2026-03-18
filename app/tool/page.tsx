@@ -537,6 +537,24 @@ export default function ClaimTool() {
                   </a>
                   <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載</p>
                 </div>
+                {/* FPカフェアフィリエイト（A8.net）*/}
+                <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
+                  <p className="text-sm font-black text-blue-800 mb-1">💰 専門家に相談する（PR）</p>
+                  <p className="text-xs text-blue-700 mb-3">法的問題・弁護士費用の資金繰りもFPに相談。無料でお金の専門家に相談できます。</p>
+                  <a
+                    href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+2SMA0I+5ULO+5YZ75"
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="flex items-center justify-between bg-white border border-blue-300 rounded-xl px-3 py-2.5 hover:bg-blue-50 transition-colors"
+                  >
+                    <div>
+                      <div className="text-sm font-bold text-slate-800">FPカフェ — お金の専門家に無料相談</div>
+                      <div className="text-xs text-slate-500">弁護士費用・資金繰りの悩みを解決 • 全国対応</div>
+                    </div>
+                    <span className="text-blue-600 font-bold text-xs bg-blue-100 border border-blue-200 px-2 py-1 rounded-full shrink-0">無料相談 →</span>
+                  </a>
+                  <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載</p>
+                </div>
               </div>
             ) : (
               <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] text-gray-400 gap-3">
