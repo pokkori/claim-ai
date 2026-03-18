@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 
 const PAYJP_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? "";
 
@@ -58,13 +58,15 @@ export default function BtobLP() {
   return (
     <main className="min-h-screen bg-white">
       {showPayjp && (
-        <PayjpModal
-          publicKey={PAYJP_PUBLIC_KEY}
-          planLabel="ビジネスプラン ¥9,800/月"
-          plan="business"
-          onSuccess={() => { setShowPayjp(false); window.location.href = "/success"; }}
-          onClose={() => setShowPayjp(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <div className="text-3xl mb-3 text-center">🏢</div>
+            <h2 className="text-lg font-bold mb-2 text-center">ビジネスプラン</h2>
+            <p className="text-sm text-gray-500 mb-4 text-center">クレーム対応 無制限+専任サポート</p>
+            <KomojuButton planId="standard" planLabel="ビジネスプラン ¥9,800/月" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+          </div>
+        </div>
       )}
 
       {/* ナビゲーション */}

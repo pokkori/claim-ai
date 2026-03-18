@@ -1,5 +1,4 @@
 "use client";
-import PayjpModal from "@/components/PayjpModal";
 import KomojuButton from "@/components/KomojuButton";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -680,13 +679,15 @@ export default function ClaimTool() {
         <a href="/privacy" className="hover:underline">プライバシーポリシー</a>
       </footer>
       {showPayjp && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel={(selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥2,980/月")}
-          plan={selectedPlan}
-          onSuccess={() => setShowPayjp(false)}
-          onClose={() => setShowPayjp(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <div className="text-3xl mb-3 text-center">🆘</div>
+            <h2 className="text-lg font-bold mb-2 text-center">プレミアムプラン</h2>
+            <p className="text-sm text-gray-500 mb-4 text-center">{selectedPlan === "business" ? "ビジネスプラン — クレーム対応 無制限+専任サポート" : "スタンダードプラン — クレーム対応 無制限"}</p>
+            <KomojuButton planId="standard" planLabel={selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥2,980/月"} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+          </div>
+        </div>
       )}
     </main>
   );
