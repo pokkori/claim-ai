@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import PWAInstallBanner from "@/components/PWAInstallBanner";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -15,6 +16,11 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😤</text></svg>" },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "クレームAI",
+  },
   openGraph: {
     title: TITLE,
     description: DESC,
@@ -66,6 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <PWAInstallBanner />
         <Analytics />
         {/* Microsoft Clarity — pokkoriがhttps://clarity.microsoft.com/でプロジェクト登録後にIDを設定 */}
         <Script id="clarity-script" strategy="afterInteractive">
