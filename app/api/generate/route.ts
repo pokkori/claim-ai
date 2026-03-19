@@ -75,12 +75,20 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { claimType, situation, severity: rawSeverity } = body as Record<string, string>;
+  const { claimType, situation, severity: rawSeverity, replyStyle } = body as Record<string, string>;
   const severity = SEVERITY_MAP[rawSeverity] || rawSeverity;
   if (!situation || !situation.trim()) return NextResponse.json({ error: "状況を入力してください" }, { status: 400 });
   if (situation.length > 1500) return NextResponse.json({ error: "状況は1500文字以内で入力してください" }, { status: 400 });
   if (claimType && !VALID_CLAIM_TYPES.includes(claimType)) return NextResponse.json({ error: "不正なクレーム種別です" }, { status: 400 });
   if (severity && !["low", "medium", "high"].includes(severity)) return NextResponse.json({ error: "不正な深刻度です" }, { status: 400 });
+  const VALID_REPLY_STYLES = ["穏便型", "毅然型", "記録型"];
+  const safeReplyStyle = replyStyle && VALID_REPLY_STYLES.includes(replyStyle) ? replyStyle : "穏便型";
+  const replyStyleGuidance =
+    safeReplyStyle === "毅然型"
+      ? "【返答スタイル: 毅然型】事実を客観的かつ明確に伝え、不当な要求や過剰なクレームには毅然とした姿勢で対応してください。法的根拠を示しつつ、感情的にならず断固たる文言を使用してください。"
+      : safeReplyStyle === "記録型"
+      ? "【返答スタイル: 記録型】証拠保全とエスカレーション準備を最優先にした対応文を生成してください。記録の正確性・客観性を重視し、将来の法的対応・第三者への報告に耐えうる文書品質を確保してください。"
+      : "【返答スタイル: 穏便型】まず誠実な謝罪と共感を示し、顧客との関係維持を最優先にした対応文を生成してください。温かみのある言葉遣いで、解決への誠意を最大限に伝えてください。";
 
   const safSituation = situation.replace(/[<>]/g, "");
 
@@ -109,6 +117,8 @@ ${safSituation}
 
 【対応方針】
 ${severityGuidance}
+
+${replyStyleGuidance}
 
 以下の3種類の対応文を生成してください。各対応文は「---」（ハイフン3つのみの行）で区切ってください。
 

@@ -14,6 +14,11 @@ const SEVERITY_OPTIONS = [
   { value: "中度", label: "中度", desc: "強い不満・要求" },
   { value: "重度", label: "重度", desc: "脅迫・カスハラ" },
 ];
+const REPLY_STYLE_OPTIONS = [
+  { value: "穏便型", label: "🤝 穏便型", desc: "まず謝罪・関係維持を優先した返答" },
+  { value: "毅然型", label: "⚖️ 毅然型", desc: "事実を明確にし、不当なクレームには毅然と対応" },
+  { value: "記録型", label: "📋 記録型", desc: "証拠保全・エスカレーション準備を意識した返答" },
+];
 
 type Section = { title: string; icon: string; content: string };
 type LevelInfo = { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string };
@@ -227,6 +232,7 @@ export default function ClaimTool() {
   const [claimType, setClaimType] = useState("");
   const [situation, setSituation] = useState("");
   const [severity, setSeverity] = useState("中度");
+  const [replyStyle, setReplyStyle] = useState("穏便型");
   const [showDetails, setShowDetails] = useState(false);
   const [parsed, setParsed] = useState<ParsedResult | null>(null);
   const [levelInfo, setLevelInfo] = useState<LevelInfo | null>(null);
@@ -286,7 +292,7 @@ export default function ClaimTool() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ claimType, situation, severity }),
+        body: JSON.stringify({ claimType, situation, severity, replyStyle }),
       });
       if (res.status === 429) { track('paywall_shown', { service: 'クレームAI' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
@@ -382,6 +388,28 @@ export default function ClaimTool() {
                 placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
               <p className="text-xs text-gray-400 mt-1">これだけで対応文を生成できます。詳細は下から任意で追加できます（{situation.length}/1000文字）</p>
+            </div>
+
+            {/* 返答スタイル選択 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">返答スタイル</label>
+              <div className="flex gap-2 flex-wrap">
+                {REPLY_STYLE_OPTIONS.map(opt => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setReplyStyle(opt.value)}
+                    className={`flex-1 min-w-[90px] flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl border-2 text-center transition-colors ${
+                      replyStyle === opt.value
+                        ? "border-blue-600 bg-blue-50 text-blue-800"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50/50"
+                    }`}
+                  >
+                    <span className="text-sm font-bold">{opt.label}</span>
+                    <span className={`text-xs leading-tight ${replyStyle === opt.value ? "text-blue-600" : "text-gray-400"}`}>{opt.desc}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* 詳細情報（折りたたみ・任意） */}
