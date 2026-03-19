@@ -146,6 +146,148 @@ const BTOB_CLIENTS = [
   { icon: "🏪", type: "飲食チェーン", size: "5店舗運営", usage: "義務化前にカスハラマニュアルを整備" },
 ];
 
+// カスハラ義務化 対策チェックリスト（15項目）
+const COMPLIANCE_CHECKLIST = [
+  { id: 1, category: "方針整備", text: "カスタマーハラスメントの定義と方針を社内で明文化している" },
+  { id: 2, category: "方針整備", text: "カスハラ対策の担当者または責任者を指定している" },
+  { id: 3, category: "方針整備", text: "カスハラと正当なクレームの判定基準を定めている" },
+  { id: 4, category: "マニュアル", text: "カスハラ発生時の対応フローチャートがある" },
+  { id: 5, category: "マニュアル", text: "エスカレーション手順（上司・警察・弁護士連携）が明文化されている" },
+  { id: 6, category: "マニュアル", text: "業種別の典型的なカスハラ事例と対応例が整備されている" },
+  { id: 7, category: "研修・周知", text: "従業員へのカスハラ対応研修を実施している（年1回以上）" },
+  { id: 8, category: "研修・周知", text: "新入社員へのカスハラ対応オリエンテーションを行っている" },
+  { id: 9, category: "証拠保全", text: "クレーム・カスハラの発生記録をシステムまたは紙で残している" },
+  { id: 10, category: "証拠保全", text: "電話・対面での対応内容を記録する仕組みがある" },
+  { id: 11, category: "従業員保護", text: "カスハラ被害を受けた従業員が相談できる窓口がある" },
+  { id: 12, category: "従業員保護", text: "精神的被害を受けた従業員へのフォロー体制がある" },
+  { id: 13, category: "従業員保護", text: "一人での対応を禁止し、複数対応できる体制を整えている" },
+  { id: 14, category: "法的対応", text: "悪質なカスハラに対し業務委託または顧問弁護士に相談できる" },
+  { id: 15, category: "法的対応", text: "警察への相談・届出の手順を社内で把握している" },
+];
+
+function ComplianceChecklist() {
+  const [checked, setChecked] = useState<number[]>([]);
+  const [revealed, setRevealed] = useState(false);
+  const toggle = (id: number) => setChecked(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+  const score = checked.length;
+  const pct = Math.round((score / COMPLIANCE_CHECKLIST.length) * 100);
+  const level = pct >= 80 ? { label: "対応済み", color: "text-green-600", bg: "bg-green-50 border-green-200", bar: "bg-green-500" }
+    : pct >= 50 ? { label: "一部未対応", color: "text-yellow-600", bg: "bg-yellow-50 border-yellow-200", bar: "bg-yellow-500" }
+    : { label: "対応不足", color: "text-red-600", bg: "bg-red-50 border-red-200", bar: "bg-red-500" };
+  const categories = Array.from(new Set(COMPLIANCE_CHECKLIST.map(c => c.category)));
+
+  return (
+    <div className="mt-8">
+      {!revealed ? (
+        <div className="text-center">
+          <div className="inline-block bg-red-100 text-red-700 text-xs font-bold px-3 py-1.5 rounded-full mb-4">
+            企業の8割がカスハラ対策未整備（Helpfeel 2024年調査）
+          </div>
+          <p className="text-gray-600 text-sm mb-5">あなたの会社の義務化対応状況を15項目でセルフチェックできます</p>
+          <button
+            onClick={() => setRevealed(true)}
+            className="bg-red-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-red-700 shadow-lg hover:scale-105 transition-transform text-sm"
+          >
+            今すぐ準備度チェックを開始する（無料）
+          </button>
+        </div>
+      ) : (
+        <div>
+          <div className={`rounded-2xl border p-5 mb-5 ${level.bg}`}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-bold text-gray-700">対策完了率</span>
+              <span className={`text-lg font-black ${level.color}`}>{pct}% — {level.label}</span>
+            </div>
+            <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className={`${level.bar} h-3 rounded-full transition-all duration-500`} style={{ width: `${pct}%` }} />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">{score}/{COMPLIANCE_CHECKLIST.length} 項目対応済み</p>
+          </div>
+          {categories.map(cat => (
+            <div key={cat} className="mb-5">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">{cat}</p>
+              <div className="space-y-2">
+                {COMPLIANCE_CHECKLIST.filter(c => c.category === cat).map(item => (
+                  <label key={item.id} className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${checked.includes(item.id) ? "bg-green-50 border-green-300" : "bg-white border-gray-200 hover:border-gray-300"}`}>
+                    <input
+                      type="checkbox"
+                      checked={checked.includes(item.id)}
+                      onChange={() => toggle(item.id)}
+                      className="mt-0.5 w-4 h-4 accent-green-500"
+                    />
+                    <span className={`text-sm ${checked.includes(item.id) ? "text-green-700 line-through" : "text-gray-700"}`}>{item.text}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+          {score < COMPLIANCE_CHECKLIST.length && (
+            <div className="bg-blue-600 text-white rounded-2xl p-5 text-center mt-4">
+              <p className="font-bold mb-2">未対応 {COMPLIANCE_CHECKLIST.length - score} 項目をAIで即整備できます</p>
+              <p className="text-sm text-blue-100 mb-4">対応フロー・マニュアル・記録テンプレート・断り文言をセットで生成</p>
+              <a href="/tool" className="inline-block bg-white text-blue-600 font-bold px-6 py-2.5 rounded-xl hover:bg-blue-50 text-sm">
+                クレームAIで対応文書を作成する →
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// 競合比較表
+function CompetitorComparison() {
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <div className="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">他サービスとの比較</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">クレームAIが選ばれる理由</h2>
+          <p className="text-sm text-gray-500">カスハラ対策ツールの機能・料金を比較</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="text-left p-3 font-semibold text-gray-700 rounded-tl-xl">機能</th>
+                <th className="p-3 font-bold text-blue-700 bg-blue-50">クレームAI<br /><span className="text-xs font-normal text-blue-500">¥2,980/月〜</span></th>
+                <th className="p-3 font-semibold text-gray-600">IVRy<br /><span className="text-xs font-normal text-gray-400">¥3,317/月〜</span></th>
+                <th className="p-3 font-semibold text-gray-600 rounded-tr-xl">さくらさん<br /><span className="text-xs font-normal text-gray-400">要問い合わせ</span></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {[
+                { feature: "クレーム対応文の即時生成", claim: "✅", ivry: "❌", sakura: "❌" },
+                { feature: "カスハラ判定（正当クレーム区別）", claim: "✅", ivry: "△", sakura: "✅" },
+                { feature: "お詫び状・書面の自動作成", claim: "✅", ivry: "❌", sakura: "❌" },
+                { feature: "社内インシデント記録生成", claim: "✅", ivry: "△", sakura: "❌" },
+                { feature: "業種別カスタマイズ対応", claim: "✅", ivry: "❌", sakura: "❌" },
+                { feature: "電話AI自動応答", claim: "❌", ivry: "✅", sakura: "✅" },
+                { feature: "義務化対策チェックリスト", claim: "✅", ivry: "❌", sakura: "❌" },
+                { feature: "今すぐ使える（登録不要）", claim: "✅", ivry: "❌", sakura: "❌" },
+              ].map((row, i) => (
+                <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
+                  <td className="p-3 text-gray-700">{row.feature}</td>
+                  <td className="p-3 text-center font-bold text-blue-600 bg-blue-50/50">{row.claim}</td>
+                  <td className="p-3 text-center text-gray-500">{row.ivry}</td>
+                  <td className="p-3 text-center text-gray-500">{row.sakura}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-gray-400 text-center mt-3">※2026年3月時点の各社公開情報をもとに作成。詳細は各社サービスページをご確認ください。</p>
+        <div className="text-center mt-6">
+          <a href="/tool" className="inline-block bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 text-sm shadow-lg">
+            無料で試す（登録不要） →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function RoiCalculator() {
   const [count, setCount] = useState(10);
   const [minutes, setMinutes] = useState(60);
@@ -414,8 +556,19 @@ export default function ClaimLP() {
               義務化前に対応体制を整える →
             </a>
           </div>
+          {/* 義務化対策チェックリスト */}
+          <div className="mt-12 border-t border-red-100 pt-10">
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">義務化対策 準備度チェックリスト（15項目）</h3>
+              <p className="text-sm text-gray-500">2026年10月施行の改正労働施策総合推進法に向けた自社の対応状況を確認しましょう</p>
+            </div>
+            <ComplianceChecklist />
+          </div>
         </div>
       </section>
+
+      {/* 競合比較表 */}
+      <CompetitorComparison />
 
       {/* 業種別 */}
       <section className="py-16">

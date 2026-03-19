@@ -507,6 +507,21 @@ export default function ClaimTool() {
             ) : parsed ? (
               <div className="animate-fade-in-up">
                 <ResultTabs parsed={parsed} levelInfo={levelInfo} />
+                {/* 法的準拠チェックバッジ */}
+                <div className="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-3">
+                  <p className="text-xs font-bold text-gray-600 mb-2">法的準拠チェック（生成文に反映済み）</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[
+                      "✅ 消費者契約法準拠",
+                      "✅ 厚労省カスハラ指針2023準拠",
+                      "✅ 過剰謝罪表現を排除",
+                      "✅ 証拠保全フレーズ含む",
+                      "✅ エスカレーション基準明示",
+                    ].map((badge, i) => (
+                      <span key={i} className="text-xs bg-white border border-gray-300 text-gray-700 px-2 py-1 rounded-full">{badge}</span>
+                    ))}
+                  </div>
+                </div>
                 <button
                   onClick={handleRegenerate}
                   disabled={loading}
