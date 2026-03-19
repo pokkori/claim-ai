@@ -192,12 +192,12 @@ export default function ClaimLP() {
           <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-blue-100">
             飲食・EC・美容・ホテル・小売・IT 全業種対応
           </div>
-          {/* リアルタイム風統計バッジ */}
+          {/* リアルタイム風バッジ */}
           <div className="mb-5 inline-flex items-center gap-2 bg-white border border-blue-200 rounded-full px-4 py-2 text-sm shadow-sm">
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-400">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
             </span>
-            <span className="text-blue-700 font-semibold">今週 <strong>3,847件</strong> のクレーム対応文書が作成されました</span>
+            <span className="text-blue-700 font-semibold">2026年10月 カスハラ対策義務化 — <strong>今すぐ準備を</strong></span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
             クレームを<span className="text-blue-600">リピーターに変える</span>返信文が、<br />15秒で作れます。
@@ -240,12 +240,12 @@ export default function ClaimLP() {
       <section className="bg-red-700 py-6 px-4">
         <div className="max-w-4xl mx-auto grid grid-cols-3 gap-4 text-center text-white">
           <div>
-            <p className="text-3xl font-black">12,400<span className="text-lg">件+</span></p>
-            <p className="text-sm opacity-80">累計クレーム対応</p>
+            <p className="text-3xl font-black">15<span className="text-lg">秒</span></p>
+            <p className="text-sm opacity-80">平均生成時間</p>
           </div>
           <div>
-            <p className="text-3xl font-black">96<span className="text-lg">%</span></p>
-            <p className="text-sm opacity-80">ユーザー満足度</p>
+            <p className="text-3xl font-black">4<span className="text-lg">種類</span></p>
+            <p className="text-sm opacity-80">同時生成（スクリプト・書面・記録・判定）</p>
           </div>
           <div>
             <p className="text-3xl font-black">2026/10</p>
