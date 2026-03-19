@@ -363,6 +363,21 @@ export default function ClaimTool() {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 クレームの状況を1行で <span className="text-red-500">*</span>
               </label>
+              {/* よくあるクレームプリセット */}
+              <div className="mb-2 flex flex-wrap gap-1.5">
+                {[
+                  { label: "📦 商品不良", text: "お客様から商品に傷・汚れがあったとお怒りの電話を受けています。" },
+                  { label: "🚚 配送遅延", text: "注文から2週間経っても商品が届かないと、お客様から強いお怒りを受けています。" },
+                  { label: "😠 接客対応", text: "スタッフの言葉遣いが悪かったとのお申し出があり、「謝罪しろ」「責任者を出せ」とのクレームを受けています。" },
+                  { label: "💴 返金要求", text: "購入した商品が説明と違うとして、全額返金と慰謝料を要求されています。" },
+                  { label: "📱 SNS脅迫", text: "対応が悪いとして「SNSで晒す」「口コミに書く」と脅され、不当な要求を受けています。" },
+                ].map((p) => (
+                  <button key={p.label} type="button" onClick={() => setSituation(p.text)}
+                    className="text-xs px-2.5 py-1.5 rounded-full border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors font-medium">
+                    {p.label}
+                  </button>
+                ))}
+              </div>
               <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={4}
                 placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
