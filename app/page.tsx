@@ -139,6 +139,67 @@ function SampleSection() {
   );
 }
 
+const BTOB_CLIENTS = [
+  { icon: "🏢", type: "小売業", size: "従業員50名", usage: "月平均12件のクレーム対応を統一化" },
+  { icon: "🏥", type: "クリニック", size: "スタッフ12名", usage: "医療クレーム・カスハラ判定で受付負担軽減" },
+  { icon: "🏨", type: "ホテル", size: "客室100室", usage: "フロント対応スクリプトをチーム共有" },
+  { icon: "🏪", type: "飲食チェーン", size: "5店舗運営", usage: "義務化前にカスハラマニュアルを整備" },
+];
+
+function RoiCalculator() {
+  const [count, setCount] = useState(10);
+  const [minutes, setMinutes] = useState(60);
+  const hourlyRate = 2000;
+  const savedHours = Math.round((count * minutes) / 60 * 10) / 10;
+  const savedCost = Math.round(savedHours * hourlyRate / 10000 * 10) / 10;
+  return (
+    <div className="bg-gray-800 rounded-2xl p-6 mt-8">
+      <p className="text-yellow-400 font-bold text-sm mb-4">💰 削減できるコストを計算</p>
+      <div className="space-y-5">
+        <div>
+          <label className="text-gray-300 text-xs font-medium block mb-2">月間クレーム件数: <span className="text-white font-bold text-lg">{count}件</span></label>
+          <input
+            type="range"
+            min={1}
+            max={100}
+            value={count}
+            onChange={e => setCount(Number(e.target.value))}
+            className="w-full accent-yellow-400"
+          />
+          <div className="flex justify-between text-xs text-gray-500 mt-1"><span>1件</span><span>100件</span></div>
+        </div>
+        <div>
+          <label className="text-gray-300 text-xs font-medium block mb-2">1件あたりの対応時間</label>
+          <div className="flex gap-2">
+            {[30, 60, 120].map(m => (
+              <button
+                key={m}
+                onClick={() => setMinutes(m)}
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-colors ${minutes === m ? "bg-yellow-400 text-gray-900" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}`}
+              >
+                {m}分
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="bg-gray-900 rounded-xl p-4 border border-yellow-400/30">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="text-center">
+              <p className="text-gray-400 text-xs mb-1">月間削減時間</p>
+              <p className="text-2xl font-black text-yellow-400">{savedHours}<span className="text-sm font-normal text-gray-400">時間</span></p>
+            </div>
+            <div className="text-center">
+              <p className="text-gray-400 text-xs mb-1">削減コスト（目安）</p>
+              <p className="text-2xl font-black text-green-400">約¥{savedCost}<span className="text-sm font-normal text-gray-400">万円</span></p>
+            </div>
+          </div>
+          <p className="text-gray-500 text-xs text-center mt-2">時給¥2,000換算 / クレームAI導入費用¥9,800/月との比較</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ClaimLP() {
   const [showPayjp, setShowPayjp] = useState(false);
   const [payjpPlan, setPayjpPlan] = useState("standard");
@@ -471,8 +532,25 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* 導入企業モック（社会的証明） */}
+      <section className="bg-gray-900 py-12 px-6">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-center text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">こんな企業・施設に選ばれています</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {BTOB_CLIENTS.map(c => (
+              <div key={c.type} className="bg-gray-800 rounded-xl p-4 text-center border border-gray-700">
+                <div className="text-3xl mb-2">{c.icon}</div>
+                <p className="text-white font-bold text-sm mb-0.5">{c.type}</p>
+                <p className="text-gray-400 text-xs mb-2">{c.size}</p>
+                <p className="text-gray-500 text-xs leading-relaxed">{c.usage}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* BtoB 法人向けセクション */}
-      <section id="btob" className="bg-gray-900 text-white py-20 px-6">
+      <section id="btob" className="bg-gray-900 text-white py-20 px-6 border-t border-gray-800">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-red-600 text-white text-xs font-bold px-4 py-1.5 rounded-full mb-4">
@@ -556,6 +634,8 @@ export default function ClaimLP() {
               ))}
             </div>
           </div>
+          {/* ROI計算ミニツール */}
+          <RoiCalculator />
         </div>
       </section>
 
