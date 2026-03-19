@@ -24,7 +24,8 @@ function checkRateLimit(ip: string): boolean {
 }
 
 const VALID_CLAIM_TYPES = ["商品・品質クレーム", "接客・対応クレーム", "配送・納期クレーム", "請求・料金クレーム", "カスタマーハラスメント", "その他"];
-const VALID_SEVERITY = ["low", "medium", "high"];
+const VALID_SEVERITY = ["low", "medium", "high", "軽度", "中度", "重度"];
+const SEVERITY_MAP: Record<string, string> = { "軽度": "low", "中度": "medium", "重度": "high" };
 
 const systemPrompt = `あなたは企業のカスタマーサポート対応の専門家です。15年以上の現場経験を持ち、消費者契約法・民法・不正競争防止法・景品表示法・製造物責任法（PL法）・カスタマーハラスメント対策指針（厚労省2023年改訂版）を熟知しています。
 大手小売業・飲食チェーン・ECサイト運営会社・ホテル・IT企業など150社以上のクレーム対応体制構築を支援してきた実績があります。
@@ -74,11 +75,12 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); }
   catch { return NextResponse.json({ error: "リクエストの形式が正しくありません" }, { status: 400 }); }
 
-  const { claimType, situation, severity } = body as Record<string, string>;
+  const { claimType, situation, severity: rawSeverity } = body as Record<string, string>;
+  const severity = SEVERITY_MAP[rawSeverity] || rawSeverity;
   if (!situation || !situation.trim()) return NextResponse.json({ error: "状況を入力してください" }, { status: 400 });
   if (situation.length > 1500) return NextResponse.json({ error: "状況は1500文字以内で入力してください" }, { status: 400 });
   if (claimType && !VALID_CLAIM_TYPES.includes(claimType)) return NextResponse.json({ error: "不正なクレーム種別です" }, { status: 400 });
-  if (severity && !VALID_SEVERITY.includes(severity)) return NextResponse.json({ error: "不正な深刻度です" }, { status: 400 });
+  if (severity && !["low", "medium", "high"].includes(severity)) return NextResponse.json({ error: "不正な深刻度です" }, { status: 400 });
 
   const safSituation = situation.replace(/[<>]/g, "");
 
