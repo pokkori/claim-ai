@@ -8,8 +8,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 const SITE_URL = "https://claim-ai-beryl.vercel.app";
-const TITLE = "AIクレーム対応文ジェネレーター｜30秒でプロ品質の対応文を自動生成";
-const DESC = "クレーム内容を入力するだけ。お詫び文・原因説明・再発防止策をAIが自動構成。飲食・EC・小売・ホテルなど業種別対応。メール文＋電話スクリプト＋チェックリスト付き。無料3回。";
+const TITLE = "クレームAI｜カスハラ対策・クレーム対応文を15秒で自動生成【2026年義務化対応】";
+const DESC = "クレーム内容を入力するだけ。お詫び文・口頭スクリプト・社内記録・カスハラ判定の4種をAIが自動生成。2026年10月義務化対応チェックリスト付き。飲食・EC・ホテル・美容など業種別対応。登録不要・無料3回。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -51,6 +51,8 @@ const jsonLd = {
         { "@type": "Question", "name": "どんな業種に対応していますか？", "acceptedAnswer": { "@type": "Answer", "text": "飲食店・ECショップ・ホテル・小売・美容など幅広い業種に対応しています。業種を選択するだけで最適な対応文が生成されます。" } },
         { "@type": "Question", "name": "生成された文章はそのまま使えますか？", "acceptedAnswer": { "@type": "Answer", "text": "AIの生成結果はあくまで参考情報です。実際の使用前に内容を確認・修正してご利用ください。" } },
         { "@type": "Question", "name": "解約はいつでもできますか？", "acceptedAnswer": { "@type": "Answer", "text": "はい、マイページからいつでも解約できます。解約後は次回更新日まで引き続きご利用いただけます。" } },
+        { "@type": "Question", "name": "2026年10月のカスハラ義務化に向けた対策チェックリストはありますか？", "acceptedAnswer": { "@type": "Answer", "text": "はい。改正労働施策総合推進法に対応した15項目の義務化対策チェックリストを無料公開しています。方針整備・マニュアル・研修・証拠保全・従業員保護・法的対応の6カテゴリで自社の対応状況を確認できます。" } },
+        { "@type": "Question", "name": "カスタマーハラスメントと正当なクレームはどう見分ければいいですか？", "acceptedAnswer": { "@type": "Answer", "text": "厚労省2023年カスハラ対策指針を基に、要求内容の正当性・手段の不当性（暴言・脅迫・長時間拘束等）で判定します。クレームAIのカスハラ判定機能が自動で判定し、正当クレームには誠実対応、不当要求には毅然とした断り文を生成します。" } },
       ],
     },
   ],

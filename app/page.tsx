@@ -139,6 +139,36 @@ function SampleSection() {
   );
 }
 
+const CASE_STUDIES = [
+  {
+    industry: "飲食チェーン（5店舗）",
+    icon: "🍽",
+    problem: "月12件のクレーム対応に1件あたり平均65分かかっており、店長の精神的負担が限界に。SNS拡散を恐れて過度な謝罪・補償をしてしまうケースが頻発。",
+    solution: "クレームAI導入後、プリセット選択+状況入力だけで口頭スクリプト・書面・記録の3種を即出力。カスハラ判定機能で「正当クレーム/不当要求」を判別し、毅然とした対応が可能に。",
+    result: "対応時間65分→12分（81%削減）。過度な補償ゼロ。スタッフのメンタル安定により離職1名→0名。",
+    tag: "対応時間 81%削減",
+    tagColor: "bg-green-100 text-green-800",
+  },
+  {
+    industry: "ECショップ（月商800万円）",
+    icon: "📦",
+    problem: "返品・返金クレームの対応文が人によってバラバラ。新人スタッフが誤った文言で返信し、消費者契約法上のリスクが発生したことも。",
+    solution: "業種「EC・通販」+返答スタイル「穏便型/毅然型」の選択で、法的リスクを踏まえた対応文を統一出力。全スタッフが同じ品質で即回答できる体制に。",
+    result: "クレーム対応品質の標準化達成。法的トラブル0件。リピーター率が対応改善後3ヶ月で+8%向上。",
+    tag: "対応品質を統一",
+    tagColor: "bg-blue-100 text-blue-800",
+  },
+  {
+    industry: "美容サロン（スタッフ8名）",
+    icon: "✂",
+    problem: "施術結果への不満クレームを受けた際、どこまで謝罪・補償すべきか判断できず、毎回オーナーに確認する必要があった。義務化対応の社内マニュアルも未整備。",
+    solution: "カスハラ判定でエスカレーション基準を明確化。義務化対策チェックリスト15項目で未対応箇所を特定し、対応フロー・マニュアルをAIで即整備。",
+    result: "オーナーへのエスカレーション月8件→1件。2026年義務化対応を3日間で完了。顧客満足度アンケートで対応評価が4.1→4.7に向上。",
+    tag: "義務化対応を3日で完了",
+    tagColor: "bg-red-100 text-red-800",
+  },
+];
+
 const BTOB_CLIENTS = [
   { icon: "🏢", type: "小売業", size: "従業員50名", usage: "月平均12件のクレーム対応を統一化" },
   { icon: "🏥", type: "クリニック", size: "スタッフ12名", usage: "医療クレーム・カスハラ判定で受付負担軽減" },
@@ -233,6 +263,74 @@ function ComplianceChecklist() {
         </div>
       )}
     </div>
+  );
+}
+
+// 成功事例ケーススタディ
+function CaseStudiesSection() {
+  const [active, setActive] = useState(0);
+  const c = CASE_STUDIES[active];
+  return (
+    <section className="py-16 bg-gray-50">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-10">
+          <div className="inline-block bg-green-50 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">導入事例</div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">クレームAI導入後の変化</h2>
+          <p className="text-sm text-gray-500">業種別の実際の活用シーン（内容はモデルケースです）</p>
+        </div>
+        <div className="flex gap-2 justify-center mb-6 flex-wrap">
+          {CASE_STUDIES.map((cs, i) => (
+            <button
+              key={i}
+              onClick={() => setActive(i)}
+              className={`text-sm px-4 py-2 rounded-full border font-medium transition-colors ${active === i ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-200 hover:border-blue-300"}`}
+            >
+              {cs.icon} {cs.industry}
+            </button>
+          ))}
+        </div>
+        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+          <div className="p-5 border-b border-gray-100 flex items-center gap-3">
+            <span className="text-3xl">{c.icon}</span>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-gray-900">{c.industry}</span>
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${c.tagColor}`}>{c.tag}</span>
+              </div>
+            </div>
+          </div>
+          <div className="p-5 space-y-4">
+            <div className="flex gap-3">
+              <div className="w-6 h-6 rounded-full bg-red-100 text-red-600 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">課</div>
+              <div>
+                <p className="text-xs font-bold text-gray-500 mb-1">導入前の課題</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{c.problem}</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">解</div>
+              <div>
+                <p className="text-xs font-bold text-gray-500 mb-1">クレームAIの活用方法</p>
+                <p className="text-sm text-gray-700 leading-relaxed">{c.solution}</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="w-6 h-6 rounded-full bg-green-100 text-green-600 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">果</div>
+              <div>
+                <p className="text-xs font-bold text-gray-500 mb-1">導入後の結果</p>
+                <p className="text-sm text-gray-700 leading-relaxed font-medium">{c.result}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-xs text-gray-400 mt-3">※上記はモデルケースです。実際の導入効果は環境・使用状況により異なります。</p>
+        <div className="text-center mt-6">
+          <a href="/tool" className="inline-block bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 text-sm shadow-lg shadow-blue-100">
+            自分の業種で試してみる（無料）→
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -517,6 +615,9 @@ export default function ClaimLP() {
       {/* 実際の生成例 */}
       <SampleSection />
 
+      {/* 成功事例ケーススタディ */}
+      <CaseStudiesSection />
+
       {/* カスハラ義務化セクション */}
       <section className="bg-red-50 border-y border-red-100 py-16">
         <div className="max-w-4xl mx-auto px-6">
@@ -675,6 +776,8 @@ export default function ClaimLP() {
               { q: "どんな業種に対応していますか？", a: "飲食店・EC通販・美容サロン・ホテル旅館・小売店・医療介護・IT・サービス業など、あらゆる業種に対応しています。業種を選ぶだけで専門的な文章が生成されます。" },
               { q: "モンスタークレーマーへの対応もできますか？", a: "はい。対応トーンで「毅然・プロ」「強硬・法的」を選ぶと、不当要求への断り文言や法的根拠を踏まえた対応文が生成されます。" },
               { q: "解約はいつでもできますか？", a: "はい。いつでも解約可能です。解約後は次の更新日まで利用できます。" },
+              { q: "2026年10月のカスハラ義務化に向けて何を準備すればいいですか？", a: "改正労働施策総合推進法により、全事業主に①カスハラ防止方針の策定、②対応マニュアルの整備、③従業員研修の実施、④相談窓口の設置が義務化されます。クレームAIの義務化対策チェックリスト（15項目）で自社の対応状況を確認し、未対応箇所をAIで即整備できます。" },
+              { q: "東京都のカスハラ対策奨励金は実際に申請できますか？", a: "東京都しごと財団が実施する「カスハラ対策奨励金（最大¥40万）」制度です。クレームAIがツール費用の補助対象に該当するかは、申請時に東京都しごと財団にご確認ください。年間利用費用¥35,760〜を大幅に補填できる可能性があります。" },
             ].map((faq, i) => (
               <div key={i} className="bg-white rounded-xl p-5 border border-gray-200">
                 <p className="font-semibold text-gray-900 mb-2 text-sm">Q. {faq.q}</p>
@@ -770,10 +873,17 @@ export default function ClaimLP() {
                 ビジネスプランで申し込む →
               </button>
               <p className="text-xs text-gray-400 mt-3 text-center">いつでも解約可能 / 法人請求書払いはXでお問い合わせ</p>
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-500 text-center">
-                  法人一括払い・請求書払いをご希望の場合は<br />
-                  X (Twitter) <a href="https://x.com/levona_design" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">@levona_design</a> にてご連絡ください
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+                <p className="text-xs text-gray-500 text-center font-semibold">法人・チーム導入のご相談</p>
+                <a
+                  href="/contact"
+                  className="block w-full text-center text-sm font-medium py-2.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  📋 法人問い合わせフォームはこちら →
+                </a>
+                <p className="text-xs text-gray-400 text-center">
+                  請求書払い・複数拠点契約・カスタマイズ対応もご相談ください<br />
+                  X: <a href="https://x.com/levona_design" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">@levona_design</a>
                 </p>
               </div>
             </div>

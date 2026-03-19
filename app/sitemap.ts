@@ -21,10 +21,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      url: "https://claim-ai-beryl.vercel.app/guide",
+      url: "https://claim-ai-beryl.vercel.app/guide/kasuhara",
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.6,
+      priority: 0.7,
+    },
+    {
+      url: "https://claim-ai-beryl.vercel.app/business",
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: "https://claim-ai-beryl.vercel.app/contact",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
     },
     {
       url: "https://claim-ai-beryl.vercel.app/legal",

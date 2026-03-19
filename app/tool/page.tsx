@@ -8,6 +8,16 @@ const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
 const HISTORY_KEY = "claim_history";
 
+const INDUSTRY_PRESETS = [
+  { icon: "🍽", label: "飲食店" },
+  { icon: "📦", label: "EC・通販" },
+  { icon: "✂", label: "美容・サロン" },
+  { icon: "🏨", label: "ホテル・旅館" },
+  { icon: "🏪", label: "小売店" },
+  { icon: "🏥", label: "医療・介護" },
+  { icon: "💻", label: "IT・SaaS" },
+  { icon: "📞", label: "コールセンター" },
+];
 const CLAIM_TYPE_PRESETS = ["商品・品質不具合", "サービス遅延・キャンセル", "スタッフ対応", "請求・料金トラブル", "安全・衛生問題", "その他"];
 const SEVERITY_OPTIONS = [
   { value: "軽度", label: "軽度", desc: "一般的な不満" },
@@ -229,6 +239,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
 }
 
 export default function ClaimTool() {
+  const [industry, setIndustry] = useState("");
   const [claimType, setClaimType] = useState("");
   const [situation, setSituation] = useState("");
   const [severity, setSeverity] = useState("中度");
@@ -292,7 +303,7 @@ export default function ClaimTool() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ claimType, situation, severity, replyStyle }),
+        body: JSON.stringify({ claimType, situation, severity, replyStyle, industry }),
       });
       if (res.status === 429) { track('paywall_shown', { service: 'クレームAI' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
@@ -363,6 +374,30 @@ export default function ClaimTool() {
           {/* 入力フォーム */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <h1 className="text-xl font-bold text-gray-900">クレーム情報を入力</h1>
+
+            {/* 業種セレクター */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                業種を選ぶ <span className="text-gray-400 text-xs font-normal">（任意・より正確な対応文になります）</span>
+              </label>
+              <div className="grid grid-cols-4 gap-1.5">
+                {INDUSTRY_PRESETS.map(({ icon, label }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={() => setIndustry(industry === label ? "" : label)}
+                    className={`flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl border-2 text-center transition-colors ${
+                      industry === label
+                        ? "border-blue-600 bg-blue-50 text-blue-800"
+                        : "border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:bg-blue-50/40"
+                    }`}
+                  >
+                    <span className="text-lg">{icon}</span>
+                    <span className="text-xs font-medium leading-tight">{label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* クレームの状況（必須・1フィールドで即生成可能） */}
             <div>
