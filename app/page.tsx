@@ -778,6 +778,9 @@ export default function ClaimLP() {
               { q: "解約はいつでもできますか？", a: "はい。いつでも解約可能です。解約後は次の更新日まで利用できます。" },
               { q: "2026年10月のカスハラ義務化に向けて何を準備すればいいですか？", a: "改正労働施策総合推進法により、全事業主に①カスハラ防止方針の策定、②対応マニュアルの整備、③従業員研修の実施、④相談窓口の設置が義務化されます。クレームAIの義務化対策チェックリスト（15項目）で自社の対応状況を確認し、未対応箇所をAIで即整備できます。" },
               { q: "東京都のカスハラ対策奨励金は実際に申請できますか？", a: "東京都しごと財団が実施する「カスハラ対策奨励金（最大¥40万）」制度です。クレームAIがツール費用の補助対象に該当するかは、申請時に東京都しごと財団にご確認ください。年間利用費用¥35,760〜を大幅に補填できる可能性があります。" },
+              { q: "クレーム対応の法的根拠はどのように使えばいいですか？", a: "AIが生成する対応文には、消費者契約法・PL法（製造物責任法）・民法709条（不法行為）など関連法条文が自動的に引用されます。書面をそのまま弁護士への相談資料や社内エスカレーション記録としてお使いいただけます。" },
+              { q: "複数の店舗やスタッフで共有できますか？", a: "ビジネスプラン（¥9,800/月）ではチームアカウントとして複数スタッフが同じツールを利用できます。対応品質の統一化と、新人スタッフの即戦力化を同時に実現できます。" },
+              { q: "クレームの深刻度はどう判定されますか？", a: "感情温度（普通・強い・激しい）、カスハラ疑いの有無、補償要求の有無を組み合わせてAIが法的リスクスコア（1〜10）と緊急度（即日・1週間・余裕あり）を判定します。深刻度に応じた対応文・書面・エスカレーション手順が自動選択されます。" },
             ].map((faq, i) => (
               <div key={i} className="bg-white rounded-xl p-5 border border-gray-200">
                 <p className="font-semibold text-gray-900 mb-2 text-sm">Q. {faq.q}</p>
@@ -931,6 +934,55 @@ export default function ClaimLP() {
           無料登録 →
         </a>
       </div>
+
+      {/* クレームAIだけができること — SEO差別化セクション */}
+      <section className="bg-indigo-50 border-y border-indigo-100 py-14 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-block bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full mb-3">クレームAIだけの機能</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">「クレーム対応文+法的根拠+社内記録」を1回の生成で</h2>
+            <p className="text-sm text-gray-500">IVRy（電話AI）・さくらさんにはない、文書生成に特化した3つの独自機能</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              { icon: "⚖️", title: "法条文を自動付加", desc: "出力文に消費者契約法・PL法・カスハラ対策指針など関連法条文を自動引用。「法的に正しい対応」を担保します。", badge: "IVRyにはない" },
+              { icon: "📋", title: "1回で4種類の書類を生成", desc: "口頭スクリプト・お詫び状・社内インシデント記録・カスハラ判定を同時生成。バラバラに依頼する手間がゼロ。", badge: "さくらさんにはない" },
+              { icon: "🏭", title: "業種別の専門文言", desc: "飲食・EC・美容・ホテル・医療介護など業種ごとの業界慣習・補償基準を踏まえた専門的な文章を生成。", badge: "汎用AIにはない" },
+            ].map(item => (
+              <div key={item.title} className="bg-white rounded-2xl p-5 border border-indigo-100 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-2xl">{item.icon}</span>
+                  <span className="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-full">{item.badge}</span>
+                </div>
+                <h3 className="font-bold text-gray-900 mb-2 text-sm">{item.title}</h3>
+                <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 bg-white border border-indigo-200 rounded-2xl p-5 max-w-2xl mx-auto">
+            <p className="text-xs font-bold text-indigo-700 mb-3 text-center">クレームAI vs 競合 — 機能比較まとめ</p>
+            <div className="grid grid-cols-4 text-xs text-center gap-2">
+              <div className="font-bold text-gray-600 text-left">機能</div>
+              <div className="font-bold text-blue-700">クレームAI</div>
+              <div className="font-bold text-gray-500">IVRy</div>
+              <div className="font-bold text-gray-500">さくらさん</div>
+              {["対応文即時生成", "法的根拠の引用", "社内記録生成", "業種別対応", "登録不要で利用可"].map(feat => (
+                <>
+                  <div key={feat} className="text-left text-gray-600 py-1 border-t border-gray-100">{feat}</div>
+                  <div className="text-blue-600 font-bold py-1 border-t border-gray-100">✅</div>
+                  <div className="text-gray-400 py-1 border-t border-gray-100">{feat === "対応文即時生成" ? "❌" : feat === "業種別対応" ? "❌" : feat === "法的根拠の引用" ? "❌" : "△"}</div>
+                  <div className="text-gray-400 py-1 border-t border-gray-100">{feat === "対応文即時生成" ? "❌" : feat === "社内記録生成" ? "❌" : feat === "登録不要で利用可" ? "❌" : "△"}</div>
+                </>
+              ))}
+            </div>
+          </div>
+          <div className="text-center mt-6">
+            <a href="/tool" className="inline-block bg-indigo-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-indigo-700 text-sm shadow-lg">
+              クレームAIの全機能を無料で試す →
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* X Share */}
       <section className="py-6 px-6 text-center">
