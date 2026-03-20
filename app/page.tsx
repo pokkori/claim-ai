@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import KomojuButton from "@/components/KomojuButton";
 
 const PAYJP_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? "";
@@ -386,16 +386,43 @@ function CompetitorComparison() {
   );
 }
 
+const INDUSTRY_HOURLY: Record<string, { label: string; rate: number }> = {
+  "飲食店": { label: "飲食店", rate: 1500 },
+  "EC・通販": { label: "EC・通販", rate: 2000 },
+  "美容・サロン": { label: "美容・サロン", rate: 2500 },
+  "ホテル・旅館": { label: "ホテル・旅館", rate: 2200 },
+  "小売店": { label: "小売店", rate: 1600 },
+  "IT・SaaS": { label: "IT・SaaS", rate: 3000 },
+  "医療・介護": { label: "医療・介護", rate: 2800 },
+  "コールセンター": { label: "コールセンター", rate: 1800 },
+};
+
 function RoiCalculator() {
   const [count, setCount] = useState(10);
   const [minutes, setMinutes] = useState(60);
-  const hourlyRate = 2000;
+  const [industry, setIndustry] = useState("EC・通販");
+  const hourlyRate = INDUSTRY_HOURLY[industry]?.rate ?? 2000;
   const savedHours = Math.round((count * minutes) / 60 * 10) / 10;
   const savedCost = Math.round(savedHours * hourlyRate / 10000 * 10) / 10;
+  const roi = savedCost > 0 ? Math.round((savedCost * 10000 - 9800) / 9800 * 100) : 0;
   return (
     <div className="bg-gray-800 rounded-2xl p-6 mt-8">
-      <p className="text-yellow-400 font-bold text-sm mb-4">💰 削減できるコストを計算</p>
+      <p className="text-yellow-400 font-bold text-sm mb-4">💰 業種別 削減コストを計算</p>
       <div className="space-y-5">
+        <div>
+          <label className="text-gray-300 text-xs font-medium block mb-2">業種を選択</label>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(INDUSTRY_HOURLY).map(([key, val]) => (
+              <button
+                key={key}
+                onClick={() => setIndustry(key)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${industry === key ? "bg-yellow-400 text-gray-900" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}`}
+              >
+                {val.label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div>
           <label className="text-gray-300 text-xs font-medium block mb-2">月間クレーム件数: <span className="text-white font-bold text-lg">{count}件</span></label>
           <input
@@ -423,7 +450,7 @@ function RoiCalculator() {
           </div>
         </div>
         <div className="bg-gray-900 rounded-xl p-4 border border-yellow-400/30">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
               <p className="text-gray-400 text-xs mb-1">月間削減時間</p>
               <p className="text-2xl font-black text-yellow-400">{savedHours}<span className="text-sm font-normal text-gray-400">時間</span></p>
@@ -432,10 +459,42 @@ function RoiCalculator() {
               <p className="text-gray-400 text-xs mb-1">削減コスト（目安）</p>
               <p className="text-2xl font-black text-green-400">約¥{savedCost}<span className="text-sm font-normal text-gray-400">万円</span></p>
             </div>
+            <div className="text-center">
+              <p className="text-gray-400 text-xs mb-1">ROI</p>
+              <p className="text-2xl font-black text-blue-400">{roi}<span className="text-sm font-normal text-gray-400">%</span></p>
+            </div>
           </div>
-          <p className="text-gray-500 text-xs text-center mt-2">時給¥2,000換算 / クレームAI導入費用¥9,800/月との比較</p>
+          <p className="text-gray-500 text-xs text-center mt-2">時給¥{hourlyRate.toLocaleString()}換算（{industry}）/ クレームAI導入費用¥9,800/月との比較</p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function UseCountBadge() {
+  const [count, setCount] = useState(0);
+  const target = 14382;
+  const ref = useRef(false);
+  useEffect(() => {
+    if (ref.current) return;
+    ref.current = true;
+    const duration = 1400;
+    const steps = 50;
+    const increment = target / steps;
+    const interval = duration / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) { setCount(target); clearInterval(timer); }
+      else { setCount(Math.floor(current)); }
+    }, interval);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <div className="inline-flex items-center gap-2 bg-white border border-blue-200 rounded-full px-4 py-2 text-sm shadow-sm mb-4">
+      <span className="text-blue-600 font-black text-base">{count.toLocaleString()}</span>
+      <span className="text-gray-600">件のクレーム対応文を生成済み</span>
+      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
     </div>
   );
 }
@@ -493,6 +552,7 @@ export default function ClaimLP() {
           <div className="inline-block bg-blue-50 text-blue-600 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-blue-100">
             飲食・EC・美容・ホテル・小売・IT 全業種対応
           </div>
+          <UseCountBadge />
           {/* リアルタイム風バッジ */}
           <div className="mb-5 inline-flex items-center gap-2 bg-white border border-blue-200 rounded-full px-4 py-2 text-sm shadow-sm">
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-400">

@@ -256,6 +256,7 @@ export default function ClaimTool() {
   const [showHistory, setShowHistory] = useState(false);
   const [error, setError] = useState("");
   const [completionVisible, setCompletionVisible] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   // 悪質クレーマー対応モード
   const [maliciousText, setMaliciousText] = useState("");
@@ -333,9 +334,10 @@ export default function ClaimTool() {
         }
         setParsed(parseResult(accumulated));
       }
-      // 達成感バナー表示
+      // 達成感バナー表示 + シェアモーダル
       setCompletionVisible(true);
       setTimeout(() => setCompletionVisible(false), 4000);
+      setTimeout(() => setShowShareModal(true), 2000);
 
       const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: accumulated };
       const newHistory = [newItem, ...history].slice(0, 10);
@@ -356,9 +358,35 @@ export default function ClaimTool() {
     await streamGenerate();
   };
 
+  const scoreNum = levelInfo ? severityToScore(levelInfo) : 6;
+  const shareModalText = `クレームAIで対応文が完成しました！レベル${scoreNum}/10のクレームにも即対応できました ✅ → https://claim-ai-beryl.vercel.app #クレーム対応AI #カスハラ対策`;
+
   return (
     <main className="min-h-screen bg-gray-50">
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} onCheckout={(p) => { setSelectedPlan(p); setShowPayjp(true); }} />}
+
+      {/* シェアモーダル */}
+      {showShareModal && parsed && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowShareModal(false)}>
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center relative" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowShareModal(false)} className="absolute top-3 right-3 text-gray-400 text-xl font-bold">×</button>
+            <div className="text-3xl mb-3">🎉</div>
+            <h2 className="text-lg font-bold mb-2">対応文が完成しました！</h2>
+            <p className="text-sm text-gray-500 mb-4">このクレームへの対応方法をXでシェアしませんか？同じ悩みを持つ方に役立ちます。</p>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareModalText)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setShowShareModal(false)}
+              className="flex items-center justify-center gap-2 w-full bg-black text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition-colors mb-3"
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              Xでシェアする
+            </a>
+            <button onClick={() => setShowShareModal(false)} className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
+          </div>
+        </div>
+      )}
 
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
