@@ -1,6 +1,6 @@
 "use client";
 import KomojuButton from "@/components/KomojuButton";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
 
@@ -34,6 +34,74 @@ type Section = { title: string; icon: string; content: string };
 type LevelInfo = { level: "軽度" | "中度" | "重度"; color: "green" | "yellow" | "red"; reason: string };
 type ParsedResult = { sections: Section[]; raw: string };
 type HistoryItem = { date: string; claimType: string; severity: string; result: string };
+
+// カスハラ重篤度判定（1〜5）
+type SeverityLevel = 1 | 2 | 3 | 4 | 5;
+
+interface SeverityResult {
+  level: SeverityLevel;
+  label: string;
+  description: string;
+  color: string;
+  bgColor: string;
+  recommendation: string;
+}
+
+function analyzeSeverity(claimText: string): SeverityResult {
+  const text = claimText.toLowerCase();
+
+  const level5Words = ["殺す", "殺すぞ", "殺してやる", "死ね", "爆破", "放火", "訴える", "警察", "弁護士に", "マスコミに", "sns で晒す", "snsに晒す", "炎上", "さらし"];
+  if (level5Words.some(w => text.includes(w))) {
+    return { level: 5, label: "最重大・法的対応検討", description: "脅迫・炎上リスクを含む深刻なクレーム", color: "text-red-700", bgColor: "bg-red-50 border-red-300", recommendation: "上長への即時エスカレーション・証拠保全が必要です" };
+  }
+
+  const level4Words = ["ありえない", "なめてる", "最悪", "二度と", "全額返金", "責任者", "謝罪しろ", "土下座", "どういうつもり", "こんな会社"];
+  if (level4Words.some(w => text.includes(w))) {
+    return { level: 4, label: "重大・上長対応推奨", description: "強い怒りと具体的な要求を含む高リスククレーム", color: "text-orange-700", bgColor: "bg-orange-50 border-orange-300", recommendation: "上長への報告と慎重な文面での対応が必要です" };
+  }
+
+  const level3Words = ["どうなってる", "なぜ", "おかしい", "納得できない", "改善", "対応してください", "早く", "いつまで", "何度も"];
+  if (level3Words.some(w => text.includes(w))) {
+    return { level: 3, label: "要注意・丁寧な対応必要", description: "具体的な不満と改善要求があるクレーム", color: "text-yellow-700", bgColor: "bg-yellow-50 border-yellow-300", recommendation: "丁寧な謝罪と具体的な改善策の提示が効果的です" };
+  }
+
+  const level2Words = ["困った", "問題", "不満", "残念", "残念です", "期待してた", "思ってた"];
+  if (level2Words.some(w => text.includes(w))) {
+    return { level: 2, label: "軽微・標準対応", description: "軽微な不満を含むクレーム", color: "text-blue-700", bgColor: "bg-blue-50 border-blue-300", recommendation: "標準的な謝罪と改善対応で解決可能です" };
+  }
+
+  return { level: 1, label: "軽微・情報提供で解決", description: "問い合わせ・確認レベル", color: "text-green-700", bgColor: "bg-green-50 border-green-300", recommendation: "情報提供と丁寧な説明で解決できます" };
+}
+
+function SeverityBadge({ level, label, description, color, bgColor, recommendation }: SeverityResult) {
+  const dots = [1, 2, 3, 4, 5];
+  const dotColor =
+    level >= 5 ? "bg-red-500" :
+    level >= 4 ? "bg-orange-500" :
+    level >= 3 ? "bg-yellow-500" :
+    level >= 2 ? "bg-blue-500" : "bg-green-500";
+  return (
+    <div className={`border-2 rounded-xl p-4 mb-4 ${bgColor}`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-sm font-bold text-gray-700">カスハラ重篤度</span>
+        <span className={`text-sm font-bold px-3 py-0.5 rounded-full bg-white ${color}`}>{label}</span>
+      </div>
+      <div className="flex items-center gap-1.5 mb-2">
+        {dots.map(d => (
+          <div
+            key={d}
+            className={`h-4 flex-1 rounded-full transition-all ${d <= level ? dotColor : "bg-gray-200"}`}
+            role="img"
+            aria-label={`重篤度 ${d}`}
+          />
+        ))}
+        <span className={`text-lg font-black ml-1 ${color}`}>{level}/5</span>
+      </div>
+      <p className="text-xs text-gray-600 mb-1">{description}</p>
+      <p className={`text-xs font-semibold ${color}`}>→ {recommendation}</p>
+    </div>
+  );
+}
 
 // 深刻度スコア変換（1〜10）
 function severityToScore(level: LevelInfo): number {
@@ -343,6 +411,11 @@ export default function ClaimTool() {
 
   const isLimit = count >= FREE_LIMIT;
 
+  const severityAnalysis = useMemo(() => {
+    if (situation.length < 50) return null;
+    return analyzeSeverity(situation);
+  }, [situation]);
+
   const streamGenerate = async () => {
     track('ai_generated', { service: 'クレームAI' });
     setLoading(true); setParsed(null); setLevelInfo(null); setError(""); setCompletionVisible(false);
@@ -497,6 +570,11 @@ export default function ClaimTool() {
                 placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
               <p className="text-xs text-gray-400 mt-1">これだけで対応文を生成できます。詳細は下から任意で追加できます（{situation.length}/1000文字）</p>
+              {severityAnalysis && (
+                <div className="mt-3">
+                  <SeverityBadge {...severityAnalysis} />
+                </div>
+              )}
             </div>
 
             {/* 返答スタイル選択 */}
