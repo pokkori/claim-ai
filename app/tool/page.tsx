@@ -328,7 +328,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
         ))}
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-4 min-h-[360px]">
+      <div className="backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl p-4 min-h-[360px] shadow-sm">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
@@ -712,7 +712,7 @@ export default function ClaimTool() {
               </div>
             )}
             {loading && !parsed ? (
-              <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
+              <div className="flex-1 backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px] shadow-sm">
                 <div className="text-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3" />
                   <p className="text-sm text-gray-500 font-medium">AIが対応文を作成中...</p>
@@ -721,7 +721,7 @@ export default function ClaimTool() {
                 </div>
               </div>
             ) : loading && parsed ? (
-              <div className="flex-1 bg-white border border-gray-200 rounded-xl p-4 min-h-[420px]">
+              <div className="flex-1 backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl p-4 min-h-[420px] shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
                   <span className="text-xs text-gray-500">AIが対応文を生成中...</span>
