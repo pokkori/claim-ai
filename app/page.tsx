@@ -97,6 +97,145 @@ const SAMPLES = [
   },
 ];
 
+// 業種→SAMPLESインデックスのマッピング（SAMPLESにない業種は代表的な対応文をインラインで持つ）
+const INDUSTRY_SAMPLE_MAP: Record<string, { sampleIndex?: number; fallback?: { tab: string; situation: string; content: string } }> = {
+  "飲食店": { sampleIndex: 0 },
+  "EC・通販": { sampleIndex: 1 },
+  "美容・サロン": {
+    fallback: {
+      tab: "📞 口頭スクリプト",
+      situation: "「カットが希望と全然違う。やり直してほしいし、料金も返してほしい」という来店クレーム",
+      content: `この度は、仕上がりがご希望に沿えず、大変申し訳ございませんでした。
+
+お客様のイメージと異なる結果となり、ご不快な思いをさせてしまったことを心よりお詫び申し上げます。
+
+まず、お客様のご希望を改めてお伺いさせていただき、担当スタイリストまたは店長が責任を持ってお直しさせていただきます。お直しの費用はもちろんいただきません。
+
+また、今回の件を踏まえ、カウンセリング時の確認プロセスを見直し、イメージの共有をより丁寧に行うよう改善いたします。
+
+お客様に安心して通っていただけるサロンであり続けるため、全力で対応させていただきます。`,
+    },
+  },
+  "ホテル・旅館": {
+    fallback: {
+      tab: "📄 お詫び状",
+      situation: "「隣の部屋がうるさくて一晩中眠れなかった。宿泊費を返金してほしい」というチェックアウト時のクレーム",
+      content: `○○様
+
+この度のご宿泊におきまして、隣室からの騒音により十分なお休みをお取りいただけなかったこと、誠に申し訳ございませんでした。
+
+ご滞在中の快適な環境をお約束するのが私どもの務めでありながら、ご期待に沿えなかったことを深くお詫び申し上げます。
+
+宿泊料金につきましては、ご不便をおかけしたお詫びとして全額をご返金させていただきます。お手続きは3営業日以内に完了いたします。
+
+今後は夜間の巡回強化および防音対策の見直しを進め、再発防止に努めてまいります。
+
+またのご来館を心よりお待ち申し上げております。`,
+    },
+  },
+  "小売店": {
+    fallback: {
+      tab: "📞 口頭スクリプト",
+      situation: "「買った商品が不良品だった。レシートはないが交換してほしい」という店頭クレーム",
+      content: `この度は、お買い上げいただいた商品に不具合がございまして、誠に申し訳ございませんでした。
+
+お客様にご不便とご迷惑をおかけしたことを、心よりお詫び申し上げます。
+
+商品の状態を確認させていただき、不良が確認できましたら、レシートの有無に関わらず同一商品との交換で対応させていただきます。
+
+もし同一商品の在庫がない場合は、同等品への交換またはストアクレジットでの対応をご提案させていただきます。
+
+今後はこのようなことがないよう、入荷時の検品体制を強化いたします。`,
+    },
+  },
+  "IT・サービス": { sampleIndex: 2 },
+};
+
+function IndustryPreviewSection() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  const handleSelect = (name: string) => {
+    if (selected === name) {
+      setSelected(null);
+      setVisible(false);
+      return;
+    }
+    setVisible(false);
+    setSelected(name);
+    // trigger animation on next frame
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setVisible(true);
+      });
+    });
+  };
+
+  const mapping = selected ? INDUSTRY_SAMPLE_MAP[selected] : null;
+  const sample = mapping
+    ? mapping.sampleIndex !== undefined
+      ? { tab: SAMPLES[mapping.sampleIndex].tab, situation: SAMPLES[mapping.sampleIndex].situation, content: SAMPLES[mapping.sampleIndex].content }
+      : mapping.fallback!
+    : null;
+
+  return (
+    <section className="py-12 bg-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">あなたの業種は？</h2>
+          <p className="text-sm text-gray-500">業種をタップすると、AIが生成する対応文のサンプルを表示します</p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {INDUSTRIES.map(ind => (
+            <button
+              key={ind.name}
+              onClick={() => handleSelect(ind.name)}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl border-2 font-bold text-sm transition-all ${
+                selected === ind.name
+                  ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100 scale-105"
+                  : "bg-white text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50"
+              }`}
+            >
+              <span className="text-xl">{ind.icon}</span>
+              {ind.name}
+            </button>
+          ))}
+        </div>
+        {selected && sample && (
+          <div
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.3s ease, transform 0.3s ease",
+            }}
+          >
+            <div className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
+              <div className="bg-white border-b border-gray-200 px-5 py-3 flex items-center gap-3">
+                <span className="text-xs font-semibold text-gray-500">状況:</span>
+                <span className="text-xs text-gray-700 font-medium">{sample.situation}</span>
+              </div>
+              <div className="p-5">
+                <div className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-3">{sample.tab}</div>
+                <pre className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap font-sans bg-white border border-gray-100 rounded-xl p-4">
+                  {sample.content}
+                </pre>
+              </div>
+            </div>
+            <div className="text-center mt-5">
+              <Link
+                href="/tool"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-blue-700 text-sm shadow-lg shadow-blue-100 hover:scale-105 transition-transform"
+              >
+                もっと詳しい対応文を作る（無料3回）→
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 function SampleSection() {
   const [active, setActive] = useState(0);
   return (
@@ -596,6 +735,9 @@ export default function ClaimLP() {
           </div>
         </div>
       </section>
+
+      {/* 業種別プレビュー（ヒーロー直下） */}
+      <IndustryPreviewSection />
 
       {/* 実績カウンター */}
       <section className="bg-red-700 py-6 px-4">
