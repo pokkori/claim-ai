@@ -3,6 +3,7 @@ import KomojuButton from "@/components/KomojuButton";
 import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
+import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -371,6 +372,8 @@ export default function ClaimTool() {
   const [error, setError] = useState("");
   const [completionVisible, setCompletionVisible] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [streak, setStreak] = useState<StreakData | null>(null);
+  const [streakMsg, setStreakMsg] = useState<string | null>(null);
 
   // 悪質クレーマー対応モード
   const [maliciousText, setMaliciousText] = useState("");
@@ -407,6 +410,7 @@ export default function ClaimTool() {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
     const h = localStorage.getItem(HISTORY_KEY);
     if (h) try { setHistory(JSON.parse(h)); } catch { /* ignore */ }
+    setStreak(loadStreak("claim"));
   }, []);
 
   const isLimit = count >= FREE_LIMIT;
@@ -453,6 +457,11 @@ export default function ClaimTool() {
         }
         setParsed(parseResult(accumulated));
       }
+      // ストリーク更新
+      const s = updateStreak("claim");
+      setStreak(s);
+      const msg = getStreakMilestoneMessage(s.count);
+      if (msg) setStreakMsg(msg);
       // 達成感バナー表示 + シェアモーダル
       setCompletionVisible(true);
       setTimeout(() => setCompletionVisible(false), 4000);
@@ -521,6 +530,12 @@ export default function ClaimTool() {
           {/* 入力フォーム */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <h1 className="text-xl font-bold text-gray-900">クレーム情報を入力</h1>
+            {streak && streak.count > 0 && (
+              <div className="mt-2 inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 text-sm">
+                <span>{streak.count}日連続利用中</span>
+              </div>
+            )}
+            {streakMsg && <div className="text-orange-600 font-bold text-sm animate-bounce">{streakMsg}</div>}
 
             {/* 業種セレクター */}
             <div>
