@@ -218,7 +218,7 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center relative">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
+        <button onClick={onClose} aria-label="ペイウォールモーダルを閉じる" className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
         <div className="text-3xl mb-3">⭐</div>
         <h2 className="text-lg font-bold mb-2">無料枠を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-1">クレーム対応文を無制限に生成</p>
@@ -240,7 +240,7 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
             className="w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 text-sm disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           />
         </div>
-        <button onClick={onClose} className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
+        <button onClick={onClose} aria-label="ペイウォールモーダルを閉じる" className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
       </div>
     </div>
   );
@@ -255,7 +255,7 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   };
   return (
     <div className="relative inline-block">
-      <button onClick={handleCopy} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
+      <button onClick={handleCopy} aria-label={`${label}をクリップボードにコピーする`} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
         {copied ? "コピー済み ✓" : label}
       </button>
       {copied && (
@@ -320,6 +320,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
       <div className="flex gap-1 flex-wrap">
         {parsed.sections.map((s, i) => (
           <button key={i} onClick={() => setActiveTab(i)}
+            aria-label={`${s.title}タブを表示する`}
             className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
             <span>{s.icon}</span>
             <span>{s.title}</span>
@@ -337,13 +338,14 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
 
       <div className="flex gap-2 justify-end flex-wrap items-center">
         <CopyButton text={parsed.raw} label="全文コピー" />
-        <button onClick={handlePrint} className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
+        <button onClick={handlePrint} aria-label="クレーム対応文を印刷またはPDFとして保存する" className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium">
           印刷・PDF保存
         </button>
         <a
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="クレーム対応結果をXにシェアする"
           className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition-colors shadow-lg hover:scale-105 transition-transform"
         >
           𝕏 でシェアする
@@ -497,7 +499,7 @@ export default function ClaimTool() {
       {showShareModal && parsed && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowShareModal(false)}>
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center relative" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowShareModal(false)} className="absolute top-3 right-3 text-gray-400 text-xl font-bold">×</button>
+            <button onClick={() => setShowShareModal(false)} aria-label="シェアモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl font-bold">×</button>
             <div className="text-3xl mb-3">🎉</div>
             <h2 className="text-lg font-bold mb-2">対応文が完成しました！</h2>
             <p className="text-sm text-gray-500 mb-4">このクレームへの対応方法をXでシェアしませんか？同じ悩みを持つ方に役立ちます。</p>
@@ -506,19 +508,20 @@ export default function ClaimTool() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setShowShareModal(false)}
+              aria-label="クレーム対応結果をXにシェアする"
               className="flex items-center justify-center gap-2 w-full bg-black text-white font-bold py-3 rounded-xl hover:bg-gray-800 transition-colors mb-3"
             >
               <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
               Xでシェアする
             </a>
-            <button onClick={() => setShowShareModal(false)} className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
+            <button onClick={() => setShowShareModal(false)} aria-label="シェアモーダルを閉じる" className="text-xs text-gray-400 hover:text-gray-600">閉じる</button>
           </div>
         </div>
       )}
 
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-bold text-gray-900">⭐ クレームAI</Link>
+          <Link href="/" aria-label="クレームAI トップページへ戻る" className="font-bold text-gray-900">⭐ クレームAI</Link>
           <span className={`text-xs px-3 py-1 rounded-full ${isLimit ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"}`}>
             {isLimit ? "無料枠終了" : `無料あと${FREE_LIMIT - count}回`}
           </span>
@@ -547,6 +550,7 @@ export default function ClaimTool() {
                   <button
                     key={label}
                     type="button"
+                    aria-label={`業種：${label}を選択する`}
                     onClick={() => setIndustry(industry === label ? "" : label)}
                     className={`flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl border-2 text-center transition-colors ${
                       industry === label
@@ -576,6 +580,7 @@ export default function ClaimTool() {
                   { label: "📱 SNS脅迫", text: "対応が悪いとして「SNSで晒す」「口コミに書く」と脅され、不当な要求を受けています。" },
                 ].map((p) => (
                   <button key={p.label} type="button" onClick={() => setSituation(p.text)}
+                    aria-label={`${p.label}をクレーム状況として使用する`}
                     className="text-xs px-2.5 py-1.5 rounded-full border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors font-medium">
                     {p.label}
                   </button>
@@ -583,6 +588,7 @@ export default function ClaimTool() {
               </div>
               <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={4}
                 placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
+                aria-label="クレーム状況を入力する"
                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
               <p className="text-xs text-gray-400 mt-1">これだけで対応文を生成できます。詳細は下から任意で追加できます（{situation.length}/1000文字）</p>
               {severityAnalysis && (
@@ -600,6 +606,7 @@ export default function ClaimTool() {
                   <button
                     key={opt.value}
                     type="button"
+                    aria-label={`返答スタイルを${opt.value}に設定する`}
                     onClick={() => setReplyStyle(opt.value)}
                     className={`flex-1 min-w-[90px] flex flex-col items-center gap-0.5 px-2 py-2.5 rounded-xl border-2 text-center transition-colors ${
                       replyStyle === opt.value
@@ -618,6 +625,8 @@ export default function ClaimTool() {
             <div>
               <button
                 type="button"
+                aria-label={showDetails ? "詳細情報を非表示にする" : "詳細情報を表示する"}
+                aria-expanded={showDetails}
                 onClick={() => setShowDetails(!showDetails)}
                 className="flex items-center gap-2 text-sm font-medium text-blue-700 hover:text-blue-900 transition-colors"
               >
@@ -634,12 +643,14 @@ export default function ClaimTool() {
                     <div className="flex flex-wrap gap-2 mb-2">
                       {CLAIM_TYPE_PRESETS.map(p => (
                         <button key={p} type="button" onClick={() => setClaimType(claimType === p ? "" : p)}
+                          aria-label={`クレームの種類：${p}を選択する`}
                           className={`px-3 py-1 rounded-full text-xs border font-medium transition-colors ${claimType === p ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-600 border-gray-300 hover:border-blue-400"}`}>
                           {p}
                         </button>
                       ))}
                     </div>
                     <input type="text" value={claimType} onChange={e => setClaimType(e.target.value)} placeholder="または直接入力（例: 配送遅延、接客トラブル）"
+                      aria-label="クレームの種類を直接入力する"
                       className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
                   </div>
 
@@ -648,6 +659,7 @@ export default function ClaimTool() {
                     <div className="flex gap-2">
                       {SEVERITY_OPTIONS.map(s => (
                         <button key={s.value} type="button" onClick={() => setSeverity(s.value)}
+                          aria-label={`深刻度を${s.value}に設定する`}
                           className={`flex-1 py-2 px-1 rounded-lg border text-center transition-colors ${severity === s.value ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:border-blue-400"}`}>
                           <div className="text-xs font-semibold">{s.label}</div>
                           <div className={`text-xs mt-0.5 ${severity === s.value ? "text-blue-100" : "text-gray-400"}`}>{s.desc}</div>
@@ -660,6 +672,7 @@ export default function ClaimTool() {
             </div>
 
             <button type="submit" disabled={loading}
+              aria-label="クレーム対応文を生成する"
               className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300"}`}>
               {loading ? "対応文を生成中..." : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
             </button>
@@ -693,6 +706,7 @@ export default function ClaimTool() {
                 <div className="mt-2 pt-2 border-t border-red-200">
                   法的対応・訴訟リスクがある場合は必ず専門家にご相談ください。→
                   <a href="https://www.nichibenren.or.jp/legal_advice/search/index.html" target="_blank" rel="noopener noreferrer"
+                    aria-label="日弁連 弁護士紹介サービス（外部サイト）"
                     className="ml-1 underline font-bold hover:text-red-900">日弁連 弁護士紹介サービス</a>
                 </div>
               </div>
@@ -737,6 +751,7 @@ export default function ClaimTool() {
                 <button
                   onClick={handleRegenerate}
                   disabled={loading}
+                  aria-label="別のパターンでクレーム対応文を再生成する"
                   className="mt-2 text-sm text-gray-500 underline hover:text-gray-700 disabled:opacity-40"
                 >
                   🔄 別のパターンで再生成
@@ -765,6 +780,7 @@ export default function ClaimTool() {
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+8D9CVM+3HKU+1BNBJN"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
+                    aria-label="ビッグローブ光 公式サイトへ（PR・外部サイト）"
                     className="flex items-center justify-between bg-green-900 border border-green-700 rounded-xl px-3 py-2.5 hover:bg-green-800 transition-colors"
                   >
                     <div>
@@ -782,6 +798,7 @@ export default function ClaimTool() {
                   <div className="space-y-2">
                     {/* TODO: Replace href with A8.net affiliate URL after approval */}
                     <a href="https://www.bengo4.com/c_1011/" target="_blank" rel="noopener noreferrer sponsored"
+                      aria-label="弁護士ドットコム 無料法律相談へ（PR・外部サイト）"
                       className="flex items-center justify-between bg-white border border-slate-300 rounded-xl px-3 py-2.5 hover:bg-blue-50 transition-colors">
                       <div>
                         <div className="text-sm font-bold text-slate-800">弁護士ドットコム</div>
@@ -801,6 +818,7 @@ export default function ClaimTool() {
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+8OKLDE+4EPM+63OY9"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
+                    aria-label="SOELU オンラインヨガ 無料体験へ（PR・外部サイト）"
                     className="flex items-center justify-between bg-white border border-green-300 rounded-xl px-3 py-2.5 hover:bg-green-50 transition-colors"
                   >
                     <div>
@@ -819,6 +837,7 @@ export default function ClaimTool() {
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+2SMA0I+5ULO+5YZ75"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
+                    aria-label="FPカフェ お金の専門家に無料相談へ（PR・外部サイト）"
                     className="flex items-center justify-between bg-white border border-blue-300 rounded-xl px-3 py-2.5 hover:bg-blue-50 transition-colors"
                   >
                     <div>
@@ -863,6 +882,7 @@ export default function ClaimTool() {
                 onChange={e => setMaliciousText(e.target.value)}
                 rows={5}
                 placeholder="例：「SNSで拡散してやる」「弁護士を呼ぶ」「返金しなければ消費者センターに訴える」など、受けたクレームや不当要求の内容を入力してください。"
+                aria-label="悪質クレーム・不当要求の内容を入力する"
                 className="w-full border border-red-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 resize-none"
                 required
               />
@@ -872,6 +892,7 @@ export default function ClaimTool() {
             <button
               type="submit"
               disabled={maliciousLoading}
+              aria-label="悪質クレームへの断り文を生成する"
               className="w-full font-medium py-3 rounded-lg text-white transition-colors bg-red-600 hover:bg-red-700 disabled:bg-red-300"
             >
               {maliciousLoading ? "断り文を生成中..." : "断り文を生成する"}
@@ -897,6 +918,7 @@ export default function ClaimTool() {
                 <div className="relative inline-block">
                   <button
                     onClick={handleMaliciousCopy}
+                    aria-label="生成された断り文をクリップボードにコピーする"
                     className="text-xs px-3 py-1 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 font-medium transition-colors"
                   >
                     {maliciousCopied ? "コピー済み ✓" : "コピー"}
@@ -920,6 +942,8 @@ export default function ClaimTool() {
         {history.length > 0 && (
           <div className="mt-8 bg-white border border-gray-200 rounded-xl p-4">
             <button onClick={() => setShowHistory(!showHistory)}
+              aria-label={showHistory ? "対応履歴を閉じる" : "対応履歴を表示する"}
+              aria-expanded={showHistory}
               className="flex items-center justify-between w-full text-sm font-medium text-gray-700">
               <span>対応履歴（直近{history.length}件）</span>
               <span className="text-gray-400">{showHistory ? "▲ 閉じる" : "▼ 表示する"}</span>
@@ -934,6 +958,7 @@ export default function ClaimTool() {
                     </div>
                     <pre className="text-xs text-gray-700 whitespace-pre-wrap max-h-24 overflow-y-auto leading-relaxed">{item.result.slice(0, 200)}...</pre>
                     <button onClick={() => { navigator.clipboard.writeText(item.result); }}
+                      aria-label={`${item.claimType}の対応文全文をコピーする`}
                       className="text-xs text-blue-600 mt-2 hover:underline">全文をコピー</button>
                   </div>
                 ))}
@@ -944,14 +969,14 @@ export default function ClaimTool() {
       </div>
 
       <footer className="text-center py-6 text-xs text-gray-400 border-t mt-8">
-        <a href="/legal" className="hover:underline">特定商取引法に基づく表記</a>
+        <a href="/legal" aria-label="特定商取引法に基づく表記ページへ" className="hover:underline">特定商取引法に基づく表記</a>
         <span className="mx-2">|</span>
-        <a href="/privacy" className="hover:underline">プライバシーポリシー</a>
+        <a href="/privacy" aria-label="プライバシーポリシーページへ" className="hover:underline">プライバシーポリシー</a>
       </footer>
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button onClick={() => setShowPayjp(false)} aria-label="プレミアムプランモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <div className="text-3xl mb-3 text-center">🆘</div>
             <h2 className="text-lg font-bold mb-2 text-center">プレミアムプラン</h2>
             <p className="text-sm text-gray-500 mb-4 text-center">{selectedPlan === "business" ? "ビジネスプラン — クレーム対応 無制限+専任サポート" : "スタンダードプラン — クレーム対応 無制限"}</p>
