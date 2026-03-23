@@ -428,7 +428,7 @@ function CaseStudiesSection() {
             </button>
           ))}
         </div>
-        <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-white/20 overflow-hidden shadow-sm">
           <div className="p-5 border-b border-gray-100 flex items-center gap-3">
             <span className="text-3xl">{c.icon}</span>
             <div>
@@ -804,7 +804,7 @@ export default function ClaimLP() {
           <p className="text-center text-gray-500 text-sm mb-10">クレーム1件の入力で口頭スクリプト・書面・社内記録・カスハラ判定をまとめて生成</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {FEATURES.map(f => (
-              <div key={f.title} className="bg-white rounded-xl p-6 border border-gray-200">
+              <div key={f.title} className="bg-white/90 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                 <div className="text-2xl mb-2">{f.icon}</div>
                 <h3 className="font-bold text-gray-900 mb-2">{f.title}</h3>
                 <p className="text-sm text-gray-500">{f.desc}</p>
@@ -903,7 +903,7 @@ export default function ClaimLP() {
           <h2 className="text-2xl font-bold text-center mb-10">ご利用者の声</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {VOICES.map((v, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 border border-gray-200">
+              <div key={i} className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border border-white/20">
                 <div className="flex text-yellow-400 text-sm mb-3">{"★★★★★"}</div>
                 <p className="text-sm text-gray-700 mb-3 leading-relaxed">{v.text}</p>
                 <p className="text-xs text-gray-400">{v.role}</p>
@@ -984,7 +984,7 @@ export default function ClaimLP() {
               { q: "複数の店舗やスタッフで共有できますか？", a: "ビジネスプラン（¥9,800/月）ではチームアカウントとして複数スタッフが同じツールを利用できます。対応品質の統一化と、新人スタッフの即戦力化を同時に実現できます。" },
               { q: "クレームの深刻度はどう判定されますか？", a: "感情温度（普通・強い・激しい）、カスハラ疑いの有無、補償要求の有無を組み合わせてAIが法的リスクスコア（1〜10）と緊急度（即日・1週間・余裕あり）を判定します。深刻度に応じた対応文・書面・エスカレーション手順が自動選択されます。" },
             ].map((faq, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 border border-gray-200">
+              <div key={i} className="bg-white/90 backdrop-blur-sm rounded-xl p-5 border border-white/20">
                 <p className="font-semibold text-gray-900 mb-2 text-sm">Q. {faq.q}</p>
                 <p className="text-sm text-gray-600">A. {faq.a}</p>
               </div>
