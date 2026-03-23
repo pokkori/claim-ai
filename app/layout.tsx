@@ -25,12 +25,13 @@ export const metadata: Metadata = {
     siteName: "AIクレーム対応文ジェネレーター",
     locale: "ja_JP",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630 }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "クレームAI - カスハラ対策・クレーム対応文を自動生成" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
+    images: ["/og.png"],
   },
   metadataBase: new URL(SITE_URL),
 };
