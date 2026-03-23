@@ -999,7 +999,7 @@ export default function ClaimLP() {
           <p className="text-center text-gray-400 text-xs font-semibold uppercase tracking-widest mb-6">こんな企業・施設に選ばれています</p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {BTOB_CLIENTS.map(c => (
-              <div key={c.type} className="bg-gray-800 rounded-xl p-4 text-center border border-gray-700">
+              <div key={c.type} className="bg-gray-800/90 backdrop-blur-sm rounded-xl p-4 text-center border border-gray-700">
                 <div className="text-3xl mb-2">{c.icon}</div>
                 <p className="text-white font-bold text-sm mb-0.5">{c.type}</p>
                 <p className="text-gray-400 text-xs mb-2">{c.size}</p>
