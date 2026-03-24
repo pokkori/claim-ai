@@ -305,7 +305,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
   const section = parsed.sections[activeTab];
 
   const scoreNum = levelInfo ? severityToScore(levelInfo) : 6;
-  const shareText = `「クレーム対応文が30秒で完成した🙌 レベル${scoreNum}/10のクレームにも完璧な解決策が出た → https://claim-ai-beryl.vercel.app #カスハラ対策 #クレーム対応AI #2026年義務化`;
+  const shareText = `「クレーム対応文が30秒で完成した🙌 レベル${scoreNum}/10のクレームにも完璧な解決策が出た → https://claim-ai.vercel.app #カスハラ対策 #クレーム対応AI #2026年義務化`;
 
   const handlePrint = () => {
     const html = `<html><head><title>クレーム対応文</title><style>body{font-family:sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;}</style></head><body>${parsed.raw.replace(/</g, "&lt;")}</body></html>`;
@@ -489,7 +489,7 @@ export default function ClaimTool() {
   };
 
   const scoreNum = levelInfo ? severityToScore(levelInfo) : 6;
-  const shareModalText = `クレームAIで対応文が完成しました！レベル${scoreNum}/10のクレームにも即対応できました ✅ → https://claim-ai-beryl.vercel.app #クレーム対応AI #カスハラ対策`;
+  const shareModalText = `クレームAIで対応文が完成しました！レベル${scoreNum}/10のクレームにも即対応できました ✅ → https://claim-ai.vercel.app #クレーム対応AI #カスハラ対策`;
 
   return (
     <main className="min-h-screen bg-gray-50">

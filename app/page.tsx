@@ -1189,7 +1189,7 @@ export default function ClaimLP() {
       {/* X Share */}
       <section className="py-6 px-6 text-center">
         <a
-          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("クレームAI — 理不尽なクレーム・カスハラを15秒でプロ品質の対応文書に変換💼 顧客対応・カスタマーサポートに超便利 → https://claim-ai-beryl.vercel.app #クレーム対応 #カスハラ #AI")}
+          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("クレームAI — 理不尽なクレーム・カスハラを15秒でプロ品質の対応文書に変換💼 顧客対応・カスタマーサポートに超便利 → https://claim-ai.vercel.app #クレーム対応 #カスハラ #AI")}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"

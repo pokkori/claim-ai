@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/success"],
     },
-    sitemap: "https://claim-ai-beryl.vercel.app/sitemap.xml",
+    sitemap: "https://claim-ai.vercel.app/sitemap.xml",
   };
 }
