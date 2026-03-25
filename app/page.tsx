@@ -672,10 +672,13 @@ export default function ClaimLP() {
       )}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900">🆘 クレームAI</span>
-          <Link href="/tool" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700">
-            無料で試す
-          </Link>
+          <span className="font-bold text-gray-900">クレームAI</span>
+          <div className="flex items-center gap-3">
+            <Link href="/btob" aria-label="法人・チーム向けクレームAIプランを見る" className="text-blue-600 hover:text-blue-800 text-sm font-bold hidden sm:inline transition-colors">法人・チーム導入</Link>
+            <Link href="/tool" aria-label="クレーム対応文を無料で生成する" className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700">
+              無料で試す
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -772,7 +775,7 @@ export default function ClaimLP() {
               "2026年10月のカスハラ義務化に向けた対応体制が整っていない",
               "カスタマーハラスメントと正当なクレームの区別がつかない",
             ].map(p => (
-              <div key={p} className="flex gap-3 bg-white rounded-xl p-4 border border-gray-200">
+              <div key={p} className="flex gap-3 backdrop-blur-sm bg-white/80 border border-white/20 shadow-lg rounded-2xl p-4">
                 <span className="text-red-500 text-lg shrink-0">✗</span>
                 <p className="text-sm text-gray-700">{p}</p>
               </div>
@@ -926,7 +929,7 @@ export default function ClaimLP() {
               { name: "スタンダード", price: "¥2,980", sub: "/月", features: ["月100件まで生成", "業種別最適化", "悪質クレーマー断り文", "フィードバック直接対応"], plan: "standard", cta: "今すぐ申し込む", highlight: true },
               { name: "ビジネス", price: "¥9,800", sub: "/月（無制限）", features: ["生成無制限", "チームアカウント", "優先サポート", "カスハラ対応マニュアル"], plan: "business", cta: "申し込む", highlight: false },
             ].map(p => (
-              <div key={p.name} className={`rounded-2xl border p-6 relative ${p.highlight ? "border-blue-500 shadow-lg" : "border-gray-200"}`}>
+              <div key={p.name} className={`backdrop-blur-sm rounded-2xl border p-6 relative ${p.highlight ? "bg-white/90 border-blue-500 shadow-lg" : "bg-white/70 border-white/20 shadow-md"}`}>
                 {p.highlight && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs bg-red-500 text-white px-3 py-0.5 rounded-full whitespace-nowrap">おすすめ</div>
                 )}
