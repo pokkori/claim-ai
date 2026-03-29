@@ -10,14 +10,14 @@ const KEY = "claim_use_count";
 const HISTORY_KEY = "claim_history";
 
 const INDUSTRY_PRESETS = [
-  { icon: "🍽", label: "飲食店" },
-  { icon: "📦", label: "EC・通販" },
-  { icon: "✂", label: "美容・サロン" },
-  { icon: "🏨", label: "ホテル・旅館" },
-  { icon: "🏪", label: "小売店" },
-  { icon: "🏥", label: "医療・介護" },
-  { icon: "💻", label: "IT・SaaS" },
-  { icon: "📞", label: "コールセンター" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "飲食店" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "EC・通販" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "美容・サロン" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 22V12h6v10" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "ホテル・旅館" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "小売店" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "医療・介護" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8M12 17v4" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "IT・SaaS" },
+  { icon: <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" strokeLinecap="round" strokeLinejoin="round"/></svg>, label: "コールセンター" },
 ];
 const CLAIM_TYPE_PRESETS = ["商品・品質不具合", "サービス遅延・キャンセル", "スタッフ対応", "請求・料金トラブル", "安全・衛生問題", "その他"];
 const SEVERITY_OPTIONS = [
@@ -26,9 +26,9 @@ const SEVERITY_OPTIONS = [
   { value: "重度", label: "重度", desc: "脅迫・カスハラ" },
 ];
 const REPLY_STYLE_OPTIONS = [
-  { value: "穏便型", label: "🤝 穏便型", desc: "まず謝罪・関係維持を優先した返答" },
-  { value: "毅然型", label: "⚖️ 毅然型", desc: "事実を明確にし、不当なクレームには毅然と対応" },
-  { value: "記録型", label: "📋 記録型", desc: "証拠保全・エスカレーション準備を意識した返答" },
+  { value: "穏便型", label: "穏便型", desc: "まず謝罪・関係維持を優先した返答" },
+  { value: "毅然型", label: "毅然型", desc: "事実を明確にし、不当なクレームには毅然と対応" },
+  { value: "記録型", label: "記録型", desc: "証拠保全・エスカレーション準備を意識した返答" },
 ];
 
 type Section = { title: string; icon: string; content: string };
@@ -192,10 +192,10 @@ function renderMarkdown(text: string) {
 
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
-    { key: "口頭スクリプト", icon: "💬" },
-    { key: "書面通知文", icon: "📄" },
-    { key: "インシデント記録", icon: "📋" },
-    { key: "別パターン", icon: "✏️" },
+    { key: "口頭スクリプト", icon: "S" },
+    { key: "書面通知文", icon: "D" },
+    { key: "インシデント記録", icon: "R" },
+    { key: "別パターン", icon: "A" },
   ];
   const sections: Section[] = [];
   const parts = text.split(/^---$/m);
@@ -209,7 +209,7 @@ function parseResult(text: string): ParsedResult {
     }
   }
   if (sections.length === 0) {
-    sections.push({ title: "対応文", icon: "💬", content: text });
+    sections.push({ title: "対応文", icon: "S", content: text });
   }
   return { sections, raw: text };
 }
@@ -219,7 +219,7 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center relative">
         <button onClick={onClose} aria-label="ペイウォールモーダルを閉じる" className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">×</button>
-        <div className="text-3xl mb-3">⭐</div>
+        <div className="mb-3"><svg className="w-10 h-10 mx-auto text-yellow-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg></div>
         <h2 className="text-lg font-bold mb-2">無料枠を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-1">クレーム対応文を無制限に生成</p>
         <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
@@ -277,7 +277,7 @@ function CompletionBanner({ visible, levelInfo }: { visible: boolean; levelInfo:
     <div className={`transition-all duration-500 overflow-hidden ${visible ? "max-h-40 opacity-100 mb-4" : "max-h-0 opacity-0"}`}>
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl px-5 py-4 flex flex-col gap-2 shadow-lg">
         <div className="flex items-center gap-2 font-bold text-base">
-          <span className="text-2xl animate-stamp">✅</span>
+          <svg className="w-7 h-7 text-white animate-stamp" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           <span>対応文書 作成完了！</span>
         </div>
         {levelInfo && scoreNum !== null && (
@@ -492,7 +492,7 @@ export default function ClaimTool() {
   const shareModalText = `クレームAIで対応文が完成しました！レベル${scoreNum}/10のクレームにも即対応できました ✅ → https://claim-ai.vercel.app #クレーム対応AI #カスハラ対策`;
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(120,119,198,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%), #0F0F1A' }}>
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} onCheckout={(p) => { setSelectedPlan(p); setShowPayjp(true); }} />}
 
       {/* シェアモーダル */}
@@ -500,7 +500,7 @@ export default function ClaimTool() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4" onClick={() => setShowShareModal(false)}>
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center relative" onClick={e => e.stopPropagation()}>
             <button onClick={() => setShowShareModal(false)} aria-label="シェアモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl font-bold">×</button>
-            <div className="text-3xl mb-3">🎉</div>
+            <div className="mb-3"><svg className="w-10 h-10 mx-auto text-indigo-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
             <h2 className="text-lg font-bold mb-2">対応文が完成しました！</h2>
             <p className="text-sm text-gray-500 mb-4">このクレームへの対応方法をXでシェアしませんか？同じ悩みを持つ方に役立ちます。</p>
             <a
@@ -519,10 +519,10 @@ export default function ClaimTool() {
         </div>
       )}
 
-      <nav className="bg-white border-b px-6 py-4">
+      <nav className="backdrop-blur-sm bg-white/5 border-b border-white/10 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" aria-label="クレームAI トップページへ戻る" className="font-bold text-gray-900">⭐ クレームAI</Link>
-          <span className={`text-xs px-3 py-1 rounded-full ${isLimit ? "bg-red-100 text-red-600" : "bg-blue-100 text-blue-600"}`}>
+          <Link href="/" aria-label="クレームAI トップページへ戻る" className="font-bold text-white flex items-center gap-1.5"><svg className="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" strokeLinecap="round" strokeLinejoin="round"/></svg> クレームAI</Link>
+          <span className={`text-xs px-3 py-1 rounded-full ${isLimit ? "bg-red-500/20 text-red-300" : "bg-indigo-500/20 text-indigo-300"}`}>
             {isLimit ? "無料枠終了" : `無料あと${FREE_LIMIT - count}回`}
           </span>
         </div>
@@ -531,10 +531,10 @@ export default function ClaimTool() {
       <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* 入力フォーム */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <h1 className="text-xl font-bold text-gray-900">クレーム情報を入力</h1>
+          <form onSubmit={handleSubmit} className="space-y-4 backdrop-blur-md bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent">クレーム情報を入力</h1>
             {streak && streak.count > 0 && (
-              <div className="mt-2 inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-3 py-1 text-sm">
+              <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300">
                 <span>{streak.count}日連続利用中</span>
               </div>
             )}
@@ -542,8 +542,8 @@ export default function ClaimTool() {
 
             {/* 業種セレクター */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                業種を選ぶ <span className="text-gray-400 text-xs font-normal">（任意・より正確な対応文になります）</span>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                業種を選ぶ <span className="text-gray-500 text-xs font-normal">（任意・より正確な対応文になります）</span>
               </label>
               <div className="grid grid-cols-4 gap-1.5">
                 {INDUSTRY_PRESETS.map(({ icon, label }) => (
@@ -567,7 +567,7 @@ export default function ClaimTool() {
 
             {/* クレームの状況（必須・1フィールドで即生成可能） */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-1">
                 クレームの状況を1行で <span className="text-red-500">*</span>
               </label>
               {/* よくあるクレームプリセット */}
@@ -589,7 +589,7 @@ export default function ClaimTool() {
               <textarea value={situation} onChange={e => setSituation(e.target.value)} rows={4}
                 placeholder="例：お客様から商品に傷があると電話でお怒りを受けています"
                 aria-label="クレーム状況を入力する"
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" required />
+                className="w-full bg-white/60 border border-white/30 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 focus:shadow-[0_0_15px_rgba(99,102,241,0.15)] resize-none transition-all" required />
               <p className="text-xs text-gray-400 mt-1">これだけで対応文を生成できます。詳細は下から任意で追加できます（{situation.length}/1000文字）</p>
               {severityAnalysis && (
                 <div className="mt-3">
@@ -600,7 +600,7 @@ export default function ClaimTool() {
 
             {/* 返答スタイル選択 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">返答スタイル</label>
+              <label className="block text-sm font-medium text-gray-300 mb-2">返答スタイル</label>
               <div className="flex gap-2 flex-wrap">
                 {REPLY_STYLE_OPTIONS.map(opt => (
                   <button
@@ -639,7 +639,7 @@ export default function ClaimTool() {
                   <p className="text-xs text-gray-500">以下の情報を追加すると、より状況に合った対応文が生成されます。</p>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">クレームの種類（任意）</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">クレームの種類（任意）</label>
                     <div className="flex flex-wrap gap-2 mb-2">
                       {CLAIM_TYPE_PRESETS.map(p => (
                         <button key={p} type="button" onClick={() => setClaimType(claimType === p ? "" : p)}
@@ -651,11 +651,11 @@ export default function ClaimTool() {
                     </div>
                     <input type="text" value={claimType} onChange={e => setClaimType(e.target.value)} placeholder="または直接入力（例: 配送遅延、接客トラブル）"
                       aria-label="クレームの種類を直接入力する"
-                      className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                      className="w-full bg-white/60 border border-white/30 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 focus:shadow-[0_0_15px_rgba(99,102,241,0.15)] transition-all" />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">深刻度（任意）</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-1">深刻度（任意）</label>
                     <div className="flex gap-2">
                       {SEVERITY_OPTIONS.map(s => (
                         <button key={s.value} type="button" onClick={() => setSeverity(s.value)}
@@ -673,8 +673,17 @@ export default function ClaimTool() {
 
             <button type="submit" disabled={loading}
               aria-label="クレーム対応文を生成する"
-              className={`w-full font-medium py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300"}`}>
-              {loading ? "対応文を生成中..." : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
+              className={`w-full font-bold py-4 min-h-[52px] rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-60 disabled:hover:translate-y-0 ${isLimit ? "" : ""}`}
+              style={isLimit
+                ? { background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)', boxShadow: '0 0 20px rgba(249, 115, 22, 0.3), 0 4px 12px rgba(0,0,0,0.15)' }
+                : { background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 20px rgba(99, 102, 241, 0.3), 0 4px 12px rgba(0,0,0,0.15)' }
+              }>
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.3"/><path d="M12 2a10 10 0 0110 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>
+                  対応文を生成中...
+                </span>
+              ) : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
             </button>
 
             {error && <p className="text-sm text-red-500 text-center">{error}</p>}
@@ -683,14 +692,14 @@ export default function ClaimTool() {
           {/* 出力エリア */}
           <div className="flex flex-col">
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-700">生成結果</label>
+              <label className="text-sm font-medium text-gray-300">生成結果</label>
               {levelInfo && (
                 <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
                   levelInfo.color === "red" ? "bg-red-50 text-red-700 border-red-200" :
                   levelInfo.color === "yellow" ? "bg-yellow-50 text-yellow-700 border-yellow-200" :
                   "bg-green-50 text-green-700 border-green-200"
                 }`}>
-                  <span>{levelInfo.color === "red" ? "🔴" : levelInfo.color === "yellow" ? "🟡" : "🟢"}</span>
+                  <span className={`w-2.5 h-2.5 rounded-full inline-block ${levelInfo.color === "red" ? "bg-red-500" : levelInfo.color === "yellow" ? "bg-yellow-500" : "bg-green-500"}`} aria-hidden="true" />
                   <span>クレームレベル: {levelInfo.level}</span>
                   <span className="text-xs font-normal opacity-75">— {levelInfo.reason}</span>
                 </div>
@@ -712,13 +721,21 @@ export default function ClaimTool() {
               </div>
             )}
             {loading && !parsed ? (
-              <div className="flex-1 backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px] shadow-sm">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-3" />
-                  <p className="text-sm text-gray-500 font-medium">AIが対応文を作成中...</p>
-                  <p className="text-xs text-gray-400 mt-2">口頭スクリプト → 書面通知文 → インシデント記録</p>
-                  <p className="text-xs text-gray-300 mt-1">通常10〜15秒かかります</p>
+              <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/30 rounded-2xl shadow-lg flex flex-col items-center justify-center min-h-[420px] p-6">
+                <div className="text-center mb-6">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4" />
+                  <p className="text-sm text-gray-600 font-medium">AIが対応文を作成中...</p>
                 </div>
+                {/* Skeleton pulse */}
+                <div className="w-full space-y-3">
+                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-3/4" />
+                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-full" />
+                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-5/6" />
+                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-2/3" />
+                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-full" />
+                </div>
+                <p className="text-xs text-gray-400 mt-2">口頭スクリプト → 書面通知文 → インシデント記録</p>
+                <p className="text-xs text-gray-300 mt-1">通常10〜15秒かかります</p>
               </div>
             ) : loading && parsed ? (
               <div className="flex-1 backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl p-4 min-h-[420px] shadow-sm">

@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
+import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import PWAInstallBanner from "@/components/PWAInstallBanner";
 import FeedbackButton from "@/components/FeedbackButton";
 import "./globals.css";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-jp",
+});
 
 
 const SITE_URL = "https://claim-ai.vercel.app";
@@ -34,6 +42,7 @@ export const metadata: Metadata = {
     images: ["/og.png"],
   },
   metadataBase: new URL(SITE_URL),
+  other: { "theme-color": "#0B0F1E" },
 };
 
 const jsonLd = {
@@ -68,11 +77,11 @@ const jsonLd = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={`dark ${notoSansJP.variable}`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className="antialiased">
+      <body className={`${notoSansJP.className} antialiased`}>
         {children}
         <PWAInstallBanner />
         <footer className="flex justify-center py-2">

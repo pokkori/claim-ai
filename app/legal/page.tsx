@@ -6,7 +6,7 @@ const ITEMS = [
   { label: "運営責任者", value: "ポッコリラボ 代表 新美" },
   { label: "所在地", value: "非公開（請求があれば遅滞なく開示します）" },
   { label: "お問い合わせ", value: "levonadesign@gmail.com（X: @levona_design）" },
-  { label: "販売価格", value: "スタンダードプラン ¥2,980/月、ビジネスプラン ¥9,800/月（税込）" },
+  { label: "販売価格", value: "スタンダードプラン ¥980/月、ビジネスプラン ¥2,980/月（税込）" },
   { label: "支払方法", value: "クレジットカード（オンライン決済サービス経由）（Visa・Mastercard・American Express・JCB）" },
   { label: "支払時期", value: "お申込み時に即時決済。以降、毎月同日に自動更新" },
   { label: "サービス提供時期", value: "決済完了後、即時ご利用いただけます" },
@@ -17,21 +17,33 @@ const ITEMS = [
 
 export default function LegalPage() {
   return (
-    <div className="min-h-screen bg-white">
-      <nav className="bg-white border-b px-6 py-4">
-        <Link href="/" className="font-bold text-gray-900">AIクレーム対応文</Link>
+    <div className="min-h-screen relative" style={{ background: "linear-gradient(135deg, #0f0b15 0%, #1a1333 25%, #0d1f2d 50%, #1a1333 75%, #0f0b15 100%)" }}>
+      <div className="fixed inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-[0.07]" style={{ background: "radial-gradient(circle, #6366f1, transparent 70%)" }} />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-[0.05]" style={{ background: "radial-gradient(circle, #8b5cf6, transparent 70%)" }} />
+      </div>
+
+      <nav className="relative z-10 border-b border-white/5 px-6 py-4">
+        <Link href="/" className="font-bold text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" stroke="#818cf8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          AIクレーム対応文
+        </Link>
       </nav>
-      <div className="max-w-2xl mx-auto px-6 py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">特定商取引法に基づく表記</h1>
-        <p className="text-gray-500 text-sm mb-8">Act on Specified Commercial Transactions</p>
-        <dl className="space-y-4">
-          {ITEMS.map((item) => (
-            <div key={item.label} className="border-b border-gray-100 pb-4">
-              <dt className="text-sm font-semibold text-gray-500 mb-1">{item.label}</dt>
-              <dd className="text-gray-800 text-sm leading-relaxed">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
+
+      <div className="relative z-10 max-w-2xl mx-auto px-6 py-12">
+        <h1 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">特定商取引法に基づく表記</h1>
+        <p className="text-slate-500 text-sm mb-8">Act on Specified Commercial Transactions</p>
+
+        <div className="rounded-2xl p-6 sm:p-8" style={{ background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}>
+          <dl className="space-y-4">
+            {ITEMS.map((item, i) => (
+              <div key={item.label} className={i < ITEMS.length - 1 ? "border-b border-white/5 pb-4" : "pb-0"}>
+                <dt className="text-sm font-semibold text-slate-400 mb-1">{item.label}</dt>
+                <dd className="text-slate-200 text-sm leading-relaxed">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </div>
   );
