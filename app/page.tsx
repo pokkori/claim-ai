@@ -698,6 +698,40 @@ export default function ClaimLP() {
     : "スタンダードプラン ¥2,980/月";
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              { '@type': 'Question', name: '生成された文章は実際に使えますか？', acceptedAnswer: { '@type': 'Answer', text: 'はい。メール返信文は件名から署名欄まで完全な形で生成されます。状況に応じて固有名詞（店名・担当者名等）を差し替えてご使用ください。' } },
+              { '@type': 'Question', name: 'どんな業種に対応していますか？', acceptedAnswer: { '@type': 'Answer', text: '飲食店・EC通販・美容サロン・ホテル旅館・小売店・医療介護・IT・サービス業など、あらゆる業種に対応しています。業種を選ぶだけで専門的な文章が生成されます。' } },
+              { '@type': 'Question', name: 'モンスタークレーマーへの対応もできますか？', acceptedAnswer: { '@type': 'Answer', text: 'はい。対応トーンで「毅然・プロ」「強硬・法的」を選ぶと、不当要求への断り文言や法的根拠を踏まえた対応文が生成されます。' } },
+              { '@type': 'Question', name: '解約はいつでもできますか？', acceptedAnswer: { '@type': 'Answer', text: 'はい。いつでも解約可能です。解約後は次の更新日まで利用できます。' } },
+              { '@type': 'Question', name: '2026年10月のカスハラ義務化に向けて何を準備すればいいですか？', acceptedAnswer: { '@type': 'Answer', text: '改正労働施策総合推進法により、全事業主に①カスハラ防止方針の策定、②対応マニュアルの整備、③従業員研修の実施、④相談窓口の設置が義務化されます。クレームAIの義務化対策チェックリスト（15項目）で自社の対応状況を確認し、未対応箇所をAIで即整備できます。' } },
+              { '@type': 'Question', name: '東京都のカスハラ対策奨励金は実際に申請できますか？', acceptedAnswer: { '@type': 'Answer', text: '東京都しごと財団が実施する「カスハラ対策奨励金（最大¥40万）」制度です。クレームAIがツール費用の補助対象に該当するかは、申請時に東京都しごと財団にご確認ください。' } },
+              { '@type': 'Question', name: 'クレーム対応の法的根拠はどのように使えばいいですか？', acceptedAnswer: { '@type': 'Answer', text: 'AIが生成する対応文には、消費者契約法・PL法（製造物責任法）・民法709条（不法行為）など関連法条文が自動的に引用されます。書面をそのまま弁護士への相談資料や社内エスカレーション記録としてお使いいただけます。' } },
+              { '@type': 'Question', name: '複数の店舗やスタッフで共有できますか？', acceptedAnswer: { '@type': 'Answer', text: 'ビジネスプラン（¥9,800/月）ではチームアカウントとして複数スタッフが同じツールを利用できます。対応品質の統一化と、新人スタッフの即戦力化を同時に実現できます。' } },
+              { '@type': 'Question', name: 'クレームの深刻度はどう判定されますか？', acceptedAnswer: { '@type': 'Answer', text: '感情温度（普通・強い・激しい）、カスハラ疑いの有無、補償要求の有無を組み合わせてAIが法的リスクスコア（1〜10）と緊急度（即日・1週間・余裕あり）を判定します。' } },
+            ],
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: 'クレームAI',
+            operatingSystem: 'Web',
+            applicationCategory: 'BusinessApplication',
+            offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
+          }).replace(/</g, '\\u003c'),
+        }}
+      />
     <main className="min-h-screen text-white relative" style={{background: T.bg}}>
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
         {[{size:4,x:'10%',y:'20%',dur:'6s',delay:'0s'},{size:3,x:'85%',y:'15%',dur:'8s',delay:'1s'},{size:5,x:'70%',y:'60%',dur:'7s',delay:'2s'},{size:3,x:'25%',y:'75%',dur:'9s',delay:'0.5s'},{size:4,x:'50%',y:'40%',dur:'10s',delay:'3s'},{size:6,x:'90%',y:'80%',dur:'7s',delay:'1.5s'}].map((p,i)=>(<div key={i} className="absolute rounded-full animate-pulse" style={{width:p.size,height:p.size,left:p.x,top:p.y,background:T.particleColor,animationDuration:p.dur,animationDelay:p.delay}}/>))}
@@ -1265,5 +1299,6 @@ export default function ClaimLP() {
       </footer>
       <AdBanner slot="" />
     </main>
+    </>
   );
 }
