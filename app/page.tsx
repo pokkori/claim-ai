@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import KomojuButton from "@/components/KomojuButton";
 import { THEMES } from "@/lib/design-system-themes";
+import { AdBanner } from "@/components/AdBanner";
+import { ShareButtons } from "@/components/ShareButtons";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -1230,19 +1232,19 @@ export default function ClaimLP() {
         </div>
       </section>
 
-      {/* X Share */}
+      {/* シェアセクション */}
       <section className="py-6 px-6 text-center">
-        <a
-          href={"https://twitter.com/intent/tweet?text=" + encodeURIComponent("クレームAI -- 理不尽なクレーム・カスハラを15秒でプロ品質の対応文書に変換。顧客対応・カスタマーサポートに超便利 → https://claim-ai.vercel.app #クレーム対応 #カスハラ #AI")}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-black hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl text-sm transition-colors"
-        >
-          <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-          </svg>
-          Xでシェアする
-        </a>
+        <ShareButtons url="https://claim-ai.vercel.app" text="クレームAIを使ってみた！" hashtags="クレームAI" />
+      </section>
+
+      {/* AI免責バナー */}
+      <section className="px-4 py-6">
+        <div className="max-w-3xl mx-auto bg-yellow-900/30 border border-yellow-700/50 rounded-lg p-3 text-sm text-yellow-200">
+          <p>
+            <svg className="w-4 h-4 inline-block mr-1 -mt-0.5 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            本サービスはAIによる参考情報であり、法的助言ではありません。重大なクレームや法的問題が生じた場合は弁護士にご相談ください。2026年3月時点の法令に基づいています。
+          </p>
+        </div>
       </section>
 
       <footer className="border-t py-6 text-center text-xs text-white/40">
@@ -1261,6 +1263,7 @@ export default function ClaimLP() {
           </div>
         </div>
       </footer>
+      <AdBanner slot="" />
     </main>
   );
 }
