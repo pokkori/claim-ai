@@ -7,6 +7,7 @@ import { THEMES } from "@/lib/design-system-themes";
 import { AdBanner } from "@/components/AdBanner";
 import { ShareButtons } from "@/components/ShareButtons";
 import { StreakBanner } from "@/components/StreakBanner";
+import { CrossSell } from "@/components/CrossSell";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -810,8 +811,9 @@ export default function ClaimLP() {
           </div>
           <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
           <Link href="/tool" className="inline-block font-bold text-lg px-8 py-4 rounded-2xl text-white mb-3 hover:scale-105 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" style={{background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 25px rgba(99, 102, 241, 0.4), 0 4px 15px rgba(0,0,0,0.2)'}}>
-            無料で3回試す →
+            無料でAI対応文を生成 →
           </Link>
+          <p className="text-xs opacity-60 mt-2">※登録不要・30秒で完成</p>
           <p className="text-sm font-semibold text-white/50">クレジットカード不要・登録不要・今すぐ使える</p>
           <div className="mt-4">
             <a href="#btob" className="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 font-semibold border border-blue-200 bg-blue-500/10 px-5 py-2.5 rounded-full transition">
@@ -1285,6 +1287,8 @@ export default function ClaimLP() {
           </p>
         </div>
       </section>
+
+      <CrossSell currentService="クレームAI" />
 
       <footer className="border-t py-6 text-center text-xs text-white/40">
         <div className="space-x-4 mb-3">
