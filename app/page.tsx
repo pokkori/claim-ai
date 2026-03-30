@@ -8,6 +8,7 @@ import { AdBanner } from "@/components/AdBanner";
 import { ShareButtons } from "@/components/ShareButtons";
 import { StreakBanner } from "@/components/StreakBanner";
 import { CrossSell } from "@/components/CrossSell";
+import { TrustBadge } from "@/components/TrustBadge";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -810,6 +811,7 @@ export default function ClaimLP() {
             </div>
           </div>
           <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
+          <TrustBadge />
           <Link href="/tool" className="inline-block font-bold text-lg px-8 py-4 rounded-2xl text-white mb-3 hover:scale-105 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" style={{background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 25px rgba(99, 102, 241, 0.4), 0 4px 15px rgba(0,0,0,0.2)'}}>
             無料でAI対応文を生成 →
           </Link>
