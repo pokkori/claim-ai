@@ -13,6 +13,7 @@ interface KeywordData {
   description: string;
   features: { icon: string; title: string; text: string }[];
   faqs: { q: string; a: string }[];
+  lastUpdated: string;
 }
 
 const KEYWORDS: Record<string, KeywordData> = {
@@ -52,6 +53,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "登録不要・クレジットカード不要で3回まで無料でご利用いただけます。それ以降は月額プランをご利用ください。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "customer-complaint-mail": {
     title: "クレーム メール返信｜AIが敬語・謝罪表現を最適化して自動作成",
@@ -89,6 +91,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "はい。感情温度（軽度・中度・重度）を選択することで、謝罪の深さや敬語レベルを自動調整できます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "insyokuten-claim-taiou": {
     title: "飲食店 クレーム対応｜異物混入・待ち時間・接客態度の対応文をAI生成",
@@ -126,6 +129,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "食品衛生法・消費者契約法・製造物責任法（PL法）が関連します。クレームAIは関連法規を踏まえた適切な対応文を生成し、過度な補償約束を避ける表現を使用します。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "ec-claim-taiou": {
     title: "ECショップ クレーム対応｜配送遅延・商品不良・返品の対応文をAI作成",
@@ -163,6 +167,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "公開レビューには誠実に返信し、個別対応はDM・メールで行うのが基本です。クレームAIは公開返信用とDM用の2パターンの対応文を生成できます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "hotel-claim-taiou": {
     title: "ホテル クレーム対応｜騒音・清掃不備・予約ミスの対応文をAI生成",
@@ -200,6 +205,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "旅行業法・消費者契約法に基づき、代替宿泊先の手配・差額負担・交通費補助が必要です。クレームAIは法的根拠を踏まえた適切な対応文と補償提案を生成します。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "kujou-taiou-manual": {
     title: "苦情対応マニュアル｜業種別チェックリスト付きでAIが自動作成",
@@ -237,6 +243,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "最低でも年1回、法改正時や重大クレーム発生時には都度更新が推奨です。クレームAIなら法改正を反映した最新マニュアルをいつでも再生成できます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "claim-denwa-script": {
     title: "クレーム電話 スクリプト｜話し方のコツ付きでAIが自動生成",
@@ -274,6 +281,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "通話録音は事前告知があれば合法です（「品質向上のため録音させていただきます」等）。カスハラ対策の証拠保全としても有効です。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "monster-customer-taiou": {
     title: "モンスターカスタマー対応｜理不尽なクレームに法的根拠付きで対応",
@@ -311,6 +319,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "改正労働施策総合推進法により、カスハラ対策方針の策定・マニュアル整備・従業員研修・相談窓口の設置が義務化されます。クレームAIで義務化対応を効率的に進められます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "claim-taiou-kenshu": {
     title: "クレーム対応 研修｜AIで研修コスト削減。新人でもプロ品質",
@@ -348,6 +357,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "はい。クレームAIで生成した研修教材と実施記録は、カスハラ義務化対応の証拠書類として保存・提出できます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
   "ayamari-mail-template": {
     title: "お詫びメール テンプレート｜AIが状況に合わせてカスタマイズ",
@@ -385,6 +395,7 @@ const KEYWORDS: Record<string, KeywordData> = {
         a: "はい。社外向けは敬語レベルが高く、法的リスクを考慮した表現になります。社内向けはより具体的な原因分析と再発防止策に重点を置きます。AIが自動で切り替えます。",
       },
     ],
+    lastUpdated: "2026-03-31",
   },
 };
 
@@ -414,6 +425,9 @@ export function generateMetadata({
   return {
     title: kw.title,
     description: kw.description,
+    other: {
+      "article:modified_time": kw.lastUpdated,
+    },
     openGraph: {
       title: kw.title,
       description: kw.description,
@@ -472,6 +486,7 @@ export default function KeywordPage({
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "dateModified": kw.lastUpdated,
     mainEntity: kw.faqs.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -614,6 +629,11 @@ export default function KeywordPage({
             </Link>
           </div>
         </section>
+
+        {/* LastUpdated */}
+        <p className="text-center text-xs text-white/40 mt-8">
+          最終更新: 2026年3月31日
+        </p>
 
         {/* ── CrossSell ── */}
         <section className="max-w-4xl mx-auto px-4 pb-16">
