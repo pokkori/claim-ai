@@ -1,60 +1,84 @@
 import { MetadataRoute } from "next";
 
+const KEYWORD_SLUGS = [
+  "claim-taiou-bun-rei",
+  "customer-complaint-mail",
+  "insyokuten-claim-taiou",
+  "ec-claim-taiou",
+  "hotel-claim-taiou",
+  "kujou-taiou-manual",
+  "claim-denwa-script",
+  "monster-customer-taiou",
+  "claim-taiou-kenshu",
+  "ayamari-mail-template",
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const now = new Date();
+
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: "https://claim-ai.vercel.app",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
       url: "https://claim-ai.vercel.app/tool",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: "https://claim-ai.vercel.app/btob",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: "https://claim-ai.vercel.app/guide/kasuhara",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: "https://claim-ai.vercel.app/business",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: "https://claim-ai.vercel.app/contact",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
       url: "https://claim-ai.vercel.app/legal",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
       url: "https://claim-ai.vercel.app/terms",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
       url: "https://claim-ai.vercel.app/privacy",
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
   ];
+
+  const keywordPages: MetadataRoute.Sitemap = KEYWORD_SLUGS.map((slug) => ({
+    url: `https://claim-ai.vercel.app/keywords/${slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...keywordPages];
 }
