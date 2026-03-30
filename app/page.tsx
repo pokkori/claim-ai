@@ -2,9 +2,11 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import KomojuButton from "@/components/KomojuButton";
+import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
 import { AdBanner } from "@/components/AdBanner";
 import { ShareButtons } from "@/components/ShareButtons";
+import { StreakBanner } from "@/components/StreakBanner";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -764,6 +766,8 @@ export default function ClaimLP() {
         カスハラ対策義務化（2026年10月1日施行）まで{daysLeft !== null ? <strong> あと{daysLeft}日 </strong> : ""}— <strong>全事業主に対策が法的義務</strong>になります。準備はできていますか？
       </div>
 
+      <StreakBanner />
+
       {/* ヒーロー */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 pointer-events-none" />
@@ -804,6 +808,7 @@ export default function ClaimLP() {
               <span className="text-white/60">活用できる可能性あり</span>
             </div>
           </div>
+          <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
           <Link href="/tool" className="inline-block font-bold text-lg px-8 py-4 rounded-2xl text-white mb-3 hover:scale-105 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" style={{background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 25px rgba(99, 102, 241, 0.4), 0 4px 15px rgba(0,0,0,0.2)'}}>
             無料で3回試す →
           </Link>
