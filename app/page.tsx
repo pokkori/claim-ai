@@ -196,8 +196,8 @@ const INDUSTRY_SAMPLE_MAP: Record<string, { sampleIndex?: number; fallback?: { t
 };
 
 function IndustryPreviewSection() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState<string | null>("飲食店");
+  const [visible, setVisible] = useState(true);
 
   const handleSelect = (name: string) => {
     if (selected === name) {
