@@ -6,23 +6,23 @@ import KomojuButton from "@/components/KomojuButton";
 const PAYJP_PUBLIC_KEY = process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY ?? "";
 
 const PROBLEMS = [
-  { icon: "👥", text: "スタッフごとに対応品質がバラバラ" },
-  { icon: "😰", text: "新人が重大クレームに一人で対応してしまう" },
-  { icon: "⚖️", text: "カスハラ判定基準がなく従業員を守れない" },
-  { icon: "📋", text: "2026年10月義務化に向けた対応マニュアルがない" },
-  { icon: "🏪", text: "複数店舗のクレーム対応を統一できていない" },
-  { icon: "📁", text: "証拠記録が残らず、後でトラブルになる" },
-  { icon: "⭐", text: "忙しいとき返信が後回しになりGoogleレビューが放置" },
-  { icon: "🤔", text: "弁護士に相談するほどでもないが判断に困る" },
+  { icon: "人員", text: "スタッフごとに対応品質がバラバラ" },
+  { icon: "課題", text: "新人が重大クレームに一人で対応してしまう" },
+  { icon: "法律", text: "カスハラ判定基準がなく従業員を守れない" },
+  { icon: "書類", text: "2026年10月義務化に向けた対応マニュアルがない" },
+  { icon: "店舗", text: "複数店舗のクレーム対応を統一できていない" },
+  { icon: "記録", text: "証拠記録が残らず、後でトラブルになる" },
+  { icon: "返信", text: "忙しいとき返信が後回しになりGoogleレビューが放置" },
+  { icon: "検討", text: "弁護士に相談するほどでもないが判断に困る" },
 ];
 
 const FEATURES = [
-  { icon: "♾️", title: "AI返信文・カスハラ断り文 生成無制限", desc: "件数上限なし。どの店舗のどのスタッフが使っても統一品質の返信文を即時生成。" },
-  { icon: "📘", title: "カスハラ対応マニュアル（厚労省ガイドライン準拠）", desc: "2026年10月施行の義務化に対応した社内マニュアルのひな型を提供。そのまま社内展開できます。" },
-  { icon: "🏢", title: "複数スタッフ共有・チームアカウント", desc: "ひとつの契約で複数スタッフが利用可能。店舗横断での品質統一を実現します。" },
-  { icon: "🛡️", title: "悪質クレーマーへの毅然とした断り文生成", desc: "カスハラ・恫喝・不当要求に対して、法的に問題のない毅然とした断り文を生成。従業員を守ります。" },
-  { icon: "🚀", title: "優先サポート（24時間以内返信）", desc: "重大クレームが発生したときも安心。専任サポートが24時間以内に対応します。" },
-  { icon: "💰", title: "東京都奨励金¥40万の申請サポート情報提供", desc: "東京都カスハラ対策奨励金（最大¥40万）の申請要件・手続き情報を提供。実質無料化の道筋をサポート。" },
+  { icon: "∞", title: "AI返信文・カスハラ断り文 生成無制限", desc: "件数上限なし。どの店舗のどのスタッフが使っても統一品質の返信文を即時生成。" },
+  { icon: "規則", title: "カスハラ対応マニュアル（厚労省ガイドライン準拠）", desc: "2026年10月施行の義務化に対応した社内マニュアルのひな型を提供。そのまま社内展開できます。" },
+  { icon: "企業", title: "複数スタッフ共有・チームアカウント", desc: "ひとつの契約で複数スタッフが利用可能。店舗横断での品質統一を実現します。" },
+  { icon: "対策", title: "悪質クレーマーへの毅然とした断り文生成", desc: "カスハラ・恫喝・不当要求に対して、法的に問題のない毅然とした断り文を生成。従業員を守ります。" },
+  { icon: "優先", title: "優先サポート（24時間以内返信）", desc: "重大クレームが発生したときも安心。専任サポートが24時間以内に対応します。" },
+  { icon: "コスト", title: "東京都奨励金¥40万の申請サポート情報提供", desc: "東京都カスハラ対策奨励金（最大¥40万）の申請要件・手続き情報を提供。実質無料化の道筋をサポート。" },
 ];
 
 const FAQS = [
@@ -61,7 +61,7 @@ export default function BtobLP() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
             <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
-            <div className="text-3xl mb-3 text-center">🏢</div>
+            <div className="text-base font-bold mb-3 text-center text-blue-700">法人プラン</div>
             <h2 className="text-lg font-bold mb-2 text-center">ビジネスプラン</h2>
             <p className="text-sm text-gray-500 mb-4 text-center">クレーム対応 無制限+専任サポート</p>
             <KomojuButton planId="standard" planLabel="ビジネスプラン ¥9,800/月" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
@@ -72,7 +72,7 @@ export default function BtobLP() {
       {/* ナビゲーション */}
       <nav className="border-b border-gray-100 px-6 py-4 sticky top-0 bg-white/95 backdrop-blur z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-bold text-gray-900">🏢 クレームAI 法人向け</span>
+          <span className="font-bold text-gray-900">クレームAI 法人向け</span>
           <Link
             href="/tool"
             className="bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
@@ -84,7 +84,7 @@ export default function BtobLP() {
 
       {/* カスハラ義務化カウントダウンバナー */}
       <div className="bg-red-600 text-white text-center text-sm font-semibold py-2.5 px-4">
-        🚨 カスハラ対策義務化まであと
+        【警告】カスハラ対策義務化まであと
         {daysLeft !== null ? <strong> {daysLeft}日 </strong> : ""}
         — 2026年10月1日施行
       </div>
@@ -240,7 +240,7 @@ export default function BtobLP() {
       <section className="bg-yellow-50 border-y border-yellow-200 px-6 py-14">
         <div className="max-w-3xl mx-auto text-center">
           <div className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full mb-4 border border-yellow-300">
-            🎁 助成金情報
+            助成金情報
           </div>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
             東京都カスハラ対策奨励金（最大¥40万）で<br className="hidden md:block" />
@@ -355,7 +355,7 @@ export default function BtobLP() {
       <section style={{ backgroundColor: "#1e293b" }} className="px-6 py-20 text-center text-white">
         <div className="max-w-2xl mx-auto">
           <div className="inline-block bg-red-500/20 text-red-300 text-xs font-semibold px-3 py-1 rounded-full border border-red-400/30 mb-6">
-            🚨 2026年10月 義務化まで残り
+            【義務化】2026年10月 残り
             {daysLeft !== null ? <strong> {daysLeft}日</strong> : ""}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
