@@ -29,7 +29,7 @@ const DESC = "クレーム内容を入力するだけ。お詫び文・口頭ス
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
-  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😤</text></svg>" },
+  icons: { icon: "/favicon.ico" },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
     siteName: "AIクレーム対応文ジェネレーター",
     locale: "ja_JP",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "クレームAI - カスハラ対策・クレーム対応文を自動生成" }],
+    images: [{ url: `${SITE_URL}/og.png`, width: 1200, height: 630, alt: "クレームAI - カスハラ対策・クレーム対応文を自動生成" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
-    images: ["/og.png"],
+    images: [`${SITE_URL}/og.png`],
   },
   metadataBase: new URL(SITE_URL),
   other: { "theme-color": "#0B0F1E" },
