@@ -302,6 +302,11 @@ function CompletionBanner({ visible, levelInfo }: { visible: boolean; levelInfo:
   );
 }
 
+function SectionContent({ content }: { content: string }) {
+  const displayed = useTypewriter(content, 15);
+  return <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(displayed) }} />;
+}
+
 function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: LevelInfo | null }) {
   const [activeTab, setActiveTab] = useState(0);
   const section = parsed.sections[activeTab];
@@ -335,7 +340,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
           <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
         </div>
-        <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(section.content) }} />
+        <SectionContent content={section.content} />
       </div>
 
       <div className="flex gap-2 justify-end flex-wrap items-center">
@@ -728,13 +733,13 @@ export default function ClaimTool() {
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4" />
                   <p className="text-sm text-gray-600 font-medium">AIが対応文を作成中...</p>
                 </div>
-                {/* Skeleton pulse */}
+                {/* Shimmer skeleton UI */}
                 <div className="w-full space-y-3">
-                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-3/4" />
-                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-full" />
-                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-5/6" />
-                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-2/3" />
-                  <div className="h-4 bg-gray-200/70 rounded-lg animate-pulse w-full" />
+                  <div className="skeleton h-4 w-3/4" />
+                  <div className="skeleton h-4 w-full" />
+                  <div className="skeleton h-4 w-5/6" />
+                  <div className="skeleton h-4 w-2/3" />
+                  <div className="skeleton h-4 w-full" />
                 </div>
                 <p className="text-xs text-gray-400 mt-2">口頭スクリプト → 書面通知文 → インシデント記録</p>
                 <p className="text-xs text-gray-300 mt-1">通常10〜15秒かかります</p>
