@@ -6,6 +6,7 @@ import Link from "next/link";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import { useTypewriter } from "@/lib/useTypewriter";
+import ConfettiLaunch from "@/components/ConfettiLaunch";
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -335,7 +336,7 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
         ))}
       </div>
 
-      <div className="backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl p-4 min-h-[360px] shadow-sm">
+      <div className="glass-dark rounded-xl p-4 min-h-[360px]">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
           <CopyButton text={section.content} />
@@ -383,6 +384,7 @@ export default function ClaimTool() {
   const [showShareModal, setShowShareModal] = useState(false);
   const [streak, setStreak] = useState<StreakData | null>(null);
   const [streakMsg, setStreakMsg] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // 悪質クレーマー対応モード
   const [maliciousText, setMaliciousText] = useState("");
@@ -473,8 +475,10 @@ export default function ClaimTool() {
       if (msg) setStreakMsg(msg);
       // 達成感バナー表示 + シェアモーダル
       setCompletionVisible(true);
+      setShowConfetti(true);
       setTimeout(() => setCompletionVisible(false), 4000);
       setTimeout(() => setShowShareModal(true), 2000);
+      setTimeout(() => setShowConfetti(false), 4000);
 
       const newItem: HistoryItem = { date: new Date().toLocaleDateString("ja-JP"), claimType: claimType || "一般", severity, result: accumulated };
       const newHistory = [newItem, ...history].slice(0, 10);
@@ -500,6 +504,7 @@ export default function ClaimTool() {
 
   return (
     <main className="min-h-screen" style={{ background: 'radial-gradient(ellipse at 20% 50%, rgba(120,119,198,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(255,119,198,0.1) 0%, transparent 50%), #0F0F1A' }}>
+      <ConfettiLaunch trigger={showConfetti} message="対応文が完成！" />
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} onCheckout={(p) => { setSelectedPlan(p); setShowPayjp(true); }} />}
 
       {/* シェアモーダル */}
