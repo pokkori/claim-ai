@@ -1,9 +1,11 @@
 "use client";
 import KomojuButton from "@/components/KomojuButton";
+import { GlowButton } from "@/components/GlowButton";
 import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
+import { useTypewriter } from "@/lib/useTypewriter";
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -532,7 +534,7 @@ export default function ClaimTool() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* 入力フォーム */}
           <form onSubmit={handleSubmit} className="space-y-4 backdrop-blur-md bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent">クレーム情報を入力</h1>
+            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-rounded)' }}>クレーム情報を入力</h1>
             {streak && streak.count > 0 && (
               <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300">
                 <span>{streak.count}日連続利用中</span>
@@ -671,21 +673,20 @@ export default function ClaimTool() {
               )}
             </div>
 
-            <button type="submit" disabled={loading}
+            <GlowButton
+              type="submit"
+              disabled={loading}
               aria-label={loading ? "クレーム対応文を生成中" : "クレーム対応文を生成する"}
               aria-busy={loading}
-              className={`w-full font-bold py-4 min-h-[52px] rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-60 disabled:hover:translate-y-0 ${isLimit ? "" : ""}`}
-              style={isLimit
-                ? { background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)', boxShadow: '0 0 20px rgba(249, 115, 22, 0.3), 0 4px 12px rgba(0,0,0,0.15)' }
-                : { background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 20px rgba(99, 102, 241, 0.3), 0 4px 12px rgba(0,0,0,0.15)' }
-              }>
+              variant={isLimit ? "danger" : "primary"}
+            >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
+                <span className="flex items-center gap-2">
                   <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.3"/><path d="M12 2a10 10 0 0110 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/></svg>
                   対応文を生成中...
                 </span>
               ) : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
-            </button>
+            </GlowButton>
 
             {error && <p className="text-sm text-red-500 text-center" role="alert">{error}</p>}
           </form>
@@ -722,7 +723,7 @@ export default function ClaimTool() {
               </div>
             )}
             {loading && !parsed ? (
-              <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/30 rounded-2xl shadow-lg flex flex-col items-center justify-center min-h-[420px] p-6">
+              <div className="flex-1 flex flex-col items-center justify-center min-h-[420px] p-6" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }}>
                 <div className="text-center mb-6">
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4" />
                   <p className="text-sm text-gray-600 font-medium">AIが対応文を作成中...</p>
@@ -739,7 +740,7 @@ export default function ClaimTool() {
                 <p className="text-xs text-gray-300 mt-1">通常10〜15秒かかります</p>
               </div>
             ) : loading && parsed ? (
-              <div className="flex-1 backdrop-blur-sm bg-white/95 border border-gray-200 rounded-xl p-4 min-h-[420px] shadow-sm">
+              <div className="flex-1 p-4 min-h-[420px]" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }}>
                 <div className="flex items-center gap-2 mb-3">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600" />
                   <span className="text-xs text-gray-500">AIが対応文を生成中...</span>
@@ -907,15 +908,15 @@ export default function ClaimTool() {
               <p className="text-xs text-gray-400 mt-1">受けたクレーム内容をそのまま貼り付けてください（{maliciousText.length}/1000文字）</p>
             </div>
 
-            <button
+            <GlowButton
               type="submit"
               disabled={maliciousLoading}
               aria-label={maliciousLoading ? "断り文を生成中" : "悪質クレームへの断り文を生成する"}
               aria-busy={maliciousLoading}
-              className="w-full font-medium py-3 rounded-lg text-white transition-colors bg-red-600 hover:bg-red-700 disabled:bg-red-300"
+              variant="danger"
             >
               {maliciousLoading ? "断り文を生成中..." : "断り文を生成する"}
-            </button>
+            </GlowButton>
 
             {maliciousError && <p className="text-sm text-red-500 text-center" role="alert">{maliciousError}</p>}
           </form>
