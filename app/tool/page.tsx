@@ -672,7 +672,8 @@ export default function ClaimTool() {
             </div>
 
             <button type="submit" disabled={loading}
-              aria-label="クレーム対応文を生成する"
+              aria-label={loading ? "クレーム対応文を生成中" : "クレーム対応文を生成する"}
+              aria-busy={loading}
               className={`w-full font-bold py-4 min-h-[52px] rounded-xl text-white transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-60 disabled:hover:translate-y-0 ${isLimit ? "" : ""}`}
               style={isLimit
                 ? { background: 'linear-gradient(135deg, #F97316 0%, #EA580C 100%)', boxShadow: '0 0 20px rgba(249, 115, 22, 0.3), 0 4px 12px rgba(0,0,0,0.15)' }
@@ -686,7 +687,7 @@ export default function ClaimTool() {
               ) : isLimit ? "有料プランに申し込む" : "対応文を生成する（無料）"}
             </button>
 
-            {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+            {error && <p className="text-sm text-red-500 text-center" role="alert">{error}</p>}
           </form>
 
           {/* 出力エリア */}
@@ -909,13 +910,14 @@ export default function ClaimTool() {
             <button
               type="submit"
               disabled={maliciousLoading}
-              aria-label="悪質クレームへの断り文を生成する"
+              aria-label={maliciousLoading ? "断り文を生成中" : "悪質クレームへの断り文を生成する"}
+              aria-busy={maliciousLoading}
               className="w-full font-medium py-3 rounded-lg text-white transition-colors bg-red-600 hover:bg-red-700 disabled:bg-red-300"
             >
               {maliciousLoading ? "断り文を生成中..." : "断り文を生成する"}
             </button>
 
-            {maliciousError && <p className="text-sm text-red-500 text-center">{maliciousError}</p>}
+            {maliciousError && <p className="text-sm text-red-500 text-center" role="alert">{maliciousError}</p>}
           </form>
 
           {maliciousLoading && (
