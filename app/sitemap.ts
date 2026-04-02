@@ -18,55 +18,55 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages: MetadataRoute.Sitemap = [
     {
-      url: "https://claim-ai.vercel.app",
+      url: "https://claim-ai-beryl.vercel.app",
       lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: "https://claim-ai.vercel.app/tool",
+      url: "https://claim-ai-beryl.vercel.app/tool",
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: "https://claim-ai.vercel.app/btob",
+      url: "https://claim-ai-beryl.vercel.app/btob",
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
-      url: "https://claim-ai.vercel.app/guide/kasuhara",
+      url: "https://claim-ai-beryl.vercel.app/guide/kasuhara",
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
-      url: "https://claim-ai.vercel.app/business",
+      url: "https://claim-ai-beryl.vercel.app/business",
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
-      url: "https://claim-ai.vercel.app/contact",
+      url: "https://claim-ai-beryl.vercel.app/contact",
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.5,
     },
     {
-      url: "https://claim-ai.vercel.app/legal",
+      url: "https://claim-ai-beryl.vercel.app/legal",
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
-      url: "https://claim-ai.vercel.app/terms",
+      url: "https://claim-ai-beryl.vercel.app/terms",
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
     },
     {
-      url: "https://claim-ai.vercel.app/privacy",
+      url: "https://claim-ai-beryl.vercel.app/privacy",
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.3,
@@ -74,7 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const keywordPages: MetadataRoute.Sitemap = KEYWORD_SLUGS.map((slug) => ({
-    url: `https://claim-ai.vercel.app/keywords/${slug}`,
+    url: `https://claim-ai-beryl.vercel.app/keywords/${slug}`,
     lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.7,

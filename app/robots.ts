@@ -21,6 +21,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://claim-ai.vercel.app/sitemap.xml",
+    sitemap: "https://claim-ai-beryl.vercel.app/sitemap.xml",
   };
 }
