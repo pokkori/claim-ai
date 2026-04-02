@@ -24,7 +24,7 @@ const mPlusRounded = M_PLUS_Rounded_1c({
 });
 
 
-const SITE_URL = "https://claim-ai.vercel.app";
+const SITE_URL = "https://claim-ai-beryl.vercel.app";
 const TITLE = "クレームAI｜カスハラ対策・クレーム対応文を15秒で自動生成【2026年義務化対応】";
 const DESC = "クレーム内容を入力するだけ。お詫び文・口頭スクリプト・社内記録・カスハラ判定の4種をAIが自動生成。2026年10月義務化対応チェックリスト付き。飲食・EC・ホテル・美容など業種別対応。登録不要・無料3回。";
 
