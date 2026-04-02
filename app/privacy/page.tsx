@@ -66,6 +66,16 @@ export default function PrivacyPage() {
           </div>
 
           <div>
+            <h2 className="font-bold text-gray-900 mb-2">6-2. 外部送信について</h2>
+            <p>本サービスでは以下の第三者サービスを利用しており、お客様の情報が外部に送信される場合があります。</p>
+            <ul className="list-disc ml-4 mt-2 space-y-1">
+              <li><strong>Google Analytics（Google LLC）</strong>: アクセス解析のため、Cookie・IPアドレス・行動データを送信します。<a href="https://policies.google.com/privacy" target="_blank" rel="noopener" className="underline">Googleのプライバシーポリシー</a></li>
+              <li><strong>Vercel Analytics（Vercel Inc.）</strong>: パフォーマンス計測のため、アクセスデータを送信します。</li>
+            </ul>
+            <p className="mt-2">上記ツールの利用停止（オプトアウト）をご希望の場合は、<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener" className="underline">Google アナリティクス オプトアウトアドオン</a>をご利用ください。</p>
+          </div>
+
+          <div>
             <h2 className="font-bold text-gray-900 mb-2">7. 免責事項</h2>
             <p>本サービスが生成するコンテンツはAIによる自動生成であり、情報提供を目的としています。生成内容の正確性・適切性を保証するものではありません。実際のクレーム対応については専門家にご相談ください。</p>
           </div>
