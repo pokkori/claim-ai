@@ -17,6 +17,8 @@
     "@google/generative-ai": "^0.24.1",
     "@sentry/nextjs": "^10.47.0",
     "@supabase/supabase-js": "^2.99.0",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.37.0",
     "@vercel/analytics": "^1.6.1",
     "@vercel/speed-insights": "^2.0.0",
     "motion": "^12.38.0",
