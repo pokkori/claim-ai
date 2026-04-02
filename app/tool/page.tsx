@@ -443,7 +443,13 @@ export default function ClaimTool() {
       if (res.status === 429) { track('paywall_shown', { service: 'クレームAI' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || "少し時間を置いてもう一度お試しください 🙏"); setLoading(false); return;
+        const rawMsg: string = data.error || "少し時間を置いてもう一度お試しください";
+        const friendlyMsg = rawMsg.includes("429") || rawMsg.toLowerCase().includes("rate")
+          ? "アクセスが集中しています。しばらくお待ちください。"
+          : rawMsg.includes("529") || rawMsg.toLowerCase().includes("overload")
+          ? "AIサーバーが混雑しています。少し待ってから再試行してください。"
+          : rawMsg;
+        setError(friendlyMsg); setLoading(false); return;
       }
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -484,7 +490,16 @@ export default function ClaimTool() {
       const newHistory = [newItem, ...history].slice(0, 10);
       setHistory(newHistory);
       localStorage.setItem(HISTORY_KEY, JSON.stringify(newHistory));
-    } catch { setError("少し時間を置いてもう一度お試しください 🙏"); }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      setError(
+        msg.includes("429") || msg.toLowerCase().includes("rate")
+          ? "アクセスが集中しています。しばらくお待ちください。"
+          : msg.includes("529") || msg.toLowerCase().includes("overload")
+          ? "AIサーバーが混雑しています。少し待ってから再試行してください。"
+          : "少し時間を置いてもう一度お試しください。"
+      );
+    }
     finally { setLoading(false); }
   };
 
