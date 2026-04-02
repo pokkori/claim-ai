@@ -7,6 +7,7 @@ import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 import { useTypewriter } from "@/lib/useTypewriter";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
+import { UsageCounter } from "@/components/UsageCounter";
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -559,6 +560,7 @@ export default function ClaimTool() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* 入力フォーム */}
           <form onSubmit={handleSubmit} className="space-y-4 backdrop-blur-md bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+            <div className="mb-1 max-w-xs"><UsageCounter /></div>
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-300 via-indigo-200 to-purple-300 bg-clip-text text-transparent" style={{ fontFamily: 'var(--font-rounded)' }}>クレーム情報を入力</h1>
             {streak && streak.count > 0 && (
               <div className="mt-2 inline-flex items-center gap-2 bg-orange-500/20 border border-orange-400/30 rounded-full px-3 py-1 text-sm text-orange-300">
