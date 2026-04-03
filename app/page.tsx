@@ -732,6 +732,8 @@ export default function ClaimLP() {
             name: 'クレームAI',
             operatingSystem: 'Web',
             applicationCategory: 'BusinessApplication',
+            description: 'クレーム・カスタマーハラスメント対応メール文を業種・状況・感情温度から即生成。法的リスクスコア判定・義務化対策チェックリスト15項目・2026年10月のカスハラ法改正対応機能を搭載したビジネス向けWebツール。',
+            url: 'https://claim-ai-beryl.vercel.app',
             offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
           }).replace(/</g, '\\u003c'),
         }}
