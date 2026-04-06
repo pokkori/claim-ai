@@ -407,7 +407,7 @@ export default function BusinessLP() {
             {PROBLEMS.map(p => (
               <div key={p.title} className="bg-white rounded-xl p-5 border border-gray-100">
                 <p className="font-semibold text-gray-900 mb-2 flex items-start gap-2">
-                  <span className="text-red-500 shrink-0 mt-0.5">✗</span>{p.title}
+                  <svg className="w-4 h-4 text-red-500 shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>{p.title}
                 </p>
                 <p className="text-sm text-gray-500 flex items-start gap-2">
                   <span className="text-green-500 shrink-0 mt-0.5">→</span>{p.desc}
@@ -468,7 +468,7 @@ export default function BusinessLP() {
                 <ul className="space-y-2 mb-6 flex-1">
                   {plan.features.map(f => (
                     <li key={f} className="text-sm text-gray-600 flex items-start gap-2">
-                      <span className="text-green-500 shrink-0">✓</span>{f}
+                      <svg className="w-4 h-4 text-green-500 shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>{f}
                     </li>
                   ))}
                 </ul>

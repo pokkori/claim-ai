@@ -19,7 +19,7 @@ export default function PWAInstallBanner() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 bg-blue-600 text-white p-3 rounded-xl flex items-center justify-between z-50 shadow-lg">
-      <span className="text-sm font-medium">📱 ホーム画面に追加して素早くアクセス</span>
+      <span className="text-sm font-medium flex items-center gap-1.5"><svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1" width="10" height="14" rx="2" stroke="currentColor" strokeWidth="1.5"/><circle cx="8" cy="12.5" r="0.75" fill="currentColor"/></svg>ホーム画面に追加して素早くアクセス</span>
       <button
         onClick={async () => {
           await deferredPrompt?.prompt();
