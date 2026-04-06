@@ -9,16 +9,25 @@ export async function POST(req: Request) {
     const signature = req.headers.get('x-komoju-signature')
     const webhookSecret = process.env.KOMOJU_WEBHOOK_SECRET
 
-    if (webhookSecret && signature) {
-      const expected = crypto.createHmac('sha256', webhookSecret).update(body).digest('hex')
-      if (expected !== signature) {
-        console.error('Komoju webhook: invalid signature')
-        return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
-      }
+    if (!webhookSecret) {
+      console.error('Komoju webhook: KOMOJU_WEBHOOK_SECRET not set')
+      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
+    }
+    if (!signature) {
+      console.error('Komoju webhook: missing signature header')
+      return NextResponse.json({ error: 'Missing signature' }, { status: 401 })
+    }
+    const expected = crypto.createHmac('sha256', webhookSecret).update(body).digest('hex')
+    const expectedBuf = Buffer.from(expected, 'hex')
+    const signatureBuf = Buffer.from(signature, 'hex')
+    const valid = expectedBuf.length === signatureBuf.length &&
+      crypto.timingSafeEqual(expectedBuf, signatureBuf)
+    if (!valid) {
+      console.error('Komoju webhook: invalid signature')
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
     }
 
     const event = JSON.parse(body)
-    console.log('Komoju webhook received:', event.type, event.data?.object?.id)
 
     switch (event.type) {
       case 'payment.captured':
@@ -28,13 +37,13 @@ export async function POST(req: Request) {
         console.log('Payment failed:', event.data?.object?.id)
         break
       default:
-        console.log('Unhandled event type:', event.type)
+        break
     }
 
     return NextResponse.json({ received: true })
-  } catch (e) {
-    console.error('Komoju webhook error:', e)
-    return NextResponse.json({ error: String(e) }, { status: 500 })
+  } catch {
+    console.error('Komoju webhook error')
+    return NextResponse.json({ error: 'Processing failed' }, { status: 500 })
   }
 }
 
