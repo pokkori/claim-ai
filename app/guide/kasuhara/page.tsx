@@ -68,31 +68,51 @@ const steps = [
     step: "01",
     title: "録音・記録を残す",
     desc: "電話対応は録音、対面は複数スタッフで対応。「記録のため確認させてください」と伝えるだけで抑止効果あり。",
-    icon: "🎙️",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-orange-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm6.364 9.636a.75.75 0 0 1 .75.75 7 7 0 0 1-13.228 3.223A7 7 0 0 1 4.886 11.386a.75.75 0 0 1 1.5 0 5.5 5.5 0 0 0 11 0 .75.75 0 0 1 .75-.75h.228zM12 18.5a.75.75 0 0 1 .75.75v2a.75.75 0 0 1-1.5 0v-2A.75.75 0 0 1 12 18.5z"/>
+      </svg>
+    ),
   },
   {
     step: "02",
     title: "感情ではなく事実で対応",
     desc: "「何が問題か」「どう対応できるか」を冷静に確認。謝罪の連発は過失を認めることになるため注意。",
-    icon: "📋",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-orange-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M8 4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v1h2a1 1 0 0 1 1 1v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a1 1 0 0 1 1-1h2V4zm6 1V4H10v1h4zM7 7v12h10V7H7zm2 3h6v1H9v-1zm0 3h6v1H9v-1zm0 3h4v1H9v-1z"/>
+      </svg>
+    ),
   },
   {
     step: "03",
     title: "「できること」と「できないこと」を明確に",
     desc: "規約・法律・会社方針に基づき、対応できる範囲を明示。不当要求には「規定上対応できません」と伝える。",
-    icon: "⚖️",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-orange-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2l1.5 4.5H18l-3.75 2.75 1.5 4.5L12 11l-3.75 2.75 1.5-4.5L6 6.5h4.5L12 2zm-7 14h14a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2zm2 3h10a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2z"/>
+      </svg>
+    ),
   },
   {
     step: "04",
     title: "エスカレーション基準を設ける",
     desc: "暴言・脅迫・長時間拘束が発生したら上長対応または退去要請へ。スタッフ1人に任せない体制を作る。",
-    icon: "🔺",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-orange-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path fillRule="evenodd" d="M11.47 2.47a.75.75 0 0 1 1.06 0l6 6a.75.75 0 0 1-1.06 1.06L13 5.06V19a.75.75 0 0 1-1.5 0V5.06l-4.47 4.47a.75.75 0 0 1-1.06-1.06l6-6z" clipRule="evenodd"/>
+      </svg>
+    ),
   },
   {
     step: "05",
     title: "最終回答を明示して終了",
     desc: "「これが弊社の最終回答です」と伝え、それ以上の対応は困難と明示。第三者機関（消費者センター）を案内。",
-    icon: "🏁",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-orange-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53-1.9-1.9a.75.75 0 0 0-1.06 1.06l2.5 2.5a.75.75 0 0 0 1.14-.094l3.776-5.224z" clipRule="evenodd"/>
+      </svg>
+    ),
   },
 ];
 
@@ -166,7 +186,7 @@ export default function KasuharaGuidePage() {
           <div className="space-y-4">
             {steps.map((s) => (
               <div key={s.step} className="flex gap-6 bg-gray-900 rounded-2xl p-6">
-                <div className="text-4xl shrink-0">{s.icon}</div>
+                <div className="shrink-0 flex items-start">{s.icon}</div>
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span className="bg-orange-500 text-black text-xs font-black px-2 py-0.5 rounded">STEP {s.step}</span>
