@@ -313,7 +313,7 @@ export default function BusinessLP() {
 
       {/* カスハラ法制化バナー */}
       <div className="bg-amber-50 border-b border-amber-200 px-6 py-3 text-center text-sm text-amber-800">
-        <span className="font-bold">📢 2026年10月施行</span>：カスタマーハラスメント対策法により、企業のクレーム対応マニュアル整備が義務化。
+        <span className="font-bold">2026年10月施行</span>：カスタマーハラスメント対策法により、企業のクレーム対応マニュアル整備が義務化。
         <span className="font-bold ml-1">今すぐAIで対応品質を標準化しましょう。</span>
       </div>
 
