@@ -113,7 +113,8 @@ export default function KasuharaGuidePage() {
       <section className="py-16 px-4 text-center bg-gradient-to-b from-gray-900 to-gray-950">
         <div className="max-w-4xl mx-auto">
           <div className="inline-block bg-amber-900 text-amber-300 text-xs font-bold px-3 py-1 rounded-full mb-6">
-            🚨 2025年4月施行：カスタマーハラスメント対策法 完全対応
+            <svg className="inline-block w-3.5 h-3.5 mr-1 align-text-bottom" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd"/></svg>
+            2025年4月施行：カスタマーハラスメント対策法 完全対応
           </div>
           <h1 className="text-3xl md:text-5xl font-black mb-6 leading-tight">
             カスタマーハラスメント<br />
@@ -208,7 +209,7 @@ export default function KasuharaGuidePage() {
                       </div>
                     </div>
                     <div className="bg-blue-900/30 rounded-lg px-4 py-2">
-                      <span className="text-blue-300 text-xs font-bold">💡 ポイント: </span>
+                      <span className="text-blue-300 text-xs font-bold">ポイント: </span>
                       <span className="text-gray-300 text-xs">{c.point}</span>
                     </div>
                   </div>

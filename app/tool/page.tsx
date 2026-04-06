@@ -406,9 +406,9 @@ export default function ClaimTool() {
         body: JSON.stringify({ claimText: maliciousText }),
       });
       const data = await res.json();
-      if (!res.ok) { setMaliciousError(data.error || "少し時間を置いてもう一度お試しください 🙏"); return; }
+      if (!res.ok) { setMaliciousError(data.error || "少し時間を置いてもう一度お試しください"); return; }
       setMaliciousResult(data.result || "");
-    } catch { setMaliciousError("少し時間を置いてもう一度お試しください 🙏"); }
+    } catch { setMaliciousError("少し時間を置いてもう一度お試しください"); }
     finally { setMaliciousLoading(false); }
   };
 
@@ -602,11 +602,11 @@ export default function ClaimTool() {
               {/* よくあるクレームプリセット */}
               <div className="mb-2 flex flex-wrap gap-1.5">
                 {[
-                  { label: "📦 商品不良", text: "お客様から商品に傷・汚れがあったとお怒りの電話を受けています。" },
-                  { label: "🚚 配送遅延", text: "注文から2週間経っても商品が届かないと、お客様から強いお怒りを受けています。" },
-                  { label: "😠 接客対応", text: "スタッフの言葉遣いが悪かったとのお申し出があり、「謝罪しろ」「責任者を出せ」とのクレームを受けています。" },
-                  { label: "💴 返金要求", text: "購入した商品が説明と違うとして、全額返金と慰謝料を要求されています。" },
-                  { label: "📱 SNS脅迫", text: "対応が悪いとして「SNSで晒す」「口コミに書く」と脅され、不当な要求を受けています。" },
+                  { label: "商品不良", text: "お客様から商品に傷・汚れがあったとお怒りの電話を受けています。" },
+                  { label: "配送遅延", text: "注文から2週間経っても商品が届かないと、お客様から強いお怒りを受けています。" },
+                  { label: "接客対応", text: "スタッフの言葉遣いが悪かったとのお申し出があり、「謝罪しろ」「責任者を出せ」とのクレームを受けています。" },
+                  { label: "返金要求", text: "購入した商品が説明と違うとして、全額返金と慰謝料を要求されています。" },
+                  { label: "SNS脅迫", text: "対応が悪いとして「SNSで晒す」「口コミに書く」と脅され、不当な要求を受けています。" },
                 ].map((p) => (
                   <button key={p.label} type="button" onClick={() => setSituation(p.text)}
                     aria-label={`${p.label}をクレーム状況として使用する`}
@@ -800,27 +800,27 @@ export default function ClaimTool() {
                   aria-label="別のパターンでクレーム対応文を再生成する"
                   className="mt-2 text-sm text-gray-500 underline hover:text-gray-700 disabled:opacity-40"
                 >
-                  🔄 別のパターンで再生成
+                  再生成（別のパターン）
                 </button>
                 {/* 次のアクション3選 */}
                 <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
-                  <p className="text-sm font-bold text-blue-800 mb-3">📋 次にやるべきこと3選</p>
+                  <p className="text-sm font-bold text-blue-800 mb-3">次にやるべきこと3選</p>
                   <ol className="space-y-2">
                     {[
-                      { icon: "📝", text: "上長・責任者に今回のクレーム対応を報告・共有する" },
-                      { icon: "🗂️", text: "クレーム記録票に日時・内容・対応方法を記録する" },
-                      { icon: "📞", text: "悪質なケースは弁護士・警察・消費生活センターへ相談する" },
-                    ].map((item, i) => (
+                      "上長・責任者に今回のクレーム対応を報告・共有する",
+                      "クレーム記録票に日時・内容・対応方法を記録する",
+                      "悪質なケースは弁護士・警察・消費生活センターへ相談する",
+                    ].map((text, i) => (
                       <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                        <span className="text-lg leading-none">{item.icon}</span>
-                        <span>{i + 1}. {item.text}</span>
+                        <span className="font-bold text-blue-600 shrink-0">{i + 1}.</span>
+                        <span>{text}</span>
                       </li>
                     ))}
                   </ol>
                 </div>
                 {/* 通信費見直しアフィリエイト（A8.net ビッグローブ光） */}
                 <div className="mt-4 bg-green-950 border border-green-800 rounded-xl p-4">
-                  <p className="text-sm font-black text-green-300 mb-1">💡 業務コスト削減のヒント</p>
+                  <p className="text-sm font-black text-green-300 mb-1">業務コスト削減のヒント</p>
                   <p className="text-xs text-green-400 mb-3">クレーム対応と並行して通信費の見直しも。最短即日キャッシュバックで経費削減。</p>
                   <a
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+8D9CVM+3HKU+1BNBJN"
@@ -858,7 +858,7 @@ export default function ClaimTool() {
 
                 {/* SOELUアフィリエイト（A8.net）*/}
                 <div className="mt-4 bg-green-50 border border-green-200 rounded-xl p-4">
-                  <p className="text-sm font-black text-green-800 mb-1">🧘 クレーム対応で疲れたら、ヨガでリセット</p>
+                  <p className="text-sm font-black text-green-800 mb-1">クレーム対応で疲れたら、ヨガでリセット</p>
                   <p className="text-xs text-green-700 mb-3">オンラインヨガSOELUで心身のリフレッシュを。初月無料・スマホで自宅から受講できます。</p>
                   <a
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+8OKLDE+4EPM+63OY9"
@@ -877,7 +877,7 @@ export default function ClaimTool() {
                 </div>
                 {/* FPカフェアフィリエイト（A8.net）*/}
                 <div className="mt-4 bg-blue-50 border border-blue-200 rounded-xl p-4">
-                  <p className="text-sm font-black text-blue-800 mb-1">💰 専門家に相談する（PR）</p>
+                  <p className="text-sm font-black text-blue-800 mb-1">専門家に相談する（PR）</p>
                   <p className="text-xs text-blue-700 mb-3">法的問題・弁護士費用の資金繰りもFPに相談。無料でお金の専門家に相談できます。</p>
                   <a
                     href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+2SMA0I+5ULO+5YZ75"
@@ -901,9 +901,9 @@ export default function ClaimTool() {
                 <p className="text-sm text-center font-medium text-gray-500">クレーム状況を入力して<br />生成ボタンを押してください</p>
                 <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
                   <p className="font-semibold text-gray-600">生成される内容：</p>
-                  <p className="text-gray-500">💬 口頭スクリプト（電話・対面対応用）</p>
-                  <p className="text-gray-500">📄 書面通知文（メール・FAX送付用）</p>
-                  <p className="text-gray-500">📋 インシデント記録テンプレート</p>
+                  <p className="text-gray-500">口頭スクリプト（電話・対面対応用）</p>
+                  <p className="text-gray-500">書面通知文（メール・FAX送付用）</p>
+                  <p className="text-gray-500">インシデント記録テンプレート</p>
                 </div>
               </div>
             )}
@@ -1024,7 +1024,9 @@ export default function ClaimTool() {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
             <button onClick={() => setShowPayjp(false)} aria-label="プレミアムプランモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
-            <div className="text-3xl mb-3 text-center">🆘</div>
+            <div className="mb-3 text-center flex justify-center">
+              <svg className="w-10 h-10 text-blue-600" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="currentColor"/></svg>
+            </div>
             <h2 className="text-lg font-bold mb-2 text-center">プレミアムプラン</h2>
             <p className="text-sm text-gray-500 mb-4 text-center">{selectedPlan === "business" ? "ビジネスプラン — クレーム対応 無制限+専任サポート" : "スタンダードプラン — クレーム対応 無制限"}</p>
             <KomojuButton planId="standard" planLabel={selectedPlan === "business" ? "ビジネス ¥9,800/月" : "スタンダード ¥2,980/月"} className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
