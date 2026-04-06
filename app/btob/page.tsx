@@ -60,7 +60,7 @@ export default function BtobLP() {
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400" aria-label="閉じる"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <div className="text-base font-bold mb-3 text-center text-blue-700">法人プラン</div>
             <h2 className="text-lg font-bold mb-2 text-center">ビジネスプラン</h2>
             <p className="text-sm text-gray-500 mb-4 text-center">クレーム対応 無制限+専任サポート</p>
