@@ -33,7 +33,7 @@ function DemoForm({ accentColor, serviceName }: { accentColor: string; serviceNa
         </div>
         {submitted ? (
           <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-            <div className="text-4xl mb-3">✅</div>
+            <div className="flex justify-center mb-3"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#16A34A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
             <p className="font-bold text-gray-900 mb-2">メールアプリが開きました</p>
             <p className="text-sm text-gray-500">送信後、3営業日以内にご連絡いたします。<br />メールが開かない場合は <span className="font-medium">support@pokkorilab.com</span> まで直接ご連絡ください。</p>
           </div>

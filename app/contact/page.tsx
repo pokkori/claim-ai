@@ -53,7 +53,7 @@ export default function ContactPage() {
         </div>
 
         <div className="bg-blue-50 rounded-xl p-4 mb-8 flex gap-3">
-          <span className="text-blue-500 text-lg shrink-0">💡</span>
+          <svg className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 2a6 6 0 0 1 4.75 9.75l-.75 1.5V15a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-1.75l-.75-1.5A6 6 0 0 1 10 2zm-1 15h2v1H9v-1z"/></svg>
           <p className="text-sm text-blue-700">ビジネスプラン（¥9,800/月）は14日間の返金保証付き。まずは無料3回お試しいただくことも可能です。</p>
         </div>
 

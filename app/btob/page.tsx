@@ -210,9 +210,9 @@ export default function BtobLP() {
                 {[
                   ["月間生成件数", "100件", "無制限"],
                   ["スタッフ共有", "1名", "チーム全員"],
-                  ["カスハラマニュアル", "—", "✓"],
-                  ["優先サポート", "—", "✓"],
-                  ["義務化対応証明", "—", "✓"],
+                  ["カスハラマニュアル", "—", "○"],
+                  ["優先サポート", "—", "○"],
+                  ["義務化対応証明", "—", "○"],
                 ].map(([label, std, biz], i) => (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-4 font-medium text-gray-700">{label}</td>

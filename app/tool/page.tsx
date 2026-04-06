@@ -227,10 +227,10 @@ function Paywall({ onClose, onCheckout }: { onClose: () => void; onCheckout?: (p
         <h2 className="text-lg font-bold mb-2">無料枠を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-1">クレーム対応文を無制限に生成</p>
         <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
-          <li>✓ クレーム対応文・電話スクリプトを無制限生成</li>
-          <li>✓ 業種別・深刻度別に最適化</li>
-          <li>✓ 悪質クレーマー対応の断り文生成</li>
-          <li>✓ 対応履歴を無制限保存</li>
+          <li>クレーム対応文・電話スクリプトを無制限生成</li>
+          <li>業種別・深刻度別に最適化</li>
+          <li>悪質クレーマー対応の断り文生成</li>
+          <li>対応履歴を無制限保存</li>
         </ul>
         <div className="space-y-3 mb-4">
           <KomojuButton

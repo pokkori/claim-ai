@@ -77,11 +77,11 @@ function SuccessContent() {
         <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
           <h2 className="font-bold text-blue-800 mb-3 text-sm">あなたの特典</h2>
           <ul className="space-y-2 text-sm text-blue-900">
-            <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">✓</span>クレーム対応文・電話スクリプト・チェックリストが無制限生成</li>
-            <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">✓</span>悪質クレーマー・カスハラ対応モード（毅然とした断り文）</li>
-            <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">✓</span>クレームレベル自動判定（🔴重大 / 🟡中程度 / 🟢軽微）</li>
-            <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">✓</span>対応履歴10件を自動保存（直近の案件をすぐ参照）</li>
-            <li className="flex items-start gap-2"><span className="text-blue-600 mt-0.5">✓</span>Google口コミ返信文も生成対応</li>
+            <li className="flex items-start gap-2"><svg className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>クレーム対応文・電話スクリプト・チェックリストが無制限生成</li>
+            <li className="flex items-start gap-2"><svg className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>悪質クレーマー・カスハラ対応モード（毅然とした断り文）</li>
+            <li className="flex items-start gap-2"><svg className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>クレームレベル自動判定（🔴重大 / 🟡中程度 / 🟢軽微）</li>
+            <li className="flex items-start gap-2"><svg className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>対応履歴10件を自動保存（直近の案件をすぐ参照）</li>
+            <li className="flex items-start gap-2"><svg className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 8l4 4 8-8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>Google口コミ返信文も生成対応</li>
           </ul>
         </div>
 
