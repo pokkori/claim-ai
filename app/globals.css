@@ -156,17 +156,24 @@ select option { background: #1a1a2e; color: #fff; }
    Design Trends 2026 -- ambient mesh + glass + spring button
    ============================================================ */
 
-/* ---- Ambient Mesh Gradient Background ---- */
+/* ---- Ambient Mesh Gradient Background (replaced by OrbBackground component) ---- */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
   background:
     radial-gradient(ellipse at 20% 50%, rgba(120, 40, 200, 0.18) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 20%, rgba(0, 180, 255, 0.12) 0%, transparent 60%),
     radial-gradient(ellipse at 60% 80%, rgba(255, 60, 130, 0.10) 0%, transparent 60%);
+}
+
+/* ---- Aurora Orb Background Animation ---- */
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.85; }
+  33% { transform: translateY(-22px) scale(1.06); opacity: 1; }
+  66% { transform: translateY(12px) scale(0.96); opacity: 0.92; }
 }
 
 /* ---- 2026 Glassmorphism ---- */

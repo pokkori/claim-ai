@@ -6,6 +6,7 @@ import PWAInstallBanner from "@/components/PWAInstallBanner";
 import FeedbackButton from "@/components/FeedbackButton";
 import { GoogleAdScript } from "@/components/GoogleAdScript";
 import CookieBanner from "@/components/CookieBanner";
+import OrbBackground from "@/components/OrbBackground";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -99,6 +100,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${notoSansJP.className} antialiased`}>
+        <OrbBackground theme="legal" />
+        <div style={{ position: "relative", zIndex: 1 }}>
         {children}
         <PWAInstallBanner />
         <footer className="flex justify-center py-2">
@@ -109,6 +112,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <GoogleAdScript />
         {/* Microsoft Clarity: IDが設定されたら追加する */}
         <CookieBanner />
+        </div>
       </body>
     </html>
   );
