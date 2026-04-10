@@ -14,6 +14,20 @@ export type OrbTheme =
   | "blue"
   | "finance";
 
+// Aurora UI 2026: Stripe/Linear/Vercel採用の動くグラデーション配色
+const AURORA_COLORS: Record<OrbTheme, [string, string, string]> = {
+  legal:    ["rgba(99,102,241,0.25)", "rgba(59,130,246,0.18)", "rgba(139,92,246,0.20)"],
+  life:     ["rgba(16,185,129,0.25)", "rgba(52,211,153,0.18)", "rgba(14,165,233,0.20)"],
+  business: ["rgba(245,158,11,0.22)", "rgba(99,102,241,0.18)", "rgba(251,191,36,0.20)"],
+  betting:  ["rgba(220,38,38,0.25)",  "rgba(251,191,36,0.20)", "rgba(185,28,28,0.18)"],
+  game:     ["rgba(168,85,247,0.28)", "rgba(236,72,153,0.22)", "rgba(99,102,241,0.20)"],
+  kanji:    ["rgba(220,38,38,0.25)",  "rgba(217,119,6,0.20)",  "rgba(124,58,237,0.18)"],
+  green:    ["rgba(16,185,129,0.28)", "rgba(52,211,153,0.22)", "rgba(5,150,105,0.20)"],
+  purple:   ["rgba(139,92,246,0.28)", "rgba(168,85,247,0.22)", "rgba(124,58,237,0.20)"],
+  blue:     ["rgba(59,130,246,0.28)", "rgba(99,102,241,0.22)", "rgba(37,99,235,0.20)"],
+  finance:  ["rgba(16,185,129,0.25)", "rgba(245,158,11,0.20)", "rgba(14,165,233,0.22)"],
+};
+
 const THEME_ORBS: Record<OrbTheme, string[]> = {
   legal: [
     "rgba(59,130,246,0.18)", "rgba(99,102,241,0.14)",
@@ -101,42 +115,85 @@ const BG_BASE: Record<OrbTheme, string> = {
   finance:  "linear-gradient(135deg, #061A10 0%, #0a160c 40%, #061018 100%)",
 };
 
+// CSS injection for Aurora animation keyframes + animation-composition support
+const AURORA_CSS = `
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.9; }
+  25% { transform: translate(6px, -10px) scale(1.04); opacity: 1; }
+  50% { transform: translate(-4px, 8px) scale(0.97); opacity: 0.85; }
+  75% { transform: translate(10px, -4px) scale(1.02); opacity: 0.95; }
+}
+@keyframes auroraShift {
+  0% { background-position: 20% 50%, 80% 20%, 50% 80%; }
+  33% { background-position: 60% 30%, 20% 70%, 80% 30%; }
+  66% { background-position: 80% 70%, 50% 20%, 20% 60%; }
+  100% { background-position: 20% 50%, 80% 20%, 50% 80%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orb-float { animation: none !important; }
+  .aurora-layer { animation: none !important; }
+}
+`;
+
 interface OrbBackgroundProps {
   theme?: OrbTheme;
 }
 
 const OrbBackground = memo(function OrbBackground({ theme = "legal" }: OrbBackgroundProps) {
   const orbs = THEME_ORBS[theme];
+  const [c1, c2, c3] = AURORA_COLORS[theme];
+
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: "none",
-        overflow: "hidden",
-        background: BG_BASE[theme],
-      }}
-      aria-hidden="true"
-    >
-      {ORB_POSITIONS.map((pos, i) => (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: AURORA_CSS }} />
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          overflow: "hidden",
+          background: BG_BASE[theme],
+        }}
+        aria-hidden="true"
+      >
+        {/* Aurora UI layer: Stripe/Linear/Vercel style animated gradient (2026) */}
         <div
-          key={i}
+          className="aurora-layer"
           style={{
             position: "absolute",
-            left: `${pos.left}%`,
-            top: `${pos.top}%`,
-            width: pos.size,
-            height: pos.size,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${orbs[i]} 0%, transparent 70%)`,
-            filter: `blur(${pos.blur}px)`,
-            animation: `orbFloat ${pos.duration}s ease-in-out ${pos.delay}s infinite`,
-            willChange: "transform, opacity",
+            inset: 0,
+            backgroundImage: [
+              `radial-gradient(ellipse at 20% 50%, ${c1} 0%, transparent 60%)`,
+              `radial-gradient(ellipse at 80% 20%, ${c2} 0%, transparent 60%)`,
+              `radial-gradient(ellipse at 50% 80%, ${c3} 0%, transparent 60%)`,
+            ].join(", "),
+            backgroundSize: "200% 200%, 200% 200%, 200% 200%",
+            animation: "auroraShift 30s ease-in-out infinite",
           }}
         />
-      ))}
-    </div>
+        {/* Orb layer */}
+        {ORB_POSITIONS.map((pos, i) => (
+          <div
+            key={i}
+            className="orb-float"
+            style={{
+              position: "absolute",
+              left: `${pos.left}%`,
+              top: `${pos.top}%`,
+              width: pos.size,
+              height: pos.size,
+              borderRadius: "50%",
+              background: `radial-gradient(circle, ${orbs[i]} 0%, transparent 70%)`,
+              filter: `blur(${pos.blur}px)`,
+              animation: `orbFloat ${pos.duration}s ease-in-out ${pos.delay}s infinite`,
+              animationComposition: "add",
+              willChange: "transform, opacity",
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 });
 
