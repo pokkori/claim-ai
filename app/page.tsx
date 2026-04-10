@@ -1059,6 +1059,32 @@ export default function ClaimLP() {
         </div>
       </section>
 
+      {/* 今週よくある業種別クレームTOP3バナー */}
+      <section className="py-10 px-6 max-w-3xl mx-auto">
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-2 h-2 rounded-full bg-red-400 animate-pulse" aria-hidden="true"></div>
+            <span className="text-red-400 text-xs font-bold uppercase tracking-wide">今週よくあるクレームTOP3</span>
+          </div>
+          <div className="space-y-3">
+            {[
+              { rank: 1, industry: "飲食", text: "「料理が遅い・冷めている」→ AI対応文を即生成", color: "#F87171" },
+              { rank: 2, industry: "EC通販", text: "「届いた商品が違う・傷がある」→ 返金・交換フローをAIが作成", color: "#FB923C" },
+              { rank: 3, industry: "美容サロン", text: "「仕上がりが気に入らない」→ 法的リスクを踏まえた対応文を生成", color: "#FBBF24" },
+            ].map(({ rank, industry, text, color }) => (
+              <div key={rank} className="flex items-start gap-3 p-3 rounded-xl bg-white/5">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-black text-sm" style={{ background: `${color}22`, color }}>{rank}</div>
+                <div>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full mr-2" style={{ background: `${color}22`, color }}>{industry}</span>
+                  <span className="text-sm text-white/80">{text}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-white/40 mt-3 text-right">※業種別クレーム事例から毎週更新</p>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="bg-white/5 py-16">
         <div className="max-w-2xl mx-auto px-6">
