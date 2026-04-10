@@ -420,7 +420,7 @@ export function generateMetadata({
 }: {
   params: { slug: string };
 }): Metadata {
-  const kw = KEYWORDS[params.slug];
+  const kw = KEYWORDS[slug];
   if (!kw) return {};
   return {
     title: kw.title,
@@ -431,7 +431,7 @@ export function generateMetadata({
     openGraph: {
       title: kw.title,
       description: kw.description,
-      url: `${SITE_URL}/keywords/${params.slug}`,
+      url: `${SITE_URL}/keywords/${slug}`,
       siteName: "AIクレーム対応文ジェネレーター",
       locale: "ja_JP",
       type: "website",
@@ -444,7 +444,7 @@ export function generateMetadata({
       images: ["/og.png"],
     },
     alternates: {
-      canonical: `${SITE_URL}/keywords/${params.slug}`,
+      canonical: `${SITE_URL}/keywords/${slug}`,
     },
   };
 }
@@ -480,7 +480,7 @@ export default function KeywordPage({
 }: {
   params: { slug: string };
 }) {
-  const kw = KEYWORDS[params.slug];
+  const kw = KEYWORDS[slug];
   if (!kw) notFound();
 
   const faqJsonLd = {
