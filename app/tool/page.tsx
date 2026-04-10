@@ -5,9 +5,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
-import { useTypewriter } from "@/lib/useTypewriter";
 import ConfettiLaunch from "@/components/ConfettiLaunch";
 import { UsageCounter } from "@/components/UsageCounter";
+import AIResultCard from "@/components/AIResultCard";
 
 const FREE_LIMIT = 3;
 const KEY = "claim_use_count";
@@ -305,8 +305,7 @@ function CompletionBanner({ visible, levelInfo }: { visible: boolean; levelInfo:
 }
 
 function SectionContent({ content }: { content: string }) {
-  const displayed = useTypewriter(content, 15);
-  return <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(displayed) }} />;
+  return <div className="text-sm text-gray-300" dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }} />;
 }
 
 function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: LevelInfo | null }) {
@@ -337,13 +336,17 @@ function ResultTabs({ parsed, levelInfo }: { parsed: ParsedResult; levelInfo: Le
         ))}
       </div>
 
-      <div className="glass-dark rounded-xl p-4 min-h-[360px]">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
-          <CopyButton text={section.content} />
-        </div>
-        <SectionContent content={section.content} />
-      </div>
+      <AIResultCard
+        text={section.content}
+        accentColor="#3B82F6"
+        header={
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-semibold text-blue-300">{section.title}</span>
+            <CopyButton text={section.content} />
+          </div>
+        }
+        renderContent={(t) => <SectionContent content={t} />}
+      />
 
       <div className="flex gap-2 justify-end flex-wrap items-center">
         <CopyButton text={parsed.raw} label="全文コピー" />
