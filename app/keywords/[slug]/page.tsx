@@ -415,11 +415,12 @@ export function generateStaticParams() {
 
 const SITE_URL = "https://claim-ai.vercel.app";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
   const kw = KEYWORDS[slug];
   if (!kw) return {};
   return {
@@ -475,11 +476,12 @@ function FeatureIcon({ d }: { d: string }) {
 /*  Page component                                                     */
 /* ------------------------------------------------------------------ */
 
-export default function KeywordPage({
+export default async function KeywordPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const kw = KEYWORDS[slug];
   if (!kw) notFound();
 
