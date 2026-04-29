@@ -9,6 +9,7 @@ import { ShareButtons } from "@/components/ShareButtons";
 import { StreakBanner } from "@/components/StreakBanner";
 import { CrossSell } from "@/components/CrossSell";
 import { TrustBadge } from "@/components/TrustBadge";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -1391,6 +1392,11 @@ export default function ClaimLP() {
       />
       <AdBanner slot="" />
     </main>
+    <ExitIntentPopup
+      serviceUrl="https://claim-ai.vercel.app"
+      message="クレーム対応に困っていませんか？AIが状況別の対応文を即生成します。最初の相談は無料です。"
+      ctaText="無料でクレーム対応文を生成する"
+    />
     </>
   );
 }

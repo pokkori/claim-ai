@@ -8,6 +8,7 @@ import { GoogleAdScript } from "@/components/GoogleAdScript";
 import CookieBanner from "@/components/CookieBanner";
 import OrbBackground from "@/components/OrbBackground";
 import "./globals.css";
+import { PHProvider } from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -28,7 +29,7 @@ const mPlusRounded = M_PLUS_Rounded_1c({
 
 const SITE_URL = "https://claim-ai-beryl.vercel.app";
 const TITLE = "クレームAI｜カスハラ対策・クレーム対応文を15秒で自動生成【2026年義務化対応】";
-const DESC = "クレーム内容を入力するだけ。お詫び文・口頭スクリプト・社内記録・カスハラ判定の4種をAIが自動生成。2026年10月義務化対応チェックリスト付き。飲食・EC・ホテル・美容など業種別対応。登録不要・無料3回。";
+const DESC = "カスハラ・クレーム電話が来た瞬間に使える。AIが状況別の対応文を即生成。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -100,6 +101,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className={`${notoSansJP.className} antialiased`}>
+        <PHProvider>
         <OrbBackground theme="legal" />
         <div style={{ position: "relative", zIndex: 1 }}>
         {children}
@@ -113,6 +115,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {/* Microsoft Clarity: IDが設定されたら追加する */}
         <CookieBanner />
         </div>
+        </PHProvider>
       </body>
     </html>
   );
