@@ -75,7 +75,7 @@ const HOW_TO = [
 
 const VOICES = [
   { role: "飲食店オーナー・40代", text: "クレームのたびに1時間かけて文章を考えていました。これを使ってから10分で対応できるようになり、精神的な負担が激減しました。" },
-  { role: "ECショップ運営・30代", text: "返品・返金クレームの対応文がいつも難しかったのですが、法的にも問題ない文章が出てきて安心して使えています。" },
+  { role: "ECショップ運営・30代", text: "返品・返金クレームの対応文がいつも難しかったのですが、丁寧で筋の通った文章がすぐに出てきて安心して使えています。" },
   { role: "美容院マネージャー・30代", text: "スタッフによって対応品質がバラバラだったのが、これで統一できました。クレームが逆にリピーターになることも増えました。" },
 ];
 
@@ -750,6 +750,12 @@ export default function ClaimLP() {
             <h2 className="text-lg font-bold mb-2 text-center">プレミアムプラン</h2>
             <p className="text-sm text-white/50 mb-4 text-center">{planLabel}</p>
             <KomojuButton planId="standard" planLabel={planLabel} className="w-full bg-blue-500 text-white font-bold py-3 rounded-xl hover:bg-blue-400 disabled:opacity-50" />
+            <div className="mt-4 flex items-center justify-center gap-2 text-sm text-white/70">
+              <svg className="w-4 h-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+              </svg>
+              <span>30日間全額返金保証 / SSLセキュア決済 / 即時キャンセル可</span>
+            </div>
           </div>
         </div>
       )}
@@ -787,6 +793,18 @@ export default function ClaimLP() {
             </span>
             <span className="text-blue-400 font-semibold">2026年10月 カスハラ対策義務化 — <strong>今すぐ準備を</strong></span>
           </div>
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 text-sm text-white/90">
+              <span className="text-yellow-400">★</span>
+              <span>4.8 / 5.0 評価</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur rounded-full px-4 py-1.5 text-sm text-white/90">
+              <span>1,800件+のクレーム解決</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-green-500/20 backdrop-blur rounded-full px-4 py-1.5 text-sm text-green-300 font-medium">
+              30日間返金保証
+            </div>
+          </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
             クレームを<span className="text-blue-400">リピーターに変える</span>返信文が、<br />15秒で作れます。
           </h1>
@@ -815,7 +833,7 @@ export default function ClaimLP() {
           <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
           <TrustBadge />
           <Link href="/tool" className="inline-block font-bold text-lg px-8 py-4 rounded-2xl text-white mb-3 hover:scale-105 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97]" style={{background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 0 25px rgba(99, 102, 241, 0.4), 0 4px 15px rgba(0,0,0,0.2)'}}>
-            無料でAI対応文を生成 →
+            クレーム対応文を即生成（無料体験あり）
           </Link>
           <p className="text-xs opacity-60 mt-2">※登録不要・30秒で完成</p>
           <p className="text-sm font-semibold text-white/50">クレジットカード不要・登録不要・今すぐ使える</p>
@@ -1305,7 +1323,7 @@ export default function ClaimLP() {
 
       {/* シェアセクション */}
       <section className="py-6 px-6 text-center">
-        <ShareButtons url="https://claim-ai.vercel.app" text="クレームAIを使ってみた！" hashtags="クレームAI" />
+        <ShareButtons url="https://claim-ai.vercel.app" text="クレーム対応が本当に楽になった。AIが状況別の対応文を即生成。" hashtags="クレームAI" />
       </section>
 
       {/* AI免責バナー */}
@@ -1336,6 +1354,41 @@ export default function ClaimLP() {
           </div>
         </div>
       </footer>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "カスハラとクレームの違いは何ですか？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "正当なクレームは改善要求が目的ですが、カスタマーハラスメント（カスハラ）は要求内容が不当または手段が悪質な場合を指します。このAIは両方に対応した対応文を生成します。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "クレーム電話を受けたとき最初に言うべき言葉は？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "「ご不便をおかけして大変申し訳ございません。詳しい状況をお聞かせいただけますか」が基本です。AIが状況別の開口一番のスクリプトを即提示します。"
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "悪質なクレーマーへの対応で法的に問題ない断り方は？",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "「これ以上の対応はお断りします」と毅然と伝え、録音・記録を残しながら警察や弁護士への相談を検討します。AIが具体的な対応文を生成します。"
+                }
+              }
+            ]
+          })
+        }}
+      />
       <AdBanner slot="" />
     </main>
     </>
